@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Kentsel Dönüşüm ve İmar Mevzuatı Dijital Kütüphanesi | Ana Komuta Merkezi</title>
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="apple-touch-icon" href="logo.png">
+  <link rel="stylesheet" href="ortak.css">
+</head>
+<body data-cilt="0">
+
+  <main class="main-content">
+    <!-- ÜST BAR OTOMATİK YERLEŞİM NOKTASI -->
+    <div id="topNavSlot"></div>
+
+    <div class="container">
+
+      <!-- ANA KARŞILAMA VE LOGO BANNERI -->
+      <div class="section-card" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 60%, #065f46 100%); color: #fff; border:none; padding: 28px;">
+        <div style="display:flex; align-items:center; gap:20px; flex-wrap:wrap;">
+          <img src="logo.png" alt="Logo" onerror="this.style.display='none'" style="width:84px; height:84px; border-radius:16px; border:2px solid #fbbf24; object-fit:cover; background:#0f172a; box-shadow:0 8px 20px rgba(0,0,0,0.35);">
+          <div style="flex:1; min-width:260px;">
+            <span class="section-badge" style="background:#fbbf24; color:#0f172a;">ANA KOMUTA MERKEZİ • CİLT 1 • CİLT 2 • CİLT 3 • CİLT 4</span>
+            <h1 style="color:#fff; font-size:1.75rem; margin:6px 0 8px 0;">Kentsel Dönüşüm ve İmar Mevzuatı Dijital Kütüphanesi</h1>
+            <p style="color:#cbd5e1; margin-bottom:0; font-size:0.93rem;">
+              Belediye e-imar okuma, EK-1d semboller, 1,70 çıkma ve emsal hesapları, 6306 sayılı Kanun (4 Şubat 2026 değişiklikleri), parsel tevhidi (m.15/8), çoklu ruhsatsız yapılar, müteahhit yetki sınıfları (A–H & Y1–Y3), vekaletname/sözleşme şablonları ve 34 Bakanlık görüşünü içeren interaktif saha uygulaması.
+            </p>
+          </div>
+        </div>
+
+        <!-- HIZLI KOMUTA BUTONLARI -->
+        <div style="margin-top:20px; padding-top:16px; border-top:1px solid rgba(255,255,255,0.15); display:flex; gap:10px; flex-wrap:wrap;">
+          <button onclick="openSplitTools()" style="background:#10b981; color:#022c22; border:none; padding:9px 15px; border-radius:8px; font-weight:700; font-size:0.83rem; cursor:pointer;">⚡ Hızlı Hesaplayıcılar & 6306 Takvim Motoru</button>
+          <button onclick="openSplitLaw('yon-m15-8')" style="background:#a855f7; color:#fff; border:none; padding:9px 15px; border-radius:8px; font-weight:700; font-size:0.83rem; cursor:pointer;">⚖️ 6306 & İmar Mevzuatı Hızlı Seçici</button>
+          <button onclick="openYonEk('Ek-12')" style="background:#3b82f6; color:#fff; border:none; padding:9px 15px; border-radius:8px; font-weight:700; font-size:0.83rem; cursor:pointer;">📋 Resmi Yönetmelik Formları (Ek-1..Ek-13)</button>
+          <button onclick="openSplitNotes()" style="background:#f59e0b; color:#0f172a; border:none; padding:9px 15px; border-radius:8px; font-weight:700; font-size:0.83rem; cursor:pointer;">📝 Çalışma ve Saha Notlarım</button>
+          <button onclick="openKilavuzModal()" style="background:#1e293b; color:#e2e8f0; border:1px solid #475569; padding:9px 15px; border-radius:8px; font-weight:700; font-size:0.83rem; cursor:pointer;">❓ Sistem Kılavuzu</button>
+        </div>
+      </div>
+
+      <!-- 4 CİLDİN ANA GİRİŞ KARTLARI -->
+      <div class="grid-2" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:18px; margin-bottom:24px;"></div>
+      <!-- CİLT 1 KARTI -->
+        <div class="section-card" style="margin-bottom:0; border-top:5px solid #d97706; display:flex; flex-direction:column; justify-content:space-between;">
+          <div>
+            <span class="section-badge" style="background:#fef3c7; color:#b45309;">📘 CİLT 1 • İMAR PLANI, PAFTA VE MİMARİ HESAPLAR</span>
+            <h2 style="margin-top:4px; font-size:1.2rem;">İmar Planı Okuma, EK-1d Semboller ve Alan Hesaplamaları</h2>
+            <ul class="clean-list" style="font-size:0.86rem; color:#475569;">
+              <li>Belediye E-İmar sorgu ekranı okuma ve daire içi semboller (<code>5 / A-4 / 3</code>)</li>
+              <li>Mekânsal Planlar Yapım Yönetmeliği <strong>EK-1d Gösterimleri</strong> ve RGB kodları</li>
+              <li><strong>1,70 Çıkma Katsayısı</strong>, <strong>+2,50 m Subasman</strong> ve Canlı Fizibilite Hesaplayıcı</li>
+              <li><strong>Saha Vakaları:</strong> Muratpaşa 1291/8 (435 m²) & <strong>Kepez Güneş Mah. 27594/1</strong> (16.250 m² İBT, 157 m Mânia & <code>Ek-1F</code> Malik Krokisi)</li>
+            </ul>
+          </div>
+          <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;">
+            <a href="cilt1.html" class="live-link" style="background:#d97706; color:#fff; border-color:#b45309;">📘 Cilt 1'i Aç ➔</a>
+            <a href="cilt1.html#bolum-3" class="ek-link">🧮 Emsal Hesaplayıcı</a>
+            <a href="cilt1.html#bolum-4" class="ek-link">🗺️ Kepez 27594/1 Vaka</a>
+            <a href="cilt1.html#bolum-6" class="law-link">🎓 Cilt 1 Testi</a>
+          </div>
+        </div>
+
+        <!-- CİLT 2 KARTI -->
+        <div class="section-card" style="margin-bottom:0; border-top:5px solid #059669; display:flex; flex-direction:column; justify-content:space-between;">
+          <div>
+            <span class="section-badge" style="background:#ecfdf5; color:#047857;">📗 CİLT 2 • 6306 KANUN, TEVHİT VE ÇOKLU YAPILAR</span>
+            <h2 style="margin-top:4px; font-size:1.2rem;">6306 Uygulama Süreci, Parsel Tevhidi ve Çoklu Yapılar</h2>
+            <ul class="clean-list" style="font-size:0.86rem; color:#475569;">
+              <li>Kentsel dönüşümde <strong>16 Ana Konu</strong>, <strong>10 Aşamalı Süreç</strong> ve 7269 hasar farkı</li>
+              <li>ARAAD başvuru, <code>Ek-6</code> muhtarlık ilanı (15 gün), itiraz ve yıkım (<code>m.8</code> vs <code>m.17</code>)</li>
+              <li><strong>4 Şubat 2026 Yönetmelik Rehberi:</strong> <code>%50+1</code> karar, ruhsat öncesi pay satışı şartı (<code>m.15/4</code>), <strong>İki Riskli Parselin Tevhidi (<code>m.15/8</code>)</strong> ve aktarım (<code>m.15/10</code>)</li>
+              <li><strong>Çoklu Ruhsatsız Yapılar Karar Ağacı (<code>m.15/6-7</code>)</strong>, idari fesih ve davalar</li>
+            </ul>
+          </div>
+          <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;">
+            <a href="cilt2.html" class="live-link" style="background:#059669; color:#fff; border-color:#047857;">📗 Cilt 2'yi Aç ➔</a>
+            <a href="cilt2.html#bolum-3" class="ek-link">🔀 Parsel Tevhidi (m.15/8)</a>
+            <a href="cilt2.html#bolum-7" class="ek-link">🏚️ Çoklu Yapılar</a>
+            <a href="cilt2.html#bolum-10" class="law-link">🎓 Cilt 2 Testi</a>
+          </div>
+        </div>
+
+        <!-- CİLT 3 KARTI -->
+        <div class="section-card" style="margin-bottom:0; border-top:5px solid #2563eb; display:flex; flex-direction:column; justify-content:space-between;">
+          <div>
+            <span class="section-badge" style="background:#eff6ff; color:#1d4ed8;">📙 CİLT 3 • DOSYALAMA, MÜTEAHHİT VE SÖZLEŞMELER</span>
+            <h2 style="margin-top:4px; font-size:1.2rem;">Dosya Sistemi, Müteahhit Sınıfları ve Vekaletname</h2>
+            <ul class="clean-list" style="font-size:0.86rem; color:#475569;">
+              <li>9 Aşamalı Klasör Sistemi ve interaktif <strong><code>A1–H5</code> Evrak Kontrol Listesi</strong></li>
+              <li><strong>Yapı Müteahhitliği Sınıfları (<code>Geçici</code> ve <code>H–A</code> Grupları)</strong> & Yıkım (<code>Y1–Y3</code>)</li>
+              <li>Sınırlı Vekaletname Matrisi vs. <strong>Noter Düzenleme Şeklinde Vekaletname (<code>Ek-3L</code>)</strong></li>
+              <li><strong>Kat Karşılığı Yer Gösterme Belgesi (<code>%4 + KDV</code> - <code>Ek-3K</code>)</strong> ve 12 Şablon</li>
+            </ul>
+          </div>
+          <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;">
+            <a href="cilt3.html" class="live-link" style="background:#2563eb; color:#fff; border-color:#1d4ed8;">📙 Cilt 3'ü Aç ➔</a>
+            <a href="cilt3.html#bolum-5" class="ek-link">🏗️ Müteahhit Sınıfı Sorgu</a>
+            <a href="cilt3.html#bolum-8" class="ek-link">📋 12 Dilekçe & Vekalet</a>
+            <a href="cilt3.html#bolum-9" class="law-link">🎓 Cilt 3 Testi</a>
+          </div>
+        </div>
+
+        <!-- CİLT 4 KARTI -->
+        <div class="section-card" style="margin-bottom:0; border-top:5px solid #7c3aed; display:flex; flex-direction:column; justify-content:space-between;">
+          <div>
+            <span class="section-badge" style="background:#f3e8ff; color:#6d28d9;">⚖️ CİLT 4 • MEVZUAT MERKEZİ VE 34 BAKANLIK GÖRÜŞÜ</span>
+            <h2 style="margin-top:4px; font-size:1.2rem;">Mevzuat, Antalya İmar Yönetmeliği ve Bakanlık Görüşleri</h2>
+            <ul class="clean-list" style="font-size:0.86rem; color:#475569;">
+              <li>Doğrulanmış <strong>Canlı Mevzuat Portalı</strong> (<code>39787</code>, <code>31301</code>, <code>24408</code>, <code>4883</code>, <code>16849</code>)</li>
+              <li><strong>6306 Uygulama Yönetmeliği (Madde 1–22)</strong> ve 2026 Danıştay YD/İptal Kararları</li>
+              <li><strong>Antalya Büyükşehir Belediyesi İmar Yönetmeliği</strong> (Madde 1–59 Saha Rehberi)</li>
+              <li><strong>Bakanlık Açıklamalı 34 Soru-Cevap Rehberi:</strong> Balkon, SGK borcunda kısmi iskân (<code>m.28/10</code>), otopark, sığınak, tiny house, sundurma ve bağ evi (75/150/250 m²)</li>
+            </ul>
+          </div>
+          <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;">
+            <a href="cilt4.html" class="live-link" style="background:#7c3aed; color:#fff; border-color:#6d28d9;">⚖️ Cilt 4'ü Aç ➔</a>
+            <a href="cilt4.html#bolum-3" class="ek-link">🏛️ Antalya İmar Yön.</a>
+            <a href="cilt4.html#bolum-4" class="ek-link">📌 34 Bakanlık Görüşü</a>
+            <a href="cilt4.html#bolum-6" class="law-link">🎓 Cilt 4 Testi</a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RESMİ YÖNETMELİK EKLERİ (EK-1 .. EK-13) HIZLI ERİŞİM BARI -->
+      <section class="section-card">
+        <span class="section-badge">6306 UYGULAMA YÖNETMELİĞİ RESMİ FORMLARI • TEK TIKLA YAN EKRANDA AÇ VE KOPYALA</span>
+        <h2>📋 Resmi Tutanak, İlan ve Bildirim Formları Hızlı Erişim Masası (Ek-1 – Ek-13)</h2>
+        <p style="margin-bottom:8px;">Aşağıdaki yeşil form rozetlerinden herhangi birine tıklayarak resmi matbu şablonu sağ ikiz ekranda açabilir ve tek tıkla kopyalayabilirsiniz:</p>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <span>Lisans & Teknik: Ek-1 • Ek-2 • Ek-3 • Ek-4</span> |
+          <span>Satın Alma/Trampa: Ek-5</span> |
+          <span>Riskli Yapı Askı (15 Gün): Ek-6</span> |
+          <span>Tahliye/Yıkım (90 Gün): Ek-7/A • Ek-7/B</span> |
+          <span>Katılmayanlara Teklif (15 Gün): Ek-8 • Ek-10</span> |
+          <span>Açık Artırma Satış: Ek-9 • Ek-11</span> |
+          <span>Toplantı Çağrısı (15 Gün): Ek-12</span> |
+          <span>3. Şahıslara Satış (%10 Teminat): Ek-13</span>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <script src="ortak.js"></script>
+</body>
+</html>
