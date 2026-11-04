@@ -5039,11 +5039,10 @@ window.addEventListener('DOMContentLoaded', () => {
     setTimeout(injectVideoTriggerButtons, 150);
   });
 })();
-// 19. ANA SAYFA VURUCU TANITIM METNİ VE ÇOKLU YAPI ŞEMASI (SENARYO A-B-C-D) TAŞMA DÜZELTİCİ
-(function initHeroTextAndSchemaOverflowFix() {
+// 19. ANA SAYFA VURUCU TANITIM METNİ VE ORİJİNAL SVG ÇOKLU YAPI ŞEMASI (TAŞMASIZ & A-B-C YAPI UYUMLU)
+(function initHeroTextAndOriginalSvgFix() {
   const YENI_ANA_SAYFA_METNI = "İmar ve emsal analizlerinden A'dan Z'ye dönüşüm yol haritasına, koruyucu sözleşme şablonlarından canlı fizibilite simülasyonlarına kadar tüm kentsel dönüşüm sürecini tek merkezde buluşturan interaktif uzmanlık ve saha rehberi.";
 
-  // 1) Ana Sayfadaki (index.html) karmaşık alt başlığı sade ve vurucu metinle değiştirir
   function updateHeroDescriptionText() {
     document.querySelectorAll('p').forEach(p => {
       const txt = (p.textContent || '').trim();
@@ -5056,106 +5055,107 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 2) Taşma yapan "Aynı Parselde Birden Fazla Yapı (Senaryo A-B-C-D)" SVG şemasını sıfır taşmalı esnek şemaya dönüştürür
-  function getCleanMultiBuildingSchemaHTML() {
-    return `
-      <div style="background:#f8fafc; border:2px solid #cbd5e1; border-radius:10px; padding:12px; display:flex; flex-direction:column; gap:10px; font-family:'Segoe UI',system-ui,sans-serif;">
-        
-        <!-- SENARYO A -->
-        <div style="background:#fef2f2; border:2px solid #dc2626; border-radius:8px; padding:10px 12px;">
-          <div style="font-weight:800; font-size:0.82rem; color:#991b1b; margin-bottom:8px;">
-            🔴 SENARYO A — PARSELDEKİ BÜTÜN YAPILARIN RİSKLİ OLMASI (Yönetmelik Madde 15/6 &amp; Örnek A)
-          </div>
-          <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
-            <div style="display:flex; gap:6px; flex-shrink:0;">
-              <div style="background:#dc2626; color:#fff; padding:8px 10px; border-radius:6px; font-weight:800; font-size:0.74rem; text-align:center;">A Yapısı (Riskli)</div>
-              <div style="background:#dc2626; color:#fff; padding:8px 10px; border-radius:6px; font-weight:800; font-size:0.74rem; text-align:center;">B Yapısı (Riskli)</div>
-              <div style="background:#dc2626; color:#fff; padding:8px 10px; border-radius:6px; font-weight:800; font-size:0.74rem; text-align:center;">C Yapısı (Riskli)</div>
-            </div>
-            <div style="flex:1; min-width:260px; font-size:0.77rem; color:#1e293b; line-height:1.5;">
-              <div>• <strong>Karar Kuralı:</strong> Yapının paydaşı olup olmadığına bakılmaksızın parseldeki <strong>BÜTÜN PAYDAŞLARIN &gt;%50'si</strong> ile karar alınır.</div>
-              <div>• <strong>Saha Örneği A:</strong> Paylar P1(%35) + P2(%25) + P3(%20) + P4(%20) ➔ <strong style="color:#059669;">P1 + P2 = %60 (&gt;%50)</strong> ile tüm parsel için karar alınır.</div>
-              <div>• Katılmayan P3 ve P4'e Ek-8 ile 15 gün süre verilir; kabul etmezlerse m.15/A açık artırma satışı uygulanır.</div>
-            </div>
-          </div>
-        </div>
+  // Orijinal SVG görünümünü birebir koruyan, sağdan taşmayan ve A-B-C yapılarıyla %100 uyumlu SVG
+  function getOriginalStyleFixedSvgHTML() {
+    return `<svg viewBox="0 0 940 425" style="width:100%; height:auto; background:#f8fafc; border-radius:8px; border:1px solid #cbd5e1; font-family:'Segoe UI', system-ui, sans-serif;">
+      <!-- SENARYO A -->
+      <rect x="12" y="10" width="916" height="92" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="1.8"/>
+      <circle cx="26" cy="27" r="5.5" fill="#dc2626"/>
+      <text x="37" y="31" fill="#991b1b" font-size="12" font-weight="800">SENARYO A — PARSELDEKİ BÜTÜN YAPILARIN RİSKLİ OLMASI (Yönetmelik Madde 15/6 &amp; Örnek A)</text>
+      
+      <rect x="22" y="42" width="102" height="38" rx="5" fill="#dc2626"/>
+      <text x="73" y="59" fill="#ffffff" font-size="10.5" font-weight="700" text-anchor="middle">A Yapısı (Riskli)</text>
+      <text x="73" y="72" fill="#fecaca" font-size="9.5" font-weight="700" text-anchor="middle">Arsa Payı: %35</text>
 
-        <!-- SENARYO B -->
-        <div style="background:#ecfdf5; border:2px solid #059669; border-radius:8px; padding:10px 12px;">
-          <div style="font-weight:800; font-size:0.82rem; color:#065f46; margin-bottom:8px;">
-            🟢 SENARYO B — YALNIZ BAZI YAPILARIN RİSKLİ OLMASI VE RESEN İFRAZ (Yönetmelik Madde 15/7 &amp; Örnek B)
-          </div>
-          <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
-            <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
-              <div style="background:#dc2626; color:#fff; padding:6px 10px; border-radius:6px; font-weight:800; font-size:0.72rem; text-align:center;">A (RİSKLİ)<br><span style="font-size:0.65rem; font-weight:600;">Oy Kullanır</span></div>
-              <div style="background:#dc2626; color:#fff; padding:6px 10px; border-radius:6px; font-weight:800; font-size:0.72rem; text-align:center;">B (RİSKLİ)<br><span style="font-size:0.65rem; font-weight:600;">Oy Kullanır</span></div>
-              <div style="border-left:2px dashed #0284c7; height:38px; margin:0 2px; position:relative;" title="Resen İfraz Çizgisi"></div>
-              <div style="background:#059669; color:#fff; padding:6px 10px; border-radius:6px; font-weight:800; font-size:0.72rem; text-align:center;">C (RİSKSİZ)<br><span style="font-size:0.65rem; font-weight:600;">Kapsam Dışı</span></div>
-            </div>
-            <div style="flex:1; min-width:260px; font-size:0.77rem; color:#1e293b; line-height:1.5;">
-              <div>• <strong>Karar Kuralı:</strong> Yalnızca <strong>RİSKLİ YAPI (A ve B) PAYDAŞLARININ</strong> kendi içinde <strong>&gt;%50 çoğunluğu</strong> aranır.</div>
-              <div>• <strong>Tapu Şerhi &amp; İfraz:</strong> Şerh yalnız A ve B adresine işlenir; ifraz mümkünse A ve B alanı <strong>RESEN İFRAZ</strong> edilir.</div>
-              <div>• C yapısı yıkılmaz ve C maliklerinin mülkiyet hakları korunur <em>(Örnek B: R1 %40 + R2 %35 = %75 &gt; %50 geçerli)</em>.</div>
-            </div>
-          </div>
-        </div>
+      <rect x="130" y="42" width="102" height="38" rx="5" fill="#dc2626"/>
+      <text x="181" y="59" fill="#ffffff" font-size="10.5" font-weight="700" text-anchor="middle">B Yapısı (Riskli)</text>
+      <text x="181" y="72" fill="#fecaca" font-size="9.5" font-weight="700" text-anchor="middle">Arsa Payı: %25</text>
 
-        <!-- SENARYO C -->
-        <div style="background:#fffbeb; border:2px solid #d97706; border-radius:8px; padding:10px 12px;">
-          <div style="font-weight:800; font-size:0.82rem; color:#92400e; margin-bottom:8px;">
-            🟡 SENARYO C — İFRAZ MÜMKÜN DEĞİLSE VE PARSELDE RUHSATSIZ (KAÇAK) YAPI VARSA (m.15/7-c &amp; PAİY m.55/12)
-          </div>
-          <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
-            <div style="display:flex; gap:6px; flex-shrink:0;">
-              <div style="background:#dc2626; color:#fff; padding:6px 10px; border-radius:6px; font-weight:800; font-size:0.72rem; text-align:center;">A Yapısı (Riskli Yıkıldı)<br><span style="font-size:0.65rem; font-weight:600;">Yeni Ruhsat İstiyor</span></div>
-              <div style="background:#b45309; color:#fff; padding:6px 10px; border-radius:6px; font-weight:800; font-size:0.72rem; text-align:center;">C Yapısı (Ruhsatsız/Kaçak)<br><span style="font-size:0.65rem; font-weight:600;">İfraz Edilemiyor</span></div>
-            </div>
-            <div style="flex:1; min-width:260px; font-size:0.77rem; color:#1e293b; line-height:1.5;">
-              <div>• <strong style="color:#b91c1c;">Kritik Engel (PAİY m.55/12):</strong> Parseldeki kaçak yapı ruhsata bağlanmadan veya yıkılmadan yeni yapı ruhsatı düzenlenemez!</div>
-              <div>• <strong>Çözüm Yolu:</strong> Min. ifraz şartı (örn. 1.200 m²) sağlanamıyorsa C yapısı için de riskli yapı tespiti yaptırılır veya imar mevzuatına uygun hale getirilerek/yıktırılarak tüm parsel bütün olarak projelendirilir.</div>
-            </div>
-          </div>
-        </div>
+      <rect x="238" y="42" width="102" height="38" rx="5" fill="#dc2626"/>
+      <text x="289" y="59" fill="#ffffff" font-size="10.5" font-weight="700" text-anchor="middle">C Yapısı (Riskli)</text>
+      <text x="289" y="72" fill="#fecaca" font-size="9.5" font-weight="700" text-anchor="middle">Arsa Payı: %40</text>
 
-        <!-- SENARYO D -->
-        <div style="background:#eff6ff; border:2px solid #2563eb; border-radius:8px; padding:10px 12px;">
-          <div style="font-weight:800; font-size:0.82rem; color:#1e40af; margin-bottom:8px;">
-            🔵 SENARYO D — KAT İRTİFAKI OLMAYAN HİSSELİ ARSADA FİİLİ GECEKONDU / 91 HİSSEDAR MODELİ (Madde 7/2-a)
-          </div>
-          <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
-            <div style="display:flex; gap:6px; flex-shrink:0;">
-              <div style="background:#1d4ed8; color:#fff; padding:6px 10px; border-radius:6px; font-weight:800; font-size:0.72rem; text-align:center;">1. Tespit Başvurusu<br><span style="font-size:0.65rem; font-weight:600;">Fiili Yapı Sahibi (m.7/2-a)</span></div>
-              <div style="background:#047857; color:#fff; padding:6px 10px; border-radius:6px; font-weight:800; font-size:0.72rem; text-align:center;">2. Yıkım Sonrası Karar<br><span style="font-size:0.65rem; font-weight:600;">Tüm Hissedarlar &gt;%50</span></div>
-            </div>
-            <div style="flex:1; min-width:260px; font-size:0.77rem; color:#1e293b; line-height:1.5;">
-              <div>• <strong>Tespit Aşaması (m.7/2-a):</strong> Arsa paylı tapuda risk tespitini binanın <strong>FİİLİ SAHİBİ</strong> olan hissedar (muhtarlık/fatura belgesiyle) yaptırır.</div>
-              <div>• <strong>Sözleşme Aşaması (m.15/2):</strong> Yapı yıkıldıktan/risk kesinleştikten sonra yeni yapılacak binanın sözleşmesi tapudaki <strong>tüm arsa hissedarları</strong> <em>(Örn: Sinan Mah. 539/90 parsel 91 hissedar)</em> hisseleri oranında <strong>&gt;%50</strong> ile imzalanır.</div>
-            </div>
-          </div>
-        </div>
+      <text x="356" y="50" fill="#1e293b" font-size="11" font-weight="700">• Karar Kuralı: <tspan font-weight="400">Parseldeki tüm yapılar (A, B, C) riskli olduğundan</tspan> BÜTÜN PAYDAŞLARIN &gt;%50'si <tspan font-weight="400">aranır.</tspan></text>
+      <text x="356" y="68" fill="#1e293b" font-size="11" font-weight="700">• Saha Örneği A: <tspan font-weight="400">A Yapısı (%35) + B Yapısı (%25) anlaşır ise</tspan> <tspan fill="#059669" font-weight="800">➔ A + B = %60 (&gt;%50)</tspan> <tspan font-weight="400">ile tüm parselde karar alınır.</tspan></text>
+      <text x="356" y="86" fill="#334155" font-size="10.5">• Katılmayan C Yapısı (%40) maliklerine Ek-8 ile 15 gün süre verilir; katılmazlarsa m.15/A açık artırma satışı yapılır.</text>
 
-      </div>
-    `;
+      <!-- SENARYO B -->
+      <rect x="12" y="114" width="916" height="96" rx="8" fill="#ecfdf5" stroke="#059669" stroke-width="1.8"/>
+      <circle cx="26" cy="131" r="5.5" fill="#059669"/>
+      <text x="37" y="135" fill="#065f46" font-size="12" font-weight="800">SENARYO B — YALNIZ BAZI YAPILARIN RİSKLİ OLMASI VE RESEN İFRAZ (Yönetmelik Madde 15/7 &amp; Örnek B)</text>
+
+      <rect x="22" y="146" width="84" height="44" rx="5" fill="#dc2626"/>
+      <text x="64" y="164" fill="#ffffff" font-size="10.5" font-weight="700" text-anchor="middle">A (RİSKLİ)</text>
+      <text x="64" y="179" fill="#fef08a" font-size="9.5" text-anchor="middle">Oy Kullanır</text>
+
+      <rect x="112" y="146" width="84" height="44" rx="5" fill="#dc2626"/>
+      <text x="154" y="164" fill="#ffffff" font-size="10.5" font-weight="700" text-anchor="middle">B (RİSKLİ)</text>
+      <text x="154" y="179" fill="#fef08a" font-size="9.5" text-anchor="middle">Oy Kullanır</text>
+
+      <line x1="214" y1="142" x2="214" y2="194" stroke="#0284c7" stroke-width="2.2" stroke-dasharray="4,3"/>
+      <text x="214" y="204" fill="#0369a1" font-size="9.5" font-weight="800" text-anchor="middle">✂️ Resen İfraz</text>
+
+      <rect x="232" y="146" width="108" height="44" rx="5" fill="#059669"/>
+      <text x="286" y="164" fill="#ffffff" font-size="10.5" font-weight="700" text-anchor="middle">C (RİSKSİZ YAPI)</text>
+      <text x="286" y="179" fill="#d1fae5" font-size="9.5" text-anchor="middle">Kapsam Dışı</text>
+
+      <text x="356" y="154" fill="#1e293b" font-size="11" font-weight="700">• Karar Kuralı: <tspan font-weight="400">Yalnızca</tspan> RİSKLİ YAPI (A ve B) PAYDAŞLARININ <tspan font-weight="400">kendi içinde</tspan> &gt;%50 çoğunluğu <tspan font-weight="400">aranır.</tspan></text>
+      <text x="356" y="172" fill="#1e293b" font-size="11" font-weight="700">• Tapu Şerhi &amp; İfraz: <tspan font-weight="400">Şerh yalnız A ve B adresine işlenir; ifraz mümkünse A ve B alanı</tspan> RESEN İFRAZ <tspan font-weight="400">edilir.</tspan></text>
+      <text x="356" y="190" fill="#334155" font-size="10.5">• C yapısı yıkılmaz ve mülkiyeti korunur <tspan font-style="italic">(Örnek B: A ve B'deki maliklerin %40 + %35 = %75 &gt; %50 kararı geçerlidir).</tspan></text>
+
+      <!-- SENARYO C -->
+      <rect x="12" y="222" width="916" height="92" rx="8" fill="#fffbeb" stroke="#d97706" stroke-width="1.8"/>
+      <circle cx="26" cy="239" r="5.5" fill="#f59e0b"/>
+      <text x="37" y="243" fill="#92400e" font-size="12" font-weight="800">SENARYO C — İFRAZ MÜMKÜN DEĞİLSE VE PARSELDE RUHSATSIZ (KAÇAK) YAPI VARSA (m.15/7-c &amp; PAİY m.55/12)</text>
+
+      <rect x="22" y="254" width="150" height="44" rx="5" fill="#dc2626"/>
+      <text x="97" y="272" fill="#ffffff" font-size="10.5" font-weight="700" text-anchor="middle">A Yapısı (Riskli Yıkıldı)</text>
+      <text x="97" y="287" fill="#fef08a" font-size="9.5" text-anchor="middle">Yeni Ruhsat İstiyor</text>
+
+      <rect x="180" y="254" width="160" height="44" rx="5" fill="#b45309"/>
+      <text x="260" y="272" fill="#ffffff" font-size="10.5" font-weight="700" text-anchor="middle">C Yapısı (Ruhsatsız/Kaçak)</text>
+      <text x="260" y="287" fill="#fde68a" font-size="9.5" text-anchor="middle">İfraz Edilemiyor</text>
+
+      <text x="356" y="263" fill="#991b1b" font-size="11" font-weight="700">• Kritik Engel (PAİY m.55/12): <tspan fill="#1e293b" font-weight="600">Parseldeki C kaçak yapısı ruhsata bağlanmadan / yıkılmadan ruhsat verilmez!</tspan></text>
+      <text x="356" y="281" fill="#1e293b" font-size="10.5"><tspan font-weight="700">• Çözüm Yolu:</tspan> Min. ifraz şartı (örn. 1.200 m²) sağlanamıyorsa C yapısı için de riskli yapı tespiti yaptırılır</text>
+      <text x="364" y="297" fill="#334155" font-size="10.5">veya imar mevzuatına uygun hale getirilerek/yıktırılarak tüm parsel bütün olarak projelendirilir.</text>
+
+      <!-- SENARYO D -->
+      <rect x="12" y="326" width="916" height="88" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <circle cx="26" cy="343" r="5.5" fill="#2563eb"/>
+      <text x="37" y="347" fill="#1e40af" font-size="12" font-weight="800">SENARYO D — KAT İRTİFAKI OLMAYAN HİSSELİ ARSADA FİİLİ GECEKONDU / 91 HİSSEDAR MODELİ (Madde 7/2-a)</text>
+
+      <rect x="22" y="358" width="150" height="44" rx="5" fill="#1d4ed8"/>
+      <text x="97" y="376" fill="#ffffff" font-size="10.5" font-weight="700" text-anchor="middle">1. Tespit Başvurusu</text>
+      <text x="97" y="391" fill="#bfdbfe" font-size="9.5" text-anchor="middle">Fiili Yapı Sahibi (m.7/2-a)</text>
+
+      <rect x="180" y="358" width="160" height="44" rx="5" fill="#047857"/>
+      <text x="260" y="376" fill="#ffffff" font-size="10.5" font-weight="700" text-anchor="middle">2. Yıkım Sonrası Karar</text>
+      <text x="260" y="391" fill="#a7f3d0" font-size="9.5" text-anchor="middle">Tüm Hissedarlar &gt;%50</text>
+
+      <text x="356" y="368" fill="#1e293b" font-size="11" font-weight="700">• Tespit Aşaması (m.7/2-a): <tspan font-weight="400">Arsa paylı tapuda risk tespitini binanın</tspan> FİİLİ SAHİBİ <tspan font-weight="400">olan hissedar yaptırır.</tspan></text>
+      <text x="356" y="386" fill="#1e293b" font-size="10.5"><tspan font-weight="700">• Sözleşme Aşaması (m.15/2):</tspan> Yapı yıkıldıktan/risk kesinleştikten sonra yeni yapılacak binanın sözleşmesi</text>
+      <text x="364" y="402" fill="#334155" font-size="10.5">tapudaki <tspan font-weight="700">tüm arsa hissedarları</tspan> <tspan font-style="italic">(Örn: Sinan Mah. 539/90 parsel 91 hissedar)</tspan> hisseleri oranında <tspan font-weight="700">&gt;%50</tspan> ile imzalanır.</text>
+    </svg>`;
   }
 
-  function fixMultiBuildingDiagramInDOM(root) {
+  function replaceWithOriginalFixedSvg(root) {
     const scope = root || document;
     scope.querySelectorAll('svg').forEach(svg => {
       const txt = svg.textContent || '';
       if (txt.includes('SENARYO A') && txt.includes('SENARYO B') && txt.includes('SENARYO D')) {
-        const wrapper = document.createElement('div');
-        wrapper.innerHTML = getCleanMultiBuildingSchemaHTML();
-        svg.parentNode.replaceChild(wrapper.firstElementChild, svg);
+        const temp = document.createElement('div');
+        temp.innerHTML = getOriginalStyleFixedSvgHTML();
+        svg.parentNode.replaceChild(temp.firstElementChild, svg);
       }
     });
   }
 
-  // SEMA_GALLERY_DATA dizisindeki 4 senaryolu şemayı da kaynakta günceller
-  function patchSemaGalleryDataArray() {
+  function patchSemaGalleryDataSvg() {
     if (typeof SEMA_GALLERY_DATA !== 'undefined' && Array.isArray(SEMA_GALLERY_DATA)) {
       SEMA_GALLERY_DATA.forEach(item => {
         if (item && item.svg && item.svg.includes('SENARYO A') && item.svg.includes('SENARYO D')) {
-          item.svg = getCleanMultiBuildingSchemaHTML();
+          item.svg = getOriginalStyleFixedSvgHTML();
         }
       });
     }
@@ -5164,10 +5164,10 @@ window.addEventListener('DOMContentLoaded', () => {
   const _origOpenSemaModal = typeof window.openSemaGalleryModal === 'function' ? window.openSemaGalleryModal : null;
   if (_origOpenSemaModal) {
     window.openSemaGalleryModal = function(...args) {
-      patchSemaGalleryDataArray();
+      patchSemaGalleryDataSvg();
       const res = _origOpenSemaModal.apply(this, args);
       const modal = document.getElementById('semaGalleryModal');
-      if (modal) fixMultiBuildingDiagramInDOM(modal);
+      if (modal) replaceWithOriginalFixedSvg(modal);
       return res;
     };
   }
@@ -5175,8 +5175,169 @@ window.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
       updateHeroDescriptionText();
-      patchSemaGalleryDataArray();
-      fixMultiBuildingDiagramInDOM(document);
+      patchSemaGalleryDataSvg();
+      replaceWithOriginalFixedSvg(document);
     }, 100);
+  });
+})();
+// 20. ÜST KOMUTA VE GEZİNME BARI (CİLT 1-4 & HIZLI ARAÇLAR) KURUMSAL TASARIM DÜZENLEYİCİ
+(function initTopNavigationPolisher() {
+  function polishTopCommandBar() {
+    const topActions = document.querySelector('.top-actions');
+    if (!topActions || !topActions.parentElement) return;
+    const headerWrap = topActions.parentElement;
+    headerWrap.classList.add('kd-polished-header');
+
+    // Üst satırdaki (Cilt 1-4, Ana Sayfa, Fihrist) kapsayıcısını bul ve sınıf ekle
+    Array.from(headerWrap.children).forEach(child => {
+      if (child !== topActions) {
+        child.classList.add('kd-polished-cilt-row');
+      }
+    });
+
+    if (!document.getElementById('kdTopBarPolishStyles')) {
+      const st = document.createElement('style');
+      st.id = 'kdTopBarPolishStyles';
+      st.textContent = `
+        /* Ana Üst Komuta Kapsayıcısı */
+        .kd-polished-header {
+          background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%) !important;
+          border: 1.5px solid #cbd5e1 !important;
+          border-top: 3px solid #0f172a !important;
+          border-radius: 12px !important;
+          padding: 8px 10px !important;
+          margin-bottom: 14px !important;
+          box-shadow: 0 4px 15px rgba(15, 23, 42, 0.06) !important;
+          display: flex !important;
+          flex-direction: column !important;
+          gap: 8px !important;
+        }
+
+        /* 1. SATIR: Fihrist, Ana Sayfa ve Cilt 1-4 Sekmeleri (Tek Satırda Tam Hizalı) */
+        .kd-polished-cilt-row {
+          display: flex !important;
+          flex-wrap: nowrap !important;
+          align-items: center !important;
+          gap: 6px !important;
+          width: 100% !important;
+          overflow-x: auto !important;
+          padding-bottom: 6px !important;
+          border-bottom: 1px solid #e2e8f0 !important;
+          scrollbar-width: none !important;
+        }
+        .kd-polished-cilt-row::-webkit-scrollbar {
+          display: none !important;
+        }
+
+        .kd-polished-cilt-row > a,
+        .kd-polished-cilt-row > button {
+          height: 34px !important;
+          padding: 0 11px !important;
+          border-radius: 8px !important;
+          font-size: 0.78rem !important;
+          font-weight: 800 !important;
+          display: inline-flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          gap: 5px !important;
+          white-space: nowrap !important;
+          text-decoration: none !important;
+          transition: all 0.15s ease !important;
+          box-sizing: border-box !important;
+          flex: 1 1 auto !important;
+        }
+
+        /* Fihrist Butonu (İlk eleman) */
+        .kd-polished-cilt-row > *:first-child {
+          flex: 0 0 auto !important;
+          background: #0f172a !important;
+          color: #fbbf24 !important;
+          border: 1.5px solid #0f172a !important;
+        }
+
+        /* Pasif Cilt Sekmeleri */
+        .kd-polished-cilt-row > a:not(.active) {
+          background: #ffffff !important;
+          color: #1e293b !important;
+          border: 1.5px solid #cbd5e1 !important;
+        }
+        .kd-polished-cilt-row > a:not(.active):hover {
+          background: #f1f5f9 !important;
+          border-color: #64748b !important;
+          transform: translateY(-1px) !important;
+        }
+
+        /* Aktif Sayfa / Cilt Sekmesi */
+        .kd-polished-cilt-row > a.active {
+          background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%) !important;
+          color: #ffffff !important;
+          border: 1.5px solid #1e40af !important;
+          box-shadow: 0 3px 10px rgba(30, 58, 138, 0.25) !important;
+        }
+
+        /* 2. SATIR: Hızlı Araçlar, Rehber ve Simülasyon Çubuğu (.top-actions) */
+        .kd-polished-header .top-actions {
+          display: flex !important;
+          flex-wrap: nowrap !important;
+          align-items: center !important;
+          gap: 6px !important;
+          width: 100% !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          overflow-x: auto !important;
+          scrollbar-width: none !important;
+        }
+        .kd-polished-header .top-actions::-webkit-scrollbar {
+          display: none !important;
+        }
+
+        .kd-polished-header .top-actions > button,
+        .kd-polished-header .top-actions > a,
+        .kd-polished-header .top-actions .action-pill {
+          height: 31px !important;
+          padding: 0 10px !important;
+          border-radius: 7px !important;
+          font-size: 0.74rem !important;
+          font-weight: 800 !important;
+          display: inline-flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          gap: 4px !important;
+          white-space: nowrap !important;
+          cursor: pointer !important;
+          transition: all 0.15s ease !important;
+          flex: 1 1 auto !important;
+          box-sizing: border-box !important;
+          box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05) !important;
+        }
+
+        .kd-polished-header .top-actions > button:hover,
+        .kd-polished-header .top-actions .action-pill:hover {
+          transform: translateY(-1px) !important;
+          filter: brightness(0.97) !important;
+          box-shadow: 0 3px 8px rgba(15, 23, 42, 0.12) !important;
+        }
+
+        /* Küçük ekranlarda (Mobil/Tablet) otomatik sarma */
+        @media (max-width: 1100px) {
+          .kd-polished-cilt-row,
+          .kd-polished-header .top-actions {
+            flex-wrap: wrap !important;
+          }
+        }
+      `;
+      document.head.appendChild(st);
+    }
+
+    // "Kılavuz" butonunu en sağa ("Notlarım"ın yanına) alarak simülasyon ve rehber butonlarını sol/orta grupta topla
+    const btns = Array.from(topActions.children);
+    const kilavuzBtn = btns.find(b => (b.textContent || '').includes('Kılavuz'));
+    if (kilavuzBtn && topActions.lastElementChild !== kilavuzBtn) {
+      topActions.appendChild(kilavuzBtn);
+    }
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    setTimeout(polishTopCommandBar, 180);
   });
 })();
