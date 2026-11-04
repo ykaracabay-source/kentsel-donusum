@@ -5039,3 +5039,144 @@ window.addEventListener('DOMContentLoaded', () => {
     setTimeout(injectVideoTriggerButtons, 150);
   });
 })();
+// 19. ANA SAYFA VURUCU TANITIM METNİ VE ÇOKLU YAPI ŞEMASI (SENARYO A-B-C-D) TAŞMA DÜZELTİCİ
+(function initHeroTextAndSchemaOverflowFix() {
+  const YENI_ANA_SAYFA_METNI = "İmar ve emsal analizlerinden A'dan Z'ye dönüşüm yol haritasına, koruyucu sözleşme şablonlarından canlı fizibilite simülasyonlarına kadar tüm kentsel dönüşüm sürecini tek merkezde buluşturan interaktif uzmanlık ve saha rehberi.";
+
+  // 1) Ana Sayfadaki (index.html) karmaşık alt başlığı sade ve vurucu metinle değiştirir
+  function updateHeroDescriptionText() {
+    document.querySelectorAll('p').forEach(p => {
+      const txt = (p.textContent || '').trim();
+      if (txt.includes('Belediye e-imar okuma') && txt.includes('interaktif saha uygulaması')) {
+        p.textContent = YENI_ANA_SAYFA_METNI;
+        p.style.fontSize = '0.95rem';
+        p.style.lineHeight = '1.55';
+        p.style.color = '#e2e8f0';
+      }
+    });
+  }
+
+  // 2) Taşma yapan "Aynı Parselde Birden Fazla Yapı (Senaryo A-B-C-D)" SVG şemasını sıfır taşmalı esnek şemaya dönüştürür
+  function getCleanMultiBuildingSchemaHTML() {
+    return `
+      <div style="background:#f8fafc; border:2px solid #cbd5e1; border-radius:10px; padding:12px; display:flex; flex-direction:column; gap:10px; font-family:'Segoe UI',system-ui,sans-serif;">
+        
+        <!-- SENARYO A -->
+        <div style="background:#fef2f2; border:2px solid #dc2626; border-radius:8px; padding:10px 12px;">
+          <div style="font-weight:800; font-size:0.82rem; color:#991b1b; margin-bottom:8px;">
+            🔴 SENARYO A — PARSELDEKİ BÜTÜN YAPILARIN RİSKLİ OLMASI (Yönetmelik Madde 15/6 &amp; Örnek A)
+          </div>
+          <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
+            <div style="display:flex; gap:6px; flex-shrink:0;">
+              <div style="background:#dc2626; color:#fff; padding:8px 10px; border-radius:6px; font-weight:800; font-size:0.74rem; text-align:center;">A Yapısı (Riskli)</div>
+              <div style="background:#dc2626; color:#fff; padding:8px 10px; border-radius:6px; font-weight:800; font-size:0.74rem; text-align:center;">B Yapısı (Riskli)</div>
+              <div style="background:#dc2626; color:#fff; padding:8px 10px; border-radius:6px; font-weight:800; font-size:0.74rem; text-align:center;">C Yapısı (Riskli)</div>
+            </div>
+            <div style="flex:1; min-width:260px; font-size:0.77rem; color:#1e293b; line-height:1.5;">
+              <div>• <strong>Karar Kuralı:</strong> Yapının paydaşı olup olmadığına bakılmaksızın parseldeki <strong>BÜTÜN PAYDAŞLARIN &gt;%50'si</strong> ile karar alınır.</div>
+              <div>• <strong>Saha Örneği A:</strong> Paylar P1(%35) + P2(%25) + P3(%20) + P4(%20) ➔ <strong style="color:#059669;">P1 + P2 = %60 (&gt;%50)</strong> ile tüm parsel için karar alınır.</div>
+              <div>• Katılmayan P3 ve P4'e Ek-8 ile 15 gün süre verilir; kabul etmezlerse m.15/A açık artırma satışı uygulanır.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SENARYO B -->
+        <div style="background:#ecfdf5; border:2px solid #059669; border-radius:8px; padding:10px 12px;">
+          <div style="font-weight:800; font-size:0.82rem; color:#065f46; margin-bottom:8px;">
+            🟢 SENARYO B — YALNIZ BAZI YAPILARIN RİSKLİ OLMASI VE RESEN İFRAZ (Yönetmelik Madde 15/7 &amp; Örnek B)
+          </div>
+          <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
+            <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
+              <div style="background:#dc2626; color:#fff; padding:6px 10px; border-radius:6px; font-weight:800; font-size:0.72rem; text-align:center;">A (RİSKLİ)<br><span style="font-size:0.65rem; font-weight:600;">Oy Kullanır</span></div>
+              <div style="background:#dc2626; color:#fff; padding:6px 10px; border-radius:6px; font-weight:800; font-size:0.72rem; text-align:center;">B (RİSKLİ)<br><span style="font-size:0.65rem; font-weight:600;">Oy Kullanır</span></div>
+              <div style="border-left:2px dashed #0284c7; height:38px; margin:0 2px; position:relative;" title="Resen İfraz Çizgisi"></div>
+              <div style="background:#059669; color:#fff; padding:6px 10px; border-radius:6px; font-weight:800; font-size:0.72rem; text-align:center;">C (RİSKSİZ)<br><span style="font-size:0.65rem; font-weight:600;">Kapsam Dışı</span></div>
+            </div>
+            <div style="flex:1; min-width:260px; font-size:0.77rem; color:#1e293b; line-height:1.5;">
+              <div>• <strong>Karar Kuralı:</strong> Yalnızca <strong>RİSKLİ YAPI (A ve B) PAYDAŞLARININ</strong> kendi içinde <strong>&gt;%50 çoğunluğu</strong> aranır.</div>
+              <div>• <strong>Tapu Şerhi &amp; İfraz:</strong> Şerh yalnız A ve B adresine işlenir; ifraz mümkünse A ve B alanı <strong>RESEN İFRAZ</strong> edilir.</div>
+              <div>• C yapısı yıkılmaz ve C maliklerinin mülkiyet hakları korunur <em>(Örnek B: R1 %40 + R2 %35 = %75 &gt; %50 geçerli)</em>.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SENARYO C -->
+        <div style="background:#fffbeb; border:2px solid #d97706; border-radius:8px; padding:10px 12px;">
+          <div style="font-weight:800; font-size:0.82rem; color:#92400e; margin-bottom:8px;">
+            🟡 SENARYO C — İFRAZ MÜMKÜN DEĞİLSE VE PARSELDE RUHSATSIZ (KAÇAK) YAPI VARSA (m.15/7-c &amp; PAİY m.55/12)
+          </div>
+          <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
+            <div style="display:flex; gap:6px; flex-shrink:0;">
+              <div style="background:#dc2626; color:#fff; padding:6px 10px; border-radius:6px; font-weight:800; font-size:0.72rem; text-align:center;">A Yapısı (Riskli Yıkıldı)<br><span style="font-size:0.65rem; font-weight:600;">Yeni Ruhsat İstiyor</span></div>
+              <div style="background:#b45309; color:#fff; padding:6px 10px; border-radius:6px; font-weight:800; font-size:0.72rem; text-align:center;">C Yapısı (Ruhsatsız/Kaçak)<br><span style="font-size:0.65rem; font-weight:600;">İfraz Edilemiyor</span></div>
+            </div>
+            <div style="flex:1; min-width:260px; font-size:0.77rem; color:#1e293b; line-height:1.5;">
+              <div>• <strong style="color:#b91c1c;">Kritik Engel (PAİY m.55/12):</strong> Parseldeki kaçak yapı ruhsata bağlanmadan veya yıkılmadan yeni yapı ruhsatı düzenlenemez!</div>
+              <div>• <strong>Çözüm Yolu:</strong> Min. ifraz şartı (örn. 1.200 m²) sağlanamıyorsa C yapısı için de riskli yapı tespiti yaptırılır veya imar mevzuatına uygun hale getirilerek/yıktırılarak tüm parsel bütün olarak projelendirilir.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SENARYO D -->
+        <div style="background:#eff6ff; border:2px solid #2563eb; border-radius:8px; padding:10px 12px;">
+          <div style="font-weight:800; font-size:0.82rem; color:#1e40af; margin-bottom:8px;">
+            🔵 SENARYO D — KAT İRTİFAKI OLMAYAN HİSSELİ ARSADA FİİLİ GECEKONDU / 91 HİSSEDAR MODELİ (Madde 7/2-a)
+          </div>
+          <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
+            <div style="display:flex; gap:6px; flex-shrink:0;">
+              <div style="background:#1d4ed8; color:#fff; padding:6px 10px; border-radius:6px; font-weight:800; font-size:0.72rem; text-align:center;">1. Tespit Başvurusu<br><span style="font-size:0.65rem; font-weight:600;">Fiili Yapı Sahibi (m.7/2-a)</span></div>
+              <div style="background:#047857; color:#fff; padding:6px 10px; border-radius:6px; font-weight:800; font-size:0.72rem; text-align:center;">2. Yıkım Sonrası Karar<br><span style="font-size:0.65rem; font-weight:600;">Tüm Hissedarlar &gt;%50</span></div>
+            </div>
+            <div style="flex:1; min-width:260px; font-size:0.77rem; color:#1e293b; line-height:1.5;">
+              <div>• <strong>Tespit Aşaması (m.7/2-a):</strong> Arsa paylı tapuda risk tespitini binanın <strong>FİİLİ SAHİBİ</strong> olan hissedar (muhtarlık/fatura belgesiyle) yaptırır.</div>
+              <div>• <strong>Sözleşme Aşaması (m.15/2):</strong> Yapı yıkıldıktan/risk kesinleştikten sonra yeni yapılacak binanın sözleşmesi tapudaki <strong>tüm arsa hissedarları</strong> <em>(Örn: Sinan Mah. 539/90 parsel 91 hissedar)</em> hisseleri oranında <strong>&gt;%50</strong> ile imzalanır.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    `;
+  }
+
+  function fixMultiBuildingDiagramInDOM(root) {
+    const scope = root || document;
+    scope.querySelectorAll('svg').forEach(svg => {
+      const txt = svg.textContent || '';
+      if (txt.includes('SENARYO A') && txt.includes('SENARYO B') && txt.includes('SENARYO D')) {
+        const wrapper = document.createElement('div');
+        wrapper.innerHTML = getCleanMultiBuildingSchemaHTML();
+        svg.parentNode.replaceChild(wrapper.firstElementChild, svg);
+      }
+    });
+  }
+
+  // SEMA_GALLERY_DATA dizisindeki 4 senaryolu şemayı da kaynakta günceller
+  function patchSemaGalleryDataArray() {
+    if (typeof SEMA_GALLERY_DATA !== 'undefined' && Array.isArray(SEMA_GALLERY_DATA)) {
+      SEMA_GALLERY_DATA.forEach(item => {
+        if (item && item.svg && item.svg.includes('SENARYO A') && item.svg.includes('SENARYO D')) {
+          item.svg = getCleanMultiBuildingSchemaHTML();
+        }
+      });
+    }
+  }
+
+  const _origOpenSemaModal = typeof window.openSemaGalleryModal === 'function' ? window.openSemaGalleryModal : null;
+  if (_origOpenSemaModal) {
+    window.openSemaGalleryModal = function(...args) {
+      patchSemaGalleryDataArray();
+      const res = _origOpenSemaModal.apply(this, args);
+      const modal = document.getElementById('semaGalleryModal');
+      if (modal) fixMultiBuildingDiagramInDOM(modal);
+      return res;
+    };
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+      updateHeroDescriptionText();
+      patchSemaGalleryDataArray();
+      fixMultiBuildingDiagramInDOM(document);
+    }, 100);
+  });
+})();
