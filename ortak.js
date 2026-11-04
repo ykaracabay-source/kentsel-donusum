@@ -4866,52 +4866,29 @@ window.addEventListener('DOMContentLoaded', () => {
     setTimeout(injectMalikSunumStylesAndButtons, 120);
   });
 })();
-// 18. NOTEBOOKLM VİDEO REHBER & SUNUM OYNATICI MODÜLÜ (SADE TAM EKRAN OYNATICI - 2 VİDEO TANIMLI)
-(function initNotebookLMVideoKutuphanesi() {
-  const VIDEO_STORAGE_KEY = 'kd_custom_video_library_v1';
-
-  // VARSAYILAN VİDEO LİSTESİ (videos/ klasöründen okur)
-  const DEFAULT_VIDEOS = [
+// 18. SADE VİDEO OYNATICI MODÜLÜ (GITHUB YÜKLEMESİ GEREKTİRMEZ - BOYUT SINIRSIZ SÜRÜKLE/SEÇ OYNAT)
+(function initPratikVideoOynatici() {
+  const LOCAL_VIDEOS = [
     {
-      id: 'vid_kd_rehberi_1',
+      id: 'vid_1',
       title: '🎬 1. Kentsel Dönüşüm Rehberi: Modeller ve Sözleşme Kalkanları (10:18)',
-      src: 'videos/kentsel-donusum-rehberi.mp4',
-      desc: '5 adımda dönüşüm, %50+1 kuralı, Kat Karşılığı vs Kredi modelleri, Yarısı Bizden, Bina Tamamlama Sigortası ve Aşamalı Tapu Devri.'
+      src: 'videos/kentsel-donusum-rehberi.mp4'
     },
     {
-      id: 'vid_kd_yol_haritasi_2',
+      id: 'vid_2',
       title: '🧭 2. Kentsel Dönüşüm Yol Haritası: Plan Tadilatı, Toplantılar ve İskan (07:40)',
-      src: 'videos/kentsel-donusum-yol-haritasi.mp4',
-      desc: 'Plan tadilatı ve %20 DAP muafiyeti, 3 aşamalı malik toplantısı, 126 günlük tespit/yıkım takvimi, güvenli vekaletname, pay satışı ön şartı ve kısmi iskan.'
+      src: 'videos/kentsel-donusum-yol-haritasi.mp4'
     }
   ];
 
-  function getSavedVideos() {
-    try {
-      return JSON.parse(localStorage.getItem(VIDEO_STORAGE_KEY)) || [];
-    } catch (e) {
-      return [];
-    }
-  }
-
-  function saveCustomVideos(list) {
-    try {
-      localStorage.setItem(VIDEO_STORAGE_KEY, JSON.stringify(list));
-    } catch (e) {}
-  }
-
-  function getAllVideos() {
-    return [...DEFAULT_VIDEOS, ...getSavedVideos()];
-  }
-
-  function injectVideoButtons() {
+  function injectVideoTriggerButtons() {
     const topActions = document.querySelector('.top-actions');
     if (topActions && !document.getElementById('topVideoRehberBtn')) {
       const btn = document.createElement('button');
       btn.id = 'topVideoRehberBtn';
       btn.className = 'action-pill';
       btn.style.cssText = 'background:linear-gradient(135deg,#ec4899 0%,#be185d 100%); color:#ffffff; border-color:#f472b6; font-weight:800;';
-      btn.innerHTML = '🎥 Video Rehber';
+      btn.innerHTML = '🎥 Video Oynat';
       btn.onclick = () => window.openVideoKutuphaneModal();
       topActions.insertBefore(btn, topActions.firstChild);
     }
@@ -4921,68 +4898,67 @@ window.addEventListener('DOMContentLoaded', () => {
       const hBtn = document.createElement('button');
       hBtn.id = 'heroVideoRehberBtn';
       hBtn.style.cssText = 'background:linear-gradient(135deg,#db2777 0%,#9d174d 100%); color:#fff; border:2px solid #fbcfe8; padding:9px 15px; border-radius:8px; font-weight:800; font-size:0.84rem; cursor:pointer; box-shadow:0 4px 12px rgba(219,39,119,0.35);';
-      hBtn.innerHTML = '🎥 NotebookLM Video Sunum Kütüphanesi';
+      hBtn.innerHTML = '🎥 Video Sunum Oynatıcı';
       hBtn.onclick = () => window.openVideoKutuphaneModal();
       heroBtnBar.parentElement.insertBefore(hBtn, heroBtnBar);
     }
   }
 
-  function buildVideoModalDOM() {
+  function buildVideoPlayerModal() {
     let modal = document.getElementById('kdVideoRehberModal');
     if (modal) return modal;
 
     modal = document.createElement('div');
     modal.id = 'kdVideoRehberModal';
-    modal.style.cssText = 'position:fixed; inset:0; width:100vw; height:100vh; background:rgba(15,23,42,0.95); z-index:4300; display:none; flex-direction:column; overflow:hidden; font-family:"Segoe UI",system-ui,sans-serif;';
+    modal.style.cssText = 'position:fixed; inset:0; width:100vw; height:100vh; background:rgba(15,23,42,0.96); z-index:4300; display:none; flex-direction:column; overflow:hidden; font-family:"Segoe UI",system-ui,sans-serif;';
 
     modal.innerHTML = `
-      <!-- ÜST BAR -->
+      <!-- ÜST KONTROL BARI -->
       <div style="background:linear-gradient(135deg,#0f172a 0%,#831843 100%); color:#fff; padding:10px 16px; border-bottom:2px solid #f472b6; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
         <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
-          <span style="background:#f472b6; color:#0f172a; font-weight:900; font-size:0.76rem; padding:4px 9px; border-radius:6px;">🎥 VİDEO SUNUM KÜTÜPHANESİ</span>
-          <select id="vk_videoSelect" onchange="vkSelectVideo(this.value)" style="height:32px; border-radius:6px; border:1.5px solid #f472b6; background:#1e293b; color:#fce7f3; font-weight:800; font-size:0.82rem; padding:0 10px; min-width:420px; cursor:pointer;"></select>
+          <span style="background:#f472b6; color:#0f172a; font-weight:900; font-size:0.76rem; padding:4px 10px; border-radius:6px;">🎬 VİDEO OYNATICI</span>
+          <select id="vk_videoSelect" onchange="vkPlayPreset(this.value)" style="height:32px; border-radius:6px; border:1.5px solid #f472b6; background:#1e293b; color:#fce7f3; font-weight:800; font-size:0.82rem; padding:0 10px; min-width:360px; cursor:pointer;">
+            ${LOCAL_VIDEOS.map(v => `<option value="${v.src}">${v.title}</option>`).join('')}
+          </select>
         </div>
 
         <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-          <label style="background:#38bdf8; color:#0f172a; padding:6px 12px; border-radius:6px; font-weight:800; font-size:0.75rem; cursor:pointer;" title="Bilgisayarınızdaki herhangi bir .mp4 videoyu anında açıp oynatır">
-            📂 Bilgisayardan MP4 Aç
-            <input type="file" id="vk_localFileInput" accept="video/mp4,video/webm,video/quicktime" onchange="vkLoadLocalFile(this)" style="display:none;">
+          <label style="background:#fbbf24; color:#0f172a; padding:6px 14px; border-radius:6px; font-weight:900; font-size:0.78rem; cursor:pointer; box-shadow:0 2px 8px rgba(251,191,36,0.4);">
+            📂 Bilgisayardan Video Seç ve Oynat (Boyut Sınırı Yok)
+            <input type="file" id="vk_filePicker" accept="video/*" onchange="vkPlayLocalFile(this.files[0])" style="display:none;">
           </label>
-          <button type="button" onclick="vkAddNewVideoEntry()" style="background:#10b981; color:#022c22; border:none; padding:6px 12px; border-radius:6px; font-weight:800; font-size:0.75rem; cursor:pointer;" title="videos/ klasörüne eklediğiniz yeni bir videoyu listeye kaydedin">➕ Yeni Video Ekle</button>
-          <button type="button" id="vk_btnDeleteVideo" onclick="vkDeleteSelectedVideo()" style="display:none; background:#ef4444; color:#fff; border:none; padding:6px 10px; border-radius:6px; font-weight:800; font-size:0.75rem; cursor:pointer;">🗑️ Sil</button>
-          <button type="button" onclick="closeVideoKutuphaneModal()" style="background:#dc2626; color:#fff; border:none; padding:6px 14px; border-radius:6px; font-weight:800; font-size:0.78rem; cursor:pointer;">✕ Kapat</button>
+          <button type="button" onclick="vkCloseModal()" style="background:#dc2626; color:#fff; border:none; padding:6px 14px; border-radius:6px; font-weight:800; font-size:0.78rem; cursor:pointer;">✕ Kapat</button>
         </div>
       </div>
 
-      <!-- ANA GÖVDE: TAM EKRAN VİDEO SAHNESİ -->
-      <div style="flex:1; display:flex; flex-direction:column; padding:12px; overflow:hidden; min-height:0;">
-        <div style="flex:1; background:#020617; border:1.5px solid #334155; border-radius:12px; display:flex; flex-direction:column; justify-content:space-between; overflow:hidden; padding:12px;">
-          <div style="flex:1; display:flex; align-items:center; justify-content:center; position:relative; min-height:0; background:#000; border-radius:8px; overflow:hidden;">
-            <video id="vk_videoPlayer" controls preload="metadata" style="width:100%; height:100%; max-height:78vh; object-fit:contain; outline:none;"></video>
-            <div id="vk_videoErrorOverlay" style="display:none; position:absolute; inset:0; background:rgba(15,23,42,0.94); color:#fff; flex-direction:column; align-items:center; justify-content:center; padding:24px; text-align:center;">
-              <div style="font-size:2.4rem; margin-bottom:8px;">📁</div>
-              <h3 style="margin:0 0 8px 0; color:#fbbf24;">Video Dosyası Klasörde Bulunamadı</h3>
-              <p style="font-size:0.85rem; color:#cbd5e1; max-width:560px; line-height:1.55; margin-bottom:16px;">
-                Videonun otomatik açılması için MP4 dosyanızı proje klasörünüzün içindeki <code id="vk_missingPathCode" style="background:#1e293b; color:#38bdf8; padding:3px 8px; border-radius:4px;">videos/</code> yoluna kaydedin.<br><br>
-                <b>Veya hemen şimdi oynatmak için aşağıdaki butondan bilgisayarınızdaki MP4 dosyasını seçin:</b>
-              </p>
-              <label style="background:#fbbf24; color:#0f172a; padding:10px 20px; border-radius:8px; font-weight:900; font-size:0.86rem; cursor:pointer;">
-                📂 Bilgisayarımdan MP4 Dosyasını Seç ve Oynat
-                <input type="file" accept="video/mp4,video/webm,video/quicktime" onchange="vkLoadLocalFile(this)" style="display:none;">
-              </label>
-            </div>
-          </div>
+      <!-- VİDEO SAHNESİ (SÜRÜKLE-BIRAK DESTEKLİ) -->
+      <div id="vk_dropZone" style="flex:1; display:flex; flex-direction:column; padding:12px; overflow:hidden; min-height:0;">
+        <div style="flex:1; background:#000; border:2px solid #334155; border-radius:12px; position:relative; display:flex; align-items:center; justify-content:center; overflow:hidden;">
+          <video id="vk_videoPlayer" controls preload="metadata" style="width:100%; height:100%; max-height:80vh; object-fit:contain; outline:none;"></video>
 
-          <!-- ALT HIZ VE KONTROL BARI -->
-          <div style="margin-top:10px; padding-top:8px; border-top:1px solid #1e293b; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; color:#cbd5e1; font-size:0.78rem;">
-            <div id="vk_videoDesc" style="font-weight:600; color:#e2e8f0;"></div>
-            <div style="display:flex; align-items:center; gap:6px;">
-              <span>⚡ Oynatma Hızı:</span>
-              <button type="button" onclick="vkSetSpeed(1.0)" style="background:#1e293b; color:#fff; border:1px solid #475569; padding:4px 10px; border-radius:5px; font-weight:700; cursor:pointer;">1x</button>
-              <button type="button" onclick="vkSetSpeed(1.25)" style="background:#1e293b; color:#fde047; border:1px solid #475569; padding:4px 10px; border-radius:5px; font-weight:700; cursor:pointer;">1.25x</button>
-              <button type="button" onclick="vkSetSpeed(1.5)" style="background:#1e293b; color:#4ade80; border:1px solid #475569; padding:4px 10px; border-radius:5px; font-weight:700; cursor:pointer;">1.5x</button>
-              <button type="button" onclick="vkToggleVideoFullscreen()" style="background:#2563eb; color:#fff; border:none; padding:5px 12px; border-radius:5px; font-weight:800; cursor:pointer;">⛶ Tam Ekran</button>
-            </div>
+          <!-- GITHUB ÜZERİNDEYKEN DOSYA SEÇME / SÜRÜKLEME EKRANI -->
+          <div id="vk_selectOverlay" style="display:none; position:absolute; inset:0; background:rgba(15,23,42,0.94); color:#fff; flex-direction:column; align-items:center; justify-content:center; padding:24px; text-align:center;">
+            <div style="font-size:3rem; margin-bottom:10px;">🎬</div>
+            <h3 style="margin:0 0 8px 0; color:#fbbf24; font-size:1.25rem;">Oynatmak İstediğiniz Videoyu Seçin veya Buraya Sürükleyin</h3>
+            <p style="font-size:0.86rem; color:#cbd5e1; max-width:520px; line-height:1.5; margin-bottom:18px;">
+              GitHub'ın 25 MB dosya sınırına takılmadan, bilgisayarınızdaki <b>54 MB+ yüksek kalitedeki videoları</b> doğrudan seçerek veya bu ekrana sürükleyip bırakarak anında oynatabilirsiniz.
+            </p>
+            <label style="background:linear-gradient(135deg,#fbbf24 0%,#f59e0b 100%); color:#0f172a; padding:12px 24px; border-radius:10px; font-weight:900; font-size:0.95rem; cursor:pointer; box-shadow:0 6px 20px rgba(245,158,11,0.35);">
+              📂 Videoyu Seç ve Hemen Oynat (.mp4 / .mov)
+              <input type="file" accept="video/*" onchange="vkPlayLocalFile(this.files[0])" style="display:none;">
+            </label>
+          </div>
+        </div>
+
+        <!-- ALT HIZ VE TAM EKRAN BARI -->
+        <div style="margin-top:8px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; color:#cbd5e1; font-size:0.78rem; padding:0 4px;">
+          <div id="vk_statusText" style="font-weight:700; color:#94a3b8;">💡 Videoyu ekrana sürükleyip bırakarak da açabilirsiniz.</div>
+          <div style="display:flex; align-items:center; gap:6px;">
+            <span>⚡ Hız:</span>
+            <button type="button" onclick="vkSetSpeed(1.0)" style="background:#1e293b; color:#fff; border:1px solid #475569; padding:4px 10px; border-radius:5px; font-weight:700; cursor:pointer;">1x</button>
+            <button type="button" onclick="vkSetSpeed(1.25)" style="background:#1e293b; color:#fde047; border:1px solid #475569; padding:4px 10px; border-radius:5px; font-weight:700; cursor:pointer;">1.25x</button>
+            <button type="button" onclick="vkSetSpeed(1.5)" style="background:#1e293b; color:#4ade80; border:1px solid #475569; padding:4px 10px; border-radius:5px; font-weight:700; cursor:pointer;">1.5x</button>
+            <button type="button" onclick="vkFullscreen()" style="background:#2563eb; color:#fff; border:none; padding:5px 12px; border-radius:5px; font-weight:800; cursor:pointer;">⛶ Tam Ekran</button>
           </div>
         </div>
       </div>
@@ -4991,58 +4967,61 @@ window.addEventListener('DOMContentLoaded', () => {
     document.body.appendChild(modal);
 
     const player = modal.querySelector('#vk_videoPlayer');
-    const errBox = modal.querySelector('#vk_videoErrorOverlay');
-    if (player && errBox) {
-      player.addEventListener('error', () => { errBox.style.display = 'flex'; });
-      player.addEventListener('loadeddata', () => { errBox.style.display = 'none'; });
-    }
+    const overlay = modal.querySelector('#vk_selectOverlay');
+    const dropZone = modal.querySelector('#vk_dropZone');
+
+    player.addEventListener('error', () => { overlay.style.display = 'flex'; });
+    player.addEventListener('loadeddata', () => { overlay.style.display = 'none'; });
+
+    // Sürükle-Bırak (Drag & Drop) ile Video Oynatma
+    dropZone.addEventListener('dragover', (e) => { e.preventDefault(); });
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]) {
+        window.vkPlayLocalFile(e.dataTransfer.files[0]);
+      }
+    });
 
     return modal;
   }
 
-  function populateVideoSelect(selectedId) {
-    const sel = document.getElementById('vk_videoSelect');
-    const delBtn = document.getElementById('vk_btnDeleteVideo');
-    if (!sel) return;
-    const all = getAllVideos();
-    sel.innerHTML = all.map(v => `<option value="${v.id}" ${v.id === selectedId ? 'selected' : ''}>${v.title}</option>`).join('');
-    const isCustom = getSavedVideos().some(v => v.id === selectedId);
-    if (delBtn) delBtn.style.display = isCustom ? 'inline-block' : 'none';
-  }
-
-  window.openVideoKutuphaneModal = function(videoId) {
-    const modal = buildVideoModalDOM();
+  window.openVideoKutuphaneModal = function() {
+    const modal = buildVideoPlayerModal();
     modal.style.display = 'flex';
-    const targetId = videoId || DEFAULT_VIDEOS[0].id;
-    populateVideoSelect(targetId);
-    vkSelectVideo(targetId);
+    const sel = document.getElementById('vk_videoSelect');
+    if (sel) window.vkPlayPreset(sel.value);
   };
 
-  window.closeVideoKutuphaneModal = function() {
+  window.vkCloseModal = function() {
     const modal = document.getElementById('kdVideoRehberModal');
     const player = document.getElementById('vk_videoPlayer');
     if (player) player.pause();
     if (modal) modal.style.display = 'none';
   };
 
-  window.vkSelectVideo = function(videoId) {
-    const all = getAllVideos();
-    const vid = all.find(v => v.id === videoId) || all[0];
-    if (!vid) return;
-
-    populateVideoSelect(vid.id);
-
+  window.vkPlayPreset = function(srcPath) {
     const player = document.getElementById('vk_videoPlayer');
-    const desc = document.getElementById('vk_videoDesc');
-    const errBox = document.getElementById('vk_videoErrorOverlay');
-    const missingCode = document.getElementById('vk_missingPathCode');
-
-    if (errBox) errBox.style.display = 'none';
-    if (missingCode) missingCode.innerText = vid.src;
-    if (desc) desc.innerText = vid.desc || vid.src;
+    const overlay = document.getElementById('vk_selectOverlay');
+    const status = document.getElementById('vk_statusText');
+    if (overlay) overlay.style.display = 'none';
+    if (status) status.innerText = `🎬 Kaynak: ${srcPath}`;
     if (player) {
-      player.src = vid.src;
+      player.src = srcPath;
       player.load();
+    }
+  };
+
+  window.vkPlayLocalFile = function(file) {
+    if (!file) return;
+    const url = URL.createObjectURL(file);
+    const player = document.getElementById('vk_videoPlayer');
+    const overlay = document.getElementById('vk_selectOverlay');
+    const status = document.getElementById('vk_statusText');
+    if (overlay) overlay.style.display = 'none';
+    if (status) status.innerText = `📂 Oynatılan Video: ${file.name} (${(file.size / (1024 * 1024)).toFixed(1)} MB)`;
+    if (player) {
+      player.src = url;
+      player.play().catch(() => {});
     }
   };
 
@@ -5051,56 +5030,12 @@ window.addEventListener('DOMContentLoaded', () => {
     if (player) player.playbackRate = rate;
   };
 
-  window.vkToggleVideoFullscreen = function() {
+  window.vkFullscreen = function() {
     const player = document.getElementById('vk_videoPlayer');
     if (player && player.requestFullscreen) player.requestFullscreen().catch(() => {});
   };
 
-  window.vkLoadLocalFile = function(input) {
-    const file = input.files && input.files[0];
-    if (!file) return;
-    const url = URL.createObjectURL(file);
-    const player = document.getElementById('vk_videoPlayer');
-    const errBox = document.getElementById('vk_videoErrorOverlay');
-    const desc = document.getElementById('vk_videoDesc');
-    if (errBox) errBox.style.display = 'none';
-    if (desc) desc.innerText = `📂 Yerel Dosya Oynatılıyor: ${file.name} (${(file.size / (1024 * 1024)).toFixed(1)} MB)`;
-    if (player) {
-      player.src = url;
-      player.play().catch(() => {});
-    }
-  };
-
-  window.vkAddNewVideoEntry = function() {
-    const title = prompt('Yeni videonun başlığını girin:', '🎬 3. Uzman İş Akış ve Evrak Rehberi');
-    if (!title || !title.trim()) return;
-    const src = prompt('Videonun klasör yolunu girin:\n(Örn: videos/uzman-akis-rehberi.mp4)', 'videos/');
-    if (!src || !src.trim()) return;
-
-    const list = getSavedVideos();
-    const newVid = {
-      id: 'vid_' + Date.now(),
-      title: title.trim(),
-      src: src.trim(),
-      desc: `Kaynak: ${src.trim()}`
-    };
-    list.push(newVid);
-    saveCustomVideos(list);
-    populateVideoSelect(newVid.id);
-    vkSelectVideo(newVid.id);
-  };
-
-  window.vkDeleteSelectedVideo = function() {
-    const sel = document.getElementById('vk_videoSelect');
-    if (!sel || !sel.value) return;
-    if (!confirm('Seçili videoyu listeden silmek istediğinize emin misiniz?')) return;
-    const list = getSavedVideos().filter(v => x.id !== sel.value);
-    saveCustomVideos(list);
-    populateVideoSelect(DEFAULT_VIDEOS[0].id);
-    vkSelectVideo(DEFAULT_VIDEOS[0].id);
-  };
-
   window.addEventListener('DOMContentLoaded', () => {
-    setTimeout(injectVideoButtons, 150);
+    setTimeout(injectVideoTriggerButtons, 150);
   });
 })();
