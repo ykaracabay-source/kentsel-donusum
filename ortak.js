@@ -7784,3 +7784,1460 @@ B) KİRACI / SINIRLI AYNİ HAK SAHİBİ / KAPICI BAŞVURUSU İÇİN:
     setTimeout(rebuildTopCommandBarAndHeroGrid, 420);
   });
 })();
+// 26. GAYRİMENKUL, TAPU, KENTSEL DÖNÜŞÜM VE İNŞAAT HUKUKU TERİMLER SÖZLÜĞÜ + SATIR İÇİ ALTI ÇİZGİLİ HOVER BALONCUK MOTORU
+(function initGlossaryAndInlineTooltipEngine() {
+
+  // 1. TAM SÖZLÜK VERİTABANI (HER TERİM MÜSTAKİL MADDE + TÜM TÜRKÇE EK KALIPLARIYLA)
+  const KD_GLOSSARY_DB = [
+    // --- BÖLÜM 1: TAPU SİCİL İŞLEMLERİ VE MÜLKİYET KAVRAMLARI ---
+    {
+      id: 'tescil',
+      term: 'Tescil',
+      cat: 'Tapu & Mülkiyet',
+      patterns: ['tescil', 'tescili', 'tesciline', 'tescilinde', 'tescilini'],
+      def: 'Bir ayni hakkın (mülkiyet, ipotek, irtifak hakkı vb.) hukuken kazanılması ve kurulması için tapu kütüğüne kaydedilmesi işlemidir.'
+    },
+    {
+      id: 'terkin',
+      term: 'Terkin',
+      cat: 'Tapu & Mülkiyet',
+      patterns: ['terkin', 'terkini', 'terkinine', 'terkininden'],
+      def: 'Tapu kütüğünde kayıtlı bulunan bir hakkın, şerhin veya beyanın silinerek hukuki varlığının sona erdirilmesidir. Örneğin; riskli yapının yıktırılmasından sonra arsa haline gelmiş taşınmazın tapu kütüğündeki "riskli yapı" şerhinin ilgililerin talebi veya idarenin bildirimi ile kayıttan düşürülmesi (6306 Yön. m.8/9) bir terkin işlemidir.'
+    },
+    {
+      id: 'ferag',
+      term: 'Ferağ (Ferağ Beyanı)',
+      cat: 'Tapu & Mülkiyet',
+      patterns: ['ferağ beyanı', 'ferağ takrirlerini', 'ferağ', 'ferağı', 'ferağa'],
+      def: 'Taşınmaz malikinin, mülkiyet hakkını devretmek veya üzerinde bir hak tesis etmek amacıyla Tapu Müdürlüğü (ya da kanunen yetkili kılınan Kentsel Dönüşüm Başkanlığı gibi idareler - Ek-5 Tutanağı) huzurunda verdiği resmi devir iradesi ve imzasıdır.'
+    },
+    {
+      id: 'resen-tescil',
+      term: "Re'sen Tescil / Terkin",
+      cat: 'Tapu & Mülkiyet',
+      patterns: ['resen tescil', "re'sen tescil", 'resen terkin', 'resen ifraz'],
+      def: 'Maliklerin tapuya gidip talepte bulunmasına gerek kalmaksızın; doğrudan kanun hükmü, kesinleşmiş mahkeme kararı veya yetkili idarenin (Kentsel Dönüşüm Başkanlığı, Belediye, İcra Müdürlüğü) resmi yazısı üzerine Tapu Müdürlüğünce kendiliğinden yapılan kayıt veya silme işlemidir.'
+    },
+    {
+      id: 'cins-tashihi',
+      term: 'Cins Tashihi (Cins Değişikliği)',
+      cat: 'Tapu & Mülkiyet',
+      patterns: ['cins tashihi', 'cins değişikliği', 'cins değişikliğine'],
+      def: 'Taşınmazın tapu kütüğünde kayıtlı niteliğinin değiştirilmesidir. Üzerindeki bina yıkılan taşınmazın "kargir apartman" vasfından "arsa" vasfına döndürülmesi veya inşaat bitip iskân alındığında "arsa" vasfının "bina"ya çevrilmesi cins tashihidir.'
+    },
+    {
+      id: 'ifraz',
+      term: 'İfraz (Ayırma)',
+      cat: 'Tapu & Mülkiyet',
+      patterns: ['ifraz', 'ifrazı', 'ifrazında', 'ifrazla', 'ifrazına'],
+      def: 'Tek bir parselin imar planına uygun olarak birden fazla parsele bölünmesidir. Bir parselde yalnız bazı yapılar riskli ise riskli yapıların bulunduğu alanın risksiz yapılardan ayrılması için resen ifraz yapılabilir (6306 Yön. m.15/7-ç).'
+    },
+    {
+      id: 'tevhit',
+      term: 'Tevhit (Birleştirme)',
+      cat: 'Tapu & Mülkiyet',
+      patterns: ['tevhit', 'tevhidi', 'tevhidinde', 'tevhide', 'tevhitten'],
+      def: 'Bitişik birden fazla parselin imar uygulaması veya maliklerin talebiyle tek bir parsel haline getirilmesidir. Üzerindeki yapıların tamamı riskli olan parsellerde her parselde ayrı ayrı >%50 salt çoğunlukla tevhit kararı alınabilir (6306 Yön. m.15/8).'
+    },
+    {
+      id: 'trampa',
+      term: 'Trampa (Takas)',
+      cat: 'Tapu & Mülkiyet',
+      patterns: ['trampa', 'trampaya'],
+      def: 'Bir taşınmazın, bedel olarak para ödenmeksizin başka bir mal veya taşınmazla birebir takas (değiş-tokuş) edilmesidir. Kentsel dönüşüm uygulamalarında hak sahiplerine mevcut arsaları karşılığında başka projeden konut verilmesi trampa hükmündedir (6306 Yön. m.13/7).'
+    },
+    {
+      id: 'intikal',
+      term: 'İntikal ve Veraset İlamı',
+      cat: 'Tapu & Mülkiyet',
+      patterns: ['intikal', 'intikali', 'veraset ilamı', 'veraset ilamları', 'mirasçılık belgesi'],
+      def: 'Vefat eden kişinin (murisin) tapuda kayıtlı taşınmazlarının, noter veya sulh hukuk mahkemesinden alınan veraset ilamına (mirasçılık belgesine) dayanılarak mirasçıları adına tescil edilmesidir.'
+    },
+    {
+      id: 'elbirligi-mulkiyet',
+      term: 'Elbirliği (İştirak Halinde) Mülkiyet',
+      cat: 'Tapu & Mülkiyet',
+      patterns: ['elbirliği mülkiyet', 'elbirliği mülkiyeti', 'elbirliği', 'iştirak halinde mülkiyet'],
+      def: 'Genellikle miras yoluyla oluşan, ortakların taşınmaz üzerinde belirlenmiş matematiksel pay oranlarının bulunmadığı ve satış, kira, inşaat sözleşmesi gibi işlemlerde tüm ortakların oybirliği ile hareket etmesinin zorunlu olduğu mülkiyet türüdür.'
+    },
+    {
+      id: 'payli-mulkiyet',
+      term: 'Paylı (Müşterek) Mülkiyet',
+      cat: 'Tapu & Mülkiyet',
+      patterns: ['paylı mülkiyet', 'paylı mülkiyette', 'müşterek mülkiyet'],
+      def: 'Birden fazla kişinin bir taşınmaza belirli matematiksel hisselerle (örneğin 1/4, 3/10) sahip olduğu ve her hissedarın kendi payını diğerlerinin iznine ihtiyaç duymadan satabildiği veya ipotek edebildiği mülkiyet türüdür (Diğer paydaşların TMK m.732 şufa/önalım hakkı saklıdır).'
+    },
+    {
+      id: 'ihdas',
+      term: 'İhdas',
+      cat: 'Tapu & Mülkiyet',
+      patterns: ['ihdas', 'ihdası'],
+      def: 'İmar planı uygulaması sonucunda kapanan yol, meydan veya yeşil alan gibi kamuya ait yerlerin imar parseli haline getirilerek tapu kütüğüne tescil edilmesi işlemidir.'
+    },
+    {
+      id: 'yola-terk',
+      term: 'Yola / Yeşil Alana Terk',
+      cat: 'Tapu & Mülkiyet',
+      patterns: ['yola terk', 'bedelsiz terk', 'terk işlemi'],
+      def: 'Kadastro parselinin uygulama imar planında yol, park veya yeşil alan gibi kamu hizmetlerine ayrılan kısımlarının tapu kütüğünden bedelsiz olarak düşülerek kamuya bırakılması işlemidir. TAKS ve KAKS her zaman terk sonrası kalan Net İmar Parseli üzerinden hesaplanır.'
+    },
+    {
+      id: 'suyulandirma',
+      term: 'Şuyulandırma (İmar Kanunu 18. Madde)',
+      cat: 'Tapu & Mülkiyet',
+      patterns: ['şuyulandırma', 'şuyulandırılması', '18. madde uygulaması'],
+      def: 'Belediye veya valiliklerce imar sınırları içindeki binalı veya binasız arsa ve arazilerin maliklerin rızası aranmaksızın birbirleriyle, yol fazlalarıyla veya kamu yerleriyle birleştirilip imar planına uygun yeni parsellere ayrılması ve DOP kesintisi sonrası hak sahiplerine dağıtılması işlemidir.'
+    },
+
+    // --- BÖLÜM 2: TAPUDAKİ KISITLAMALAR, ŞERHLER VE HAKLAR (TAKYİDATLAR) ---
+    {
+      id: 'takyidat',
+      term: 'Takyidat',
+      cat: 'Takyidatlar & Haklar',
+      patterns: ['takyidat', 'takyidatlar', 'takyidatı', 'takyidatları'],
+      def: 'Bir taşınmazın mülkiyet hakkını kısıtlayan tüm şerh, beyan, ipotek, haciz, ihtiyati tedbir ve irtifak haklarının genel adıdır.'
+    },
+    {
+      id: 'serh',
+      term: 'Şerh',
+      cat: 'Takyidatlar & Haklar',
+      patterns: ['şerh', 'şerhi', 'şerhler', 'şerhin', 'şerhlerin'],
+      def: 'Sözleşmeden doğan kişisel hakların (kat karşılığı inşaat, satış vaadi, kira, önalım) üçüncü kişilere karşı da ileri sürülebilmesi veya malikin tasarruf yetkisinin kısıtlanması (ihtiyati tedbir, aile konutu, kamu haczi) amacıyla tapu kütüğüne işlenen kayıttır.'
+    },
+    {
+      id: 'beyanlar-hanesi',
+      term: 'Beyanlar Hanesi',
+      cat: 'Takyidatlar & Haklar',
+      patterns: ['beyanlar hanesi', 'beyanlar hanesinde', 'beyanlar hanesine'],
+      def: 'Taşınmazla ilgili özel hukuki veya fiili durumları alıcılara ve ilgililere aleniyet sağlamak üzere bildiren bölümdür. "Riskli Yapı", "6306 sayılı Kanun kapsamındadır (m.8/9)", "Yönetim Planı" veya "Muhdesat" kayıtları bu hanede yer alır.'
+    },
+    {
+      id: 'muhdesat',
+      term: 'Muhdesat Kaydı',
+      cat: 'Takyidatlar & Haklar',
+      patterns: ['muhdesat kaydı', 'muhdesat', 'muhdesatın', 'muhdesatları'],
+      def: 'Bir arsa veya arazi üzerinde bulunan kalıcı yapıların (bina, ev, depo) ya da dikili bitkilerin (meyve ağaçları, zeytinlik), arsa sahiplerinin tamamına değil; hissedarlardan sadece birine veya üçüncü bir kişiye ait olduğunu göstermek üzere tapunun beyanlar hanesine işlenen kayıttır. Kamulaştırma veya satışta bina bedelinin muhdesat sahibine ödenmesini sağlar.'
+    },
+    {
+      id: 'ipotek',
+      term: 'İpotek',
+      cat: 'Takyidatlar & Haklar',
+      patterns: ['ipotek', 'ipoteği', 'ipoteğin'],
+      def: 'Mevcut veya ileride doğacak bir borcun teminatı olarak taşınmaz üzerine konulan rehin kaydıdır. 6306 kapsamında satılan pay üzerindeki ipotekler satış sonrasında satış bedeli üzerinde devam eder ve tapudan resen terkin edilir (m.15/A-5).'
+    },
+    {
+      id: 'ipotek-fekki',
+      term: 'İpotek Fekki (Fek)',
+      cat: 'Takyidatlar & Haklar',
+      patterns: ['ipotek fekki', 'ipoteğin fekki', 'fek takrirleri', 'fek edilir'],
+      def: 'Borç ödendiğinde veya sözleşmedeki teminat/inşaat aşaması şartı gerçekleştiğinde alacaklının (veya arsa sahibinin) onayıyla ipoteğin tapu kütüğünden silinmesi (kaldırılması) işlemidir.'
+    },
+    {
+      id: 'kanuni-ipotek',
+      term: 'Kanuni İpotek (7410 s.K. / 6306 m.6)',
+      cat: 'Takyidatlar & Haklar',
+      patterns: ['kanuni ipotek', 'kanuni ipoteği'],
+      def: '6306 sayılı Kanun kapsamında yapılan açık artırma pay satışının mahkemece (eksik bedel gerekçesi hariç) iptal edilmesi halinde; payın eski maliki adına resen tescil edilmesiyle eşzamanlı olarak, alıcının ödediği satış bedelinin iadesi sağlanıncaya kadar satış bedeli tutarında alıcı lehine tapuya resen tescil edilen yasal güvence ipoteğidir.'
+    },
+    {
+      id: 'intifa-hakki',
+      term: 'İntifa Hakkı (Kullanım ve Yararlanma Hakkı)',
+      cat: 'Takyidatlar & Haklar',
+      patterns: ['intifa hakkı', 'intifa hakkının', 'intifa'],
+      def: 'Hak sahibine o taşınmazı ömür boyu veya belirli bir süre kullanma, kiraya verme ve semerelerinden yararlanma yetkisi veren sınırlı ayni haktır. 6306 kira yardımında sınırlı ayni hak sahibi olarak ikamet edenlere aylık kira bedelinin 5 katı kadar defaten yardım ödenir (Yön. m.16/3).'
+    },
+    {
+      id: 'ciplak-mulkiyet',
+      term: 'Çıplak (Kuru) Mülkiyet',
+      cat: 'Takyidatlar & Haklar',
+      patterns: ['çıplak mülkiyet', 'kuru mülkiyet'],
+      def: 'İntifa (kullanım ve yararlanma) hakkı başkasına verilmiş olan taşınmazın sadece kuru tapu sahipliğidir; intifa hakkı sona erdiğinde (veya intifa sahibi vefat ettiğinde) kendiliğinden tam mülkiyete dönüşür.'
+    },
+    {
+      id: 'sukna-hakki',
+      term: 'Sükna (Oturma) Hakkı',
+      cat: 'Takyidatlar & Haklar',
+      patterns: ['sükna hakkı', 'sükna', 'oturma hakkı', 'oturma hakkının'],
+      def: 'Bir binadan veya daireden yalnızca "konut olarak oturma" amacıyla yararlanma hakkıdır (TMK). İntifa hakkından farklı olarak başkasına devredilemez, mirasçılara geçmez ve kiraya verilemez. 6306 Yön. m.13/13 uyarınca borçlanma bedelini ödeyemeyen dar gelirli hak sahibine ve eşine tanınır.'
+    },
+    {
+      id: 'ust-hakki',
+      term: 'Üst (İnşaat) Hakkı',
+      cat: 'Takyidatlar & Haklar',
+      patterns: ['üst hakkı', 'inşaat hakkı'],
+      def: 'Başkasına ait bir arsanın altında veya üstünde belirli bir süre (örneğin 30 veya 49 yıl) yapı yapma ve bu yapının maliki olma yetkisi veren, bağımsız ve sürekli nitelikte kurulduğunda tapuda ayrı bir sayfaya kaydedilip alınıp satılabilen irtifak hakkıdır.'
+    },
+    {
+      id: 'sufa-hakki',
+      term: 'Şufa (Önalım) Hakkı',
+      cat: 'Takyidatlar & Haklar',
+      patterns: ['şufa hakkı', 'şufa', 'önalım hakkı', 'ön alım hakkı'],
+      def: 'Paylı mülkiyette bir hissedarın payını üçüncü bir kişiye satması halinde, diğer hissedarlara o payı aynı bedel ve şartlar üzerinden öncelikle satın alma yetkisi veren yasal (TMK m.732-734) veya sözleşmesel haktır. 6306 Yön. m.13/12 uyarınca uygulama alanlarında Başkanlığın da ön alım hakkı vardır.'
+    },
+    {
+      id: 'vefa-hakki',
+      term: 'Vefa (Geri Alım) Hakkı',
+      cat: 'Takyidatlar & Haklar',
+      patterns: ['vefa hakkı', 'geri alım hakkı'],
+      def: 'Taşınmazını satan kişinin, sözleşmede kararlaştırılan bedelle taşınmazı tek taraflı irade beyanıyla geri satın alma hakkıdır (Tapuya şerh edildiğinde üçüncü kişilere karşı en fazla 10 yıl ileri sürülebilir).'
+    },
+    {
+      id: 'istira-hakki',
+      term: 'İştira (Alım) Hakkı',
+      cat: 'Takyidatlar & Haklar',
+      patterns: ['iştira hakkı', 'alım hakkı'],
+      def: 'Bir kişiye taşınmazı belirli bir süre içinde tek taraflı irade beyanıyla satın alma yetkisi tanıyan ve tapuya şerh edilebilen (şerh etkisi en fazla 10 yıl olan) kişisel haktır.'
+    },
+
+    // --- BÖLÜM 3: İMAR, İNŞAAT VE KENTSEL DÖNÜŞÜM TERİMLERİ (KAT İRTİFAKI, KAT MÜLKİYETİ VE İSKÂN AYRI AYRI) ---
+    {
+      id: 'kat-irtifaki',
+      term: 'Kat İrtifakı',
+      cat: 'İmar & 6306',
+      patterns: ['kat irtifakı', 'kat irtifakının', 'kat irtifakını', 'kat irtifakında', 'kat irtifakına', 'kat irtifaklı'],
+      def: 'Arsa üzerinde yapılmakta veya ileride yapılacak olan bir inşaatın, onaylı mimari projesine göre bağımsız bölümlerinin (daire, dükkan) ve bunlara düşen arsa paylarının henüz inşaat aşamasındayken tapu kütüğüne kaydedilmesidir. 6306 Yön. m.15/12 uyarınca kat karşılığı sözleşmeye dayalı yeni yapıda kat irtifakı kurulurken mimari proje ve yönetim planında malik imzası aranmaz!'
+    },
+    {
+      id: 'kat-mulkiyeti',
+      term: 'Kat Mülkiyeti',
+      cat: 'İmar & 6306',
+      patterns: ['kat mülkiyeti', 'kat mülkiyetinin', 'kat mülkiyetine', 'kat mülkiyetinde', 'kat mülkiyetini', 'kat mülkiyetli'],
+      def: 'İnşaat tamamlanıp belediyeden Yapı Kullanma İzin Belgesi (İskân) alındıktan sonra, bağımsız bölümlerin (daire, işyeri) kat irtifakından tam ve bağımsız mülkiyete geçirilmiş nihai tapu aşamasıdır (634 sayılı Kat Mülkiyeti Kanunu).'
+    },
+    {
+      id: 'iskan-belgesi',
+      term: 'İskân (Yapı Kullanma İzin Belgesi)',
+      cat: 'İmar & 6306',
+      patterns: ['yapı kullanma izin belgesi', 'yapı kullanma izni', 'kısmi iskân', 'iskân', 'iskan', 'iskânı', 'iskanı', 'iskânda', 'iskânlı', 'iskanlı'],
+      def: 'İnşaatı tamamlanan binanın ruhsat ve onaylı projelerine uygun yapıldığını gösteren belediye onay belgesidir. Arsa Sahiplerinin 3 İskân Kalkanı: 1) 5 yıllık ruhsat süresi içinde uygun bitmiş yapıya yeniden ruhsat alınmadan iskân verilir (PAİY m.54/7), 2) Müteahhit haksız yere imzadan kaçınırsa imzası olmadan iskân verilir (PAİY m.64/12), 3) Müteahhidin SGK/vergi borcu varsa müteahhit daireleri hariç tutularak arsa sahiplerinin dairelerine kısmi iskân verilir (İmar K. m.28/10)!'
+    },
+    {
+      id: 'arsa-payi',
+      term: 'Arsa Payı',
+      cat: 'İmar & 6306',
+      patterns: ['arsa payı', 'arsa payları', 'arsa payının', 'arsa payına', 'arsa paylarını'],
+      def: 'Kat irtifakı veya kat mülkiyeti kurulurken, bağımsız bölümlerin konum, cephe, kat ve büyüklüklerine göre hesaplanan değerleriyle orantılı olarak her bir bağımsız bölüme tahsis edilen ortak arsa hissesidir. Kentsel dönüşümde söz hakkı (>%50 salt çoğunluk) ve yeni paylaşım doğrudan arsa payına göre belirlenir.'
+    },
+    {
+      id: 'salt-cogunluk',
+      term: 'Salt Çoğunluk (%50+1)',
+      cat: 'İmar & 6306',
+      patterns: ['salt çoğunluk', 'salt çoğunluğu', 'salt çoğunlukla', 'salt çoğunluğun'],
+      def: '09.11.2023 tarihli (7471 sayılı) 6306 sayılı Kanun değişikliği uyarınca; riskli yapılarda binanın yıktırılarak yeniden yaptırılması, müteahhit seçimi, tevhit ve kat karşılığı inşaat sözleşmesi şartlarının belirlenmesi için gereken arsa payı çoğunluğudur. Toplam parsel payının (100/100) yarısından fazlasıdır (>%50); tam %50 yeterli değildir.'
+    },
+    {
+      id: 'dbybhy',
+      term: 'DBYBHY (1998 / 2007 Deprem Yönetmeliği)',
+      cat: 'İmar & 6306',
+      patterns: ['dbybhy'],
+      def: '1998 ve 2007 yıllarında yürürlüğe giren "Deprem Bölgelerinde Yapılacak Binalar Hakkında Yönetmelik" kısaltmasıdır. 2019 öncesi binaların deprem performans ve ekspertiz incelemelerinde referans alınır.'
+    },
+    {
+      id: 'tbdy-2018',
+      term: 'TBDY-2018 (Türkiye Bina Deprem Yönetmeliği)',
+      cat: 'İmar & 6306',
+      patterns: ['tbdy-2018', 'tbdy 2018', 'tbdy'],
+      def: '1 Ocak 2019\'da DBYBHY\'nin yerini alan yürürlükteki "Türkiye Bina Deprem Yönetmeliği"dir. Özellikle Bölüm 15 hükümleri, mevcut binaların kapsamlı deprem performans değerlendirmesi ve güçlendirme projelerinde uygulanır.'
+    },
+    {
+      id: 'fenni-mesul',
+      term: 'Fenni Mesul (TUS - Teknik Uygulama Sorumlusu)',
+      cat: 'İmar & 6306',
+      patterns: ['statik fenni mesul', 'fenni mesul', 'fenni mesulün', 'teknik uygulama sorumlusu', 'tus'],
+      def: 'Bir yapının inşa edilmesi veya yıkılması sürecinde, yapılan işlemlerin kanuna, imar planına, ruhsata, onaylı projelere ve teknik standartlara uygunluğunu ilgili belediye/idare adına denetleyen yetkili mimar veya mühendistir. Bina yüksekliği >21,50 m olan riskli yapı yıkımlarında yıkım sorumlusu olarak statik fenni mesul belirlenmesi zorunludur (6306 Yön. m.8/3-b).'
+    },
+    {
+      id: 'riskli-alan',
+      term: 'Riskli Alan',
+      cat: 'İmar & 6306',
+      patterns: ['riskli alan', 'riskli alanlar', 'riskli alanda'],
+      def: 'Zemin yapısı veya üzerindeki yapılaşma (üzerindeki toplam yapı sayısının en az %65\'inin imar mevzuatına aykırı olması - Ek-4) sebebiyle can ve mal kaybına yol açma riski taşıyan ve Cumhurbaşkanı kararıyla belirlenen alandır (6306 Yön. m.5).'
+    },
+    {
+      id: 'rezerv-yapi-alani',
+      term: 'Rezerv Yapı Alanı',
+      cat: 'İmar & 6306',
+      patterns: ['rezerv yapı alanı', 'rezerv yapı alanları', 'rezerv alan'],
+      def: '6306 sayılı Kanun uyarınca gerçekleştirilecek uygulamalarda kullanılmak üzere Kentsel Dönüşüm Başkanlığının teklifi üzerine Bakanlıkça belirlenen alanlardır. Gerçek veya özel hukuk tüzel kişilerinin talebinde yapılaşmaya esas arsa m²\'sinin %30\'unun mülkiyetinin Başkanlığa devrine muvafakat edilmesi (veya değerinin verilmesi) şarttır (Yön. m.4/3).'
+    },
+    {
+      id: 'dop',
+      term: 'DOP (Düzenleme Ortaklık Payı)',
+      cat: 'İmar & 6306',
+      patterns: ['düzenleme ortaklık payı', 'dop kesintisi', 'dop'],
+      def: '3194 sayılı İmar Kanunu\'nun 18. maddesi (şuyulandırma) uyarınca, imar uygulaması gören arsalardan yol, park, meydan, okul, yeşil alan gibi kamu hizmetleri için maliklerden bedelsiz olarak kesilen (en fazla %45 oranındaki) paydır.'
+    },
+    {
+      id: 'dap',
+      term: 'DAP (Değer Artış Payı - İmar Kanunu Ek Madde 8)',
+      cat: 'İmar & 6306',
+      patterns: ['değer artış payı', 'dap muafiyeti', 'dap'],
+      def: 'Parsel veya ada bazında maliklerin tamamının (%100) talebiyle yapılan uygulama imar planı değişiklikleri sonucunda taşınmazda oluşan değer artışının kamuya ödenen %90\'lık payıdır. Riskli yapı şerhi işlenmeden önce yapılan plan tadilatlarında ilk %20\'ye kadar olan emsal artışları DAP\'tan muaftır!'
+    },
+    {
+      id: 'ek5-tutanagi',
+      term: 'EK-5 Satın Alma / Trampa Tutanağı',
+      cat: 'İmar & 6306',
+      patterns: ['ek-5 tutanağı', 'ek-5', 'satın alma tutanağı'],
+      def: '6306 sayılı Kanun (m.6/5-b) ve Uygulama Yönetmeliği (m.13/7) uyarınca; kentsel dönüşüm kapsamındaki taşınmazın Kentsel Dönüşüm Başkanlığınca anlaşma yoluyla satın alınması veya trampa edilmesi halinde imzalanan tutanaktır. Tapuda ferağ beyanı ve resen tescilin hukuki sebebi sayılır; mevcut haciz ve ipotekler satış bedeli üzerinde devam eder.'
+    },
+    {
+      id: 'taks',
+      term: 'TAKS (Taban Alanı Kat Sayısı)',
+      cat: 'İmar & 6306',
+      patterns: ['taks', 'taban alanı kat sayısı', 'taban alanı'],
+      def: 'Binanın zemin üzerinde oturduğu taban alanının net imar parseli alanına oranıdır (Azami Taban Alanı = Net İmar Parseli × TAKS). Planda açık TAKS bulunmayan ayrık/blok nizam parsellerde TAKS %40\'ı aşamaz; çekme mesafelerinin oluşturduğu yapı zarfı daha küçükse küçük olan zarf uygulanır.'
+    },
+    {
+      id: 'kaks-emsal',
+      term: 'KAKS (Katlar Alanı Kat Sayısı) / Emsal',
+      cat: 'İmar & 6306',
+      patterns: ['kaks', 'emsale esas alan', 'katlar alanı'],
+      def: 'Yapının bütün katlarındaki emsale dahil alanlar toplamının net imar parseli alanına oranıdır (Emsale Esas Alan = Net İmar Parseli × KAKS). Planlı Alanlar İmar Yönetmeliği m.22 kapsamındaki emsal harici alanlar toplamı emsalin %30\'unu aşamaz.'
+    },
+    {
+      id: 'yapi-zarfi',
+      term: 'Yapı Yaklaşma Sınırı (Çekme Mesafesi) ve Yapı Zarfı',
+      cat: 'İmar & 6306',
+      patterns: ['yapı zarfı', 'yapı yaklaşma sınırı', 'çekme mesafesi', 'çekme mesafeleri'],
+      def: 'Yapı Yaklaşma Sınırı: Binanın yoldan (ön bahçe) ve komşu parsellerden (yan ve arka bahçe) çekilmesi gereken minimum mesafeyi gösteren sınır hattıdır. Yapı Zarfı: Çekme mesafeleri düşüldükten sonra parsel içinde binanın oturabileceği azami geometrik alandır (TAKS daha büyük izin verse bile yapı zarfı aşılamaz).'
+    },
+    {
+      id: 'subasman-kotu',
+      term: 'Subasman Kotu',
+      cat: 'İmar & 6306',
+      patterns: ['subasman kotu', 'subasman'],
+      def: 'Zemin kat taban döşemesinin üst seviyesinin referans yol/tretuvar kotuna göre yüksekliğidir (Antalya plan notlarında genellikle +2,50 m uygulanır; tahvilde +1,20 m esas alınır). Subasman kotu tek başına KAKS (emsal) hakkını artırmaz; altında açığa çıkan hacim otopark/bodrum olarak değerlendirilir.'
+    },
+    {
+      id: 'gabari-yencok',
+      term: 'Gabari ve Yençok (Azami Yapı Yüksekliği)',
+      cat: 'İmar & 6306',
+      patterns: ['gabari', 'yençok', 'hmax'],
+      def: 'Binanın kot aldığı noktadan saçak seviyesine kadar olan azami yüksekliğini (metre veya kat adedi cinsinden) ifade eder. 7221 sayılı Kanun (İmar K. m.8) uyarınca imar planlarında "Serbest" yükseklik bırakılamaz, Yençok değerinin belirlenmesi zorunludur.'
+    },
+    {
+      id: 'imar-hakki-aktarimi',
+      term: 'İmar Hakkı Aktarımı (Transferi - m.15/10)',
+      cat: 'İmar & 6306',
+      patterns: ['imar hakkı aktarımı', 'imar hakkı transferi', 'imar aktarımı'],
+      def: 'Zemin, afet riski veya mevzuat kısıtı nedeniyle mevcut parselinde yeniden yapı yapılamayan riskli yapıların yapılaşma hakkının başka bir parsele taşınmasıdır (6306 Yön. m.15/10). Harç muafiyeti, riskli parsel alanının yeni parsel alanına oranı nispetinde uygulanır (m.16/11).'
+    },
+    {
+      id: 'mania-siniri',
+      term: 'Havaalanı Mânia Sınırı',
+      cat: 'İmar & 6306',
+      patterns: ['mânia sınırı', 'mania sınırı', 'mânia'],
+      def: 'Uçuş güvenliğini sağlamak amacıyla havalimanı çevresindeki yapıların (çatı, baca, asansör kulesi ve anten dahil) deniz seviyesine göre aşamayacağı en üst kot sınırıdır (Örn: Antalya Kepez Güneş Mah. 27594/1 parselde 157 m).'
+    },
+    {
+      id: 'aplikasyon-cap',
+      term: 'Aplikasyon Krokisi ve İmar Çapı',
+      cat: 'İmar & 6306',
+      patterns: ['aplikasyon krokisi', 'aplikasyon', 'imar çapı', 'röperli kroki'],
+      def: 'Aplikasyon Krokisi: Parselin köşe koordinatlarının ve sınırlarının LİHKAB / Kadastro tarafından arazide gösterildiği resmi belgedir. İmar Çapı (İmar Durum Belgesi): Belediyenin parseldeki nizam, kat, TAKS, KAKS ve çekme mesafelerini resmi olarak verdiği belgedir.'
+    },
+    {
+      id: 'ibzt-tick-bha',
+      term: 'İBZT, TİCK ve BHA (İmar Lejant Kısaltmaları)',
+      cat: 'İmar & 6306',
+      patterns: ['ibzt', 'tick', 'bha'],
+      def: 'İBZT (İBT): İsteğe Bağlı Zemin Ticaret (Konut + isteğe bağlı ticaret). TİCK: Ticaret + Konut karma kullanım alanı (EK-1d RGB: 227/186/69 + kare ızgara tarama). BHA: Belediye Hizmet Alanı (RGB: 102/153/205 + nokta tarama; kullanım amacı parantez içinde yazılır).'
+    },
+
+    // --- BÖLÜM 4: KAT KARŞILIĞI İNŞAAT SÖZLEŞMESİ (APKİS) TERİMLERİ ---
+    {
+      id: 'apkis',
+      term: 'Arsa Payı (Kat) Karşılığı İnşaat Sözleşmesi (APKİS)',
+      cat: 'Kat Karşılığı Sözleşme',
+      patterns: ['arsa payı karşılığı inşaat sözleşmesi', 'kat karşılığı inşaat sözleşmesi'],
+      def: 'Arsa sahibinin belirli arsa paylarını müteahhide devretmeyi, müteahhidin ise bunun karşılığında kendi finansmanıyla arsa üzerinde bina inşa ederek arsa sahibine düşen bağımsız bölümleri (anahtar teslim ve iskânlı olarak) teslim etmeyi üstlendiği çifte tipli karma sözleşmedir. Geçerliliği Noterde Düzenleme Şeklinde yapılmasına bağlıdır.'
+    },
+    {
+      id: 'kademeli-tapu-devri',
+      term: 'Kademeli (Aşamalı) Tapu Devri',
+      cat: 'Kat Karşılığı Sözleşme',
+      patterns: ['kademeli tapu devri', 'aşamalı tapu devri', 'aşamalı devir', 'kademeli satış'],
+      def: 'Arsa sahiplerini korumak amacıyla, müteahhidin hak edeceği daire tapularının sözleşme başında peşinen devredilmeyip; inşaatın belirli fiziki aşamaları (Ruhsatta %0 ➔ Taşıyıcı sistemde %30 ➔ Dış kabuk/tesisatta %60 ➔ İskânda %100) tamamlandıkça parça parça devredilmesi usulüdür. Ayrıca 6306 Yön. m.13/10 uyarınca İdare, inşaat ilerleme oranının %10 altındaki oranda müteahhit payı satışına izin verir.'
+    },
+    {
+      id: 'avans-tapu-devri',
+      term: 'Avans Tapu Devri',
+      cat: 'Kat Karşılığı Sözleşme',
+      patterns: ['avans tapu devri', 'avans tapu'],
+      def: 'Müteahhidin inşaatı finanse edebilmesi için henüz inşaat başlamadan veya ilgili imalat aşaması tamamlanmadan arsa sahiplerince müteahhide yapılan erken tapu devridir. Müteahhit inşaatı tamamlamazsa bu tapular "sebepsiz zenginleşme" teşkil eder ve iptal edilerek arsa sahibine döner.'
+    },
+    {
+      id: 'insaat-teminat-ipotegi',
+      term: 'İnşaat Teminat İpoteği',
+      cat: 'Kat Karşılığı Sözleşme',
+      patterns: ['inşaat teminat ipoteği', 'teminat ipoteği'],
+      def: 'Tapuların işin başında müteahhide devredildiği sözleşmelerde, müteahhidin inşaatı yarım bırakması veya daireleri satıp kaçması riskine karşı müteahhide düşen daireler üzerine arsa sahipleri lehine konulan 1. derece ipotektir. İnşaat ilerledikçe arsa sahiplerinin onayıyla kademeli olarak fek edilir.'
+    },
+    {
+      id: 'cezai-sart',
+      term: 'Cezai Şart (İfaya Eklenen ve Seçimlik Cezai Şart)',
+      cat: 'Kat Karşılığı Sözleşme',
+      patterns: ['cezai şart', 'ceza-i şart', 'ifaya eklenen cezai şart', 'seçimlik cezai şart'],
+      def: 'TBK m.179 uyarınca; müteahhidin inşaatı hiç veya gereği gibi yapmaması, teknik şartnameye aykırı imalat yapması ya da teslim süresini aşması halinde, arsa sahibinin hiçbir zararını ispat etmek zorunda kalmaksızın talep edebileceği sözleşmesel ceza tutarıdır. İfaya Eklenen: Hem teslim hem ceza birlikte istenir. Seçimlik: İfa yerine talep edilir.'
+    },
+    {
+      id: 'gecikme-tazminati',
+      term: 'Gecikme Tazminatı (Kira Tazminatı)',
+      cat: 'Kat Karşılığı Sözleşme',
+      patterns: ['gecikme tazminatı', 'kira tazminatı', 'gecikme bedeli'],
+      def: 'Müteahhidin inşaatı sözleşmede belirlenen sürede (örneğin ruhsattan itibaren 18 ay + 3 ay ek süre) tamamlayıp iskânlı olarak teslim edememesi halinde, gecikilen her ay için arsa sahiplerine ödemek zorunda olduğu kira mahrumiyeti karşılığı tazminattır. Cezai şarttan ayrı olarak talep edilebilir.'
+    },
+    {
+      id: 'nama-ifa',
+      term: 'Nama İfa İzni (TBK m.113)',
+      cat: 'Kat Karşılığı Sözleşme',
+      patterns: ['nama ifa', 'nama ifaya izin'],
+      def: 'Müteahhidin inşaatın büyük bölümünü (genellikle %85–%90 ve üzerini) tamamlamasına rağmen kalan imalatları, çevre düzenlemesini veya iskân alımını terk etmesi halinde; arsa sahiplerinin Asliye Hukuk Mahkemesinden (arabuluculuk şartıyla) "Nama İfa Yetkisi" alarak kalan eksiklikleri masrafı müteahhide ait olmak üzere tamamlaması ve müteahhide kalan daireyi mahkeme kararıyla sattırmasıdır.'
+    },
+    {
+      id: 'geriye-etkili-fesih',
+      term: 'Geriye Etkili Fesih (Sözleşmeden Dönme)',
+      cat: 'Kat Karşılığı Sözleşme',
+      patterns: ['geriye etkili fesih', 'sözleşmeden dönme'],
+      def: 'İnşaat seviyesinin %90\'ın altında kaldığı ve müteahhidin temerrüde düştüğü durumlarda sözleşmenin mahkeme kararıyla baştan itibaren ortadan kaldırılmasıdır. Bu durumda müteahhitten daire satın alan üçüncü kişilerin "iyiniyet" iddiası dinlenmez ve tüm tapular arsa sahiplerine geri döner.'
+    },
+    {
+      id: 'ileriye-etkili-fesih',
+      term: 'İleriye Etkili Fesih',
+      cat: 'Kat Karşılığı Sözleşme',
+      patterns: ['ileriye etkili fesih'],
+      def: 'Müteahhidin inşaatı %90 ve üzerinde bir seviyeye getirdiği ancak tamamlayamadığı durumlarda uygulanan fesih türüdür. Müteahhit yaptığı imalat oranında tapu payına hak kazanır, kalan eksik işlerin bedeli ise müteahhidin payından düşülerek arsa sahiplerine verilir.'
+    },
+    {
+      id: 'alacagin-temliki',
+      term: 'Alacağın Temliki (Adi Yazılı / Maketten Daire Satışı)',
+      cat: 'Kat Karşılığı Sözleşme',
+      patterns: ['alacağın temliki', 'maketten satış', 'temlik sözleşmesi'],
+      def: 'Müteahhidin sözleşme gereği ileride hak kazanacağı daireleri, henüz tapuları kendi üzerine geçmeden üçüncü kişilere yazılı sözleşmeyle devretmesidir. Yargıtay içtihatlarına göre bu işlem "alacağın temliki" hükmündedir; müteahhit sözleşmedeki borcunu tam yerine getirmezse alıcılar arsa sahibinden tapu talep edemez.'
+    },
+    {
+      id: 'eksik-ifa',
+      term: 'Eksik İfa',
+      cat: 'Kat Karşılığı Sözleşme',
+      patterns: ['eksik ifa', 'eksik işler'],
+      def: 'Sözleşmede, teknik şartnamede veya onaylı projede yapılması kararlaştırılan bir işin hiç yapılmamış olmasıdır. Ayıplı ifadan farklı olarak muayene ve ihbar külfetine tabi olmaksızın 5 yıllık zamanaşımı süresi içinde her zaman talep edilebilir.'
+    },
+    {
+      id: 'ayipli-ifa',
+      term: 'Ayıplı İfa',
+      cat: 'Kat Karşılığı Sözleşme',
+      patterns: ['ayıplı ifa', 'ayıplı işler', 'gizli ayıp'],
+      def: 'Yapılan imalatın teknik şartnameye, onaylı projeye veya fen kurallarına aykırı/kusurlu olmasıdır. Açık ayıplarda teslimden itibaren makul sürede muayene ve ihbar şartına tabidir; gizli ayıplarda ise ayıp ortaya çıktığında derhal yükleniciye ihbar edilmelidir.'
+    },
+    {
+      id: 'menfi-zarar',
+      term: 'Menfi (Olumsuz) Zarar',
+      cat: 'Kat Karşılığı Sözleşme',
+      patterns: ['menfi zarar'],
+      def: 'Sözleşmenin geriye etkili feshedilmesi (sözleşmeden dönülmesi) halinde, arsa sahibinin sözleşmeye güvenerek yaptığı masraflar (noter, harç, yıkım giderleri) ve kaçırdığı diğer sözleşme fırsatlarından doğan zararıdır.'
+    },
+    {
+      id: 'muspet-zarar',
+      term: 'Müspet (Olumlu) Zarar',
+      cat: 'Kat Karşılığı Sözleşme',
+      patterns: ['müspet zarar'],
+      def: 'Sözleşme feshedilmeyip ayakta tutulduğunda (veya ileriye etkili fesihte), inşaatın zamanında ve eksiksiz teslim edilmemesinden doğan zarardır (gecikme kira kaybı, eksik ve ayıplı işler bedeli).'
+    },
+    {
+      id: 'teknik-sartname',
+      term: 'Teknik Şartname (Mahal Listesi)',
+      cat: 'Kat Karşılığı Sözleşme',
+      patterns: ['teknik şartname', 'teknik şartnamesi', 'mahal listesi'],
+      def: 'İnşaatta kullanılacak beton, demir, dış cephe, yalıtım, asansör, mutfak, kombi, doğrama ve vitrifiye malzemelerinin marka, sınıf ve kalite standartlarını tek tek belirleyen zorunlu sözleşme ekidir.'
+    },
+    {
+      id: 'paylasim-cetveli',
+      term: 'Bağımsız Bölüm Paylaşım (Dağıtım) Cetveli',
+      cat: 'Kat Karşılığı Sözleşme',
+      patterns: ['bağımsız bölüm paylaşım cetveli', 'paylaşım cetveli', 'dağıtım cetveli', 'dağılım cetveli'],
+      def: 'Yeni projedeki hangi blok, kat, cephe ve numaralı dairenin/dükkanın hangi arsa sahibine ve müteahhide düşeceğini gösteren sözleşme ekidir. 6306 Yön. m.15/12 uyarınca kat irtifakı kurulabilmesi için hak sahiplerine düşen bağımsız bölümlerin sözleşmede belirlenmiş olması şarttır.'
+    },
+    {
+      id: 'idari-fesih-6306',
+      term: '6306 S.K. Kapsamında İdari Fesih (Yön. m.13/11)',
+      cat: 'Kat Karşılığı Sözleşme',
+      patterns: ['idari fesih', 'resen fesih', 'sözleşmenin feshi'],
+      def: 'Kentsel dönüşüm kapsamındaki yapılarda müteahhitten kaynaklanan sebeplerle 1 yıl içinde işe başlanmaması veya inşaatın en az 6 ay durdurulması halinde; maliklerin >%50 salt çoğunluk kararıyla Kentsel Dönüşüm Müdürlüğüne başvurması, müteahhide 15 gün savunma ve 30 gün işe başlama ihtarı çekilmesi ve işe başlanmazsa sözleşmelerin mahkemeye gitmeden resen feshedilmesi prosedürüdür (Feshe kadar ödenen kiralar geri istenemez).'
+    },
+    {
+      id: 'serefiye',
+      term: 'Şerefiye ve Eşdeğer Alan Denkleştirmesi',
+      cat: 'Kat Karşılığı Sözleşme',
+      patterns: ['şerefiye', 'eşdeğer alan', 'denkleştirme bedeli'],
+      def: 'Aynı binadaki bağımsız bölümlerin kat, cephe, manzara, güneşlenme ve konum avantajlarına göre sahip olduğu değer farkı katsayısıdır. Hak sahiplerinin hedef eşdeğer m² hakları ile tahsis edilen dairenin eşdeğer m²\'si arasındaki fark, birim m² değeriyle çarpılarak nakdi denkleştirme (alacak/ödeme) yapılır.'
+    },
+    {
+      id: 'bina-tamamlama-teminat',
+      term: 'Bina Tamamlama Sigortası ve %6 Müteahhit Teminatı (m.13/9)',
+      cat: 'Kat Karşılığı Sözleşme',
+      patterns: ['bina tamamlama sigortası', '%6 teminat', 'kesin teminat'],
+      def: '6306 Yön. m.13/9-c ve Geçici Madde 5 uyarınca riskli yapı parsellerinde yapı ruhsatı alınmadan önce müteahhidin yapı yaklaşık maliyet bedelinin %6\'sı oranında İdareye vermesi zorunlu olan teminattır (1/1/2024 sonrası ruhsatlardaki eski %10 teminatlar da talep üzerine %6\'ya indirilir). Bina tamamlama sigortası yaptırılırsa ayrıca %6 teminat aranmaz.'
+    },
+    {
+      id: 'yambis',
+      term: 'YAMBİS (Yapı Müteahhitliği Yetki Belgesi Sınıfları A–H)',
+      cat: 'Kat Karşılığı Sözleşme',
+      patterns: ['yambis', 'müteahhitlik yetki belgesi', 'yetki belgesi grubu'],
+      def: 'ÇŞİDB tarafından yapı müteahhitlerinin mali, ekonomik ve teknik yeterliliklerine göre H grubundan A grubuna kadar sınıflandırıldığı elektronik sistemdir. Müteahhidin üstlenebileceği azami inşaat alanı ve kat sayısı yetki belgesi grubuna uygun olmalıdır.'
+    },
+
+    // --- BÖLÜM 5: GAYRİMENKUL DAVALARI VE YARGILAMA USULÜ TERİMLERİ ---
+    {
+      id: 'izalei-suyu',
+      term: 'İzale-i Şuyu (Ortaklığın Giderilmesi) Davası ve 6306 İlişkisi',
+      cat: 'Gayrimenkul Davaları',
+      patterns: ['izale-i şuyu', 'ortaklığın giderilmesi'],
+      def: 'Paylı veya elbirliği mülkiyetine konu bir taşınmazda, hissedarlar arasındaki ortaklığın Sulh Hukuk Mahkemesi kararıyla (aynen bölüştürülerek veya açık artırmayla satılarak) sona erdirilmesi davasıdır. 6306 s.K. m.6/16 ve Yön. m.15/1 uyarınca ortaklığın giderilmesi davası açılmış olması, 6306 kapsamında >%50 salt çoğunlukla karar alınmasına ve katılmayan payların satışına engel teşkil etmez!'
+    },
+    {
+      id: 'aynen-taksim',
+      term: 'Aynen Taksim',
+      cat: 'Gayrimenkul Davaları',
+      patterns: ['aynen taksim'],
+      def: 'Ortaklığın giderilmesi davasında taşınmazın satış memurluğunca satılmadan; imar mevzuatı, yüzölçümü ve bağımsız bölüm sayısı elveriyorsa hissedarlar arasında fiilen parsel veya daire olarak bölüştürülmesidir.'
+    },
+    {
+      id: 'muhdesatin-aidiyeti',
+      term: 'Muhdesatın Aidiyetinin Tespiti Davası',
+      cat: 'Gayrimenkul Davaları',
+      patterns: ['muhdesatın aidiyetinin tespiti', 'muhdesatın aidiyeti'],
+      def: 'Ortaklığın giderilmesi veya kamulaştırma sürecinde, hisseli arsa üzerindeki bina veya ağaçları kendi parasıyla meydana getiren hissedarın, satış bedelinden bu yapının değerini ayrıca alabilmek için diğer hissedarlara karşı Asliye Hukuk Mahkemesinde açtığı tespit davasıdır.'
+    },
+    {
+      id: 'tapu-iptal-tescil',
+      term: 'Tapu İptal ve Tescil Davası',
+      cat: 'Gayrimenkul Davaları',
+      patterns: ['tapu iptal ve tescil', 'tapu iptal'],
+      def: 'Yolsuz tescil (hukuki sebebin geçersizliği), vekalet görevinin kötüye kullanılması, ehliyetsizlik, hile veya kat karşılığı inşaat sözleşmesinin geriye etkili feshi gibi nedenlerle hukuka aykırı hale gelen tapu kaydının iptal edilerek gerçek hak sahibi adına tescil edilmesi için Asliye Hukuk Mahkemesinde açılan davadır.'
+    },
+    {
+      id: 'feraga-icbar',
+      term: 'Ferağa İcbar (Tescile Zorlama) Davası (TMK m.716)',
+      cat: 'Gayrimenkul Davaları',
+      patterns: ['ferağa icbar', 'tescile zorlama'],
+      def: 'Geçerli bir kat karşılığı inşaat sözleşmesi veya satış vaadi sözleşmesi uyarınca edimini yerine getiren tarafın (örneğin inşaatı tamamlayan müteahhidin veya daire alıcısının), tapu devrini yapmaktan kaçınan karşı tarafa karşı Asliye Hukuk Mahkemesinde (arabuluculuk şartıyla) açtığı tescil davasıdır.'
+    },
+    {
+      id: 'muris-muvazaasi',
+      term: 'Muris Muvazaası (Mirastan Mal Kaçırma)',
+      cat: 'Gayrimenkul Davaları',
+      patterns: ['muris muvazaası', 'mirastan mal kaçırma', 'muvazaa'],
+      def: 'Miras bırakanın (murisin), diğer mirasçılarını miras hakkından mahrum bırakmak amacıyla gerçekte bağışlamak istediği taşınmazı, tapuda "satış" veya "ölünceye kadar bakma sözleşmesi" gibi göstererek devretmesi ve buna karşı açılan tapu iptal davasıdır.'
+    },
+    {
+      id: 'elatmanin-onlenmesi',
+      term: "Elatmanın Önlenmesi (Müdahalenin Men'i) ve Kal (Yıkım)",
+      cat: 'Gayrimenkul Davaları',
+      patterns: ['elatmanın önlenmesi', "müdahalenin men'i", 'müdahalenin meni'],
+      def: 'Taşınmazı geçerli bir hukuki sebep olmaksızın işgal eden, kullanan veya komşu parsele taşkın yapı yapan kişinin bu haksız müdahalesinin mahkeme kararıyla sonlandırılması ve (talep varsa) kaçak yapının kal\'i (yıkımı) davasıdır.'
+    },
+    {
+      id: 'ecrimisil',
+      term: 'Ecrimisil (Haksız İşgal Tazminatı)',
+      cat: 'Gayrimenkul Davaları',
+      patterns: ['ecrimisil', 'haksız işgal tazminatı'],
+      def: 'Bir taşınmazı malikin (veya paylı mülkiyette intifadan men koşulu gerçekleşmişse diğer hissedarların) rızası olmadan kötü niyetli olarak kullanan kişiden, geriye dönük en fazla 5 yıllık süre için talep edilen haksız kullanım tazminatıdır.'
+    },
+    {
+      id: 'arsa-payi-duzeltme',
+      term: 'Arsa Payının Düzeltilmesi Davası (KMK m.3)',
+      cat: 'Gayrimenkul Davaları',
+      patterns: ['arsa payının düzeltilmesi', 'arsa payı düzeltme davası', 'arsa payı düzeltme'],
+      def: 'Kat irtifakı veya kat mülkiyeti kurulurken bağımsız bölümlerin o tarihteki değerleriyle orantısız (hatalı) dağıtıldığı iddia edilen arsa paylarının yeniden hesaplanıp tapuda düzeltilmesi için Sulh Hukuk Mahkemesinde (arabuluculuk şartıyla) açılan davadır. Dikkat: Kurulumdan beri ilk elden malik olanlar açamaz ve bina yıkıldıktan sonra açılamaz!'
+    },
+    {
+      id: 'ihtiyati-tedbir',
+      term: 'İhtiyati Tedbir',
+      cat: 'Gayrimenkul Davaları',
+      patterns: ['ihtiyati tedbir', 'ihtiyati haciz'],
+      def: 'Dava devam ederken davalının taşınmazı üçüncü kişilere devrederek mal kaçırmasını ve iyiniyetli üçüncü kişi iddialarını önlemek amacıyla mahkemece tapu kaydına konulan geçici satış ve devir yasağıdır.'
+    },
+    {
+      id: 'bekletici-mesele',
+      term: 'Bekletici Mesele',
+      cat: 'Gayrimenkul Davaları',
+      patterns: ['bekletici mesele'],
+      def: 'Bir mahkemenin, baktığı davada hüküm kurabilmek için başka bir mahkemede (örneğin Asliye Hukuk Mahkemesindeki muhdesatın aidiyetinin tespiti davası) veya idari makamda (örneğin 6306 sayılı Kanun kapsamındaki idari pay satışı) yürüyen işlemin kesinleşmesini beklemesi kararıdır.'
+    },
+    {
+      id: 'kesif-bilirkisi',
+      term: 'Keşif ve Bilirkişi Raporu',
+      cat: 'Gayrimenkul Davaları',
+      patterns: ['keşif ve bilirkişi', 'bilirkişi raporu', 'bilirkişi heyeti'],
+      def: 'Hâkimin; harita mühendisi, inşaat mühendisi ve SPK lisanslı gayrimenkul değerleme uzmanından oluşan bilirkişi heyetiyle taşınmaz başında yaptığı yerinde inceleme (keşif) ve heyetin taşınmazın sınırlarını, inşaat fiziki gerçekleşme seviyesini ve rayiç değerini hesapladığı teknik rapordur.'
+    },
+    {
+      id: 'ihtirazi-kayit-vuk124',
+      term: 'İhtirazi Kayıt ve VUK m.124 Şikayet Başvurusu',
+      cat: 'Gayrimenkul Davaları',
+      patterns: ['ihtirazi kayıt', 'vuk m.124', 'idari merci tecavüzü'],
+      def: '6306 sayılı Kanun kapsamındaki harç ve ücret muafiyetlerine rağmen tahsil edilen tapu/noter/belediye harçlarının iadesinde; ödeme sırasında "İhtirazi Kayıt" konulması ve vergi dairesi reddi sonrasında Vergi Mahkemesinde dava açmadan önce VUK m.124 uyarınca Gelir İdaresi Başkanlığına şikayet başvurusu yapılması (mahkemenin idari merci tecavüzü kararı vermemesi için) prosedürüdür.'
+    },
+
+    // --- BÖLÜM 6: TEKNİK RAPOR, VEKALET VE USUL TERİMLERİ ---
+    {
+      id: 'araad-ykn',
+      term: 'ARAAD ve YKN (Yapı Kimlik Numarası)',
+      cat: 'Teknik Rapor & Usul',
+      patterns: ['araad', 'ykn', 'yapı kimlik numarası'],
+      def: 'ARAAD: Kentsel Dönüşüm Başkanlığının Afet Riski Altındaki Alanların Dönüştürülmesi elektronik yazılım sistemidir. YKN (Yapı Kimlik Numarası): Riskli yapı tespiti başvurusu açıldığında sistem tarafından o binaya verilen benzersiz takip numarasıdır.'
+    },
+    {
+      id: 'ryteie',
+      term: 'RYTEİE (6306 Yönetmeliği Ek-2 Esasları)',
+      cat: 'Teknik Rapor & Usul',
+      patterns: ['ryteie', 'ek-2 esasları'],
+      def: '6306 sayılı Kanunun Uygulama Yönetmeliği Ek-2\'de yer alan "Riskli Yapıların Tespit Edilmesine İlişkin Esaslar"dır. Yüksekliği Hn ≤ 25 m veya zemin üstü 8 katı geçmeyen betonarme ve yığma binaların risk tespitinde kullanılır; güçlendirme projelerinde kullanılamaz.'
+    },
+    {
+      id: 'karot-mpa',
+      term: 'Karot Numunesi ve Mevcut Beton Dayanımı (MPa / 0,85 Kuralı)',
+      cat: 'Teknik Rapor & Usul',
+      patterns: ['karot numunesi', 'mevcut beton dayanımı', 'düzeltilmiş karot', 'karot'],
+      def: 'Binanın kolon/perdelerinden alınan silindirik beton örneğidir. 1 MPa = 1 N/mm² ≈ 10,20 kgf/cm² (18 MPa ≈ 183,5 kgf/cm²). Boy/çap, nem ve örselenme katsayılarıyla elde edilen "Düzeltilmiş Karot Ortalaması"na RYTEİE 2019 md. 4.1.11 uyarınca × 0,85 uygulanarak "Mevcut Beton Dayanımı" bulunur (Örn: 18 × 0,85 = 15,30 MPa; 10 × 0,85 = 8,50 MPa).'
+    },
+    {
+      id: 'ahzu-kabz-tevkil',
+      term: 'Ahzu Kabz, Tevkil ve Sulh-İbra (Vekaletname Terimleri)',
+      cat: 'Teknik Rapor & Usul',
+      patterns: ['ahzu kabz', 'ahzu kabza', 'tevkil', 'sulh ve ibra', 'ibraya'],
+      def: 'Ahzu Kabz: Vekilin müvekkil adına para, bedel veya harç iadesi tahsil etme yetkisidir. Tevkil: Vekilin kendi yetkilerini başka bir vekile (alt vekile) devredebilme yetkisidir. Sulh ve İbra: Vekilin uyuşmazlığı anlaşmayla sonlandırma ve karşı tarafı borçtan kurtarma yetkisidir (Sınırlı dönüşüm vekaletnamesinde bu üç yetki sınırlandırılmalıdır!).'
+    },
+    {
+      id: 'uets-aski-tebligat',
+      term: 'UETS (Elektronik Tebligat) ve Muhtarlık 15 Günlük Askı Tebligatı',
+      cat: 'Teknik Rapor & Usul',
+      patterns: ['uets', 'elektronik tebligat', 'muhtarlık ilanı'],
+      def: '6306 süreçlerinde (m.7, m.8, m.15, m.15/A) tapuya UETS (Ulusal Elektronik Tebligat Sistemi) adresi bildirenlere yapılan tebligat ulaştığı tarihi izleyen 5. günün sonunda; muhtarlıkta 15 gün askı ilanı suretiyle yapılan tebligatlar ise 15 günlük ilanın son günü tebliğ edilmiş sayılır.'
+    }
+  ];
+
+  // 2. GENEL ARAMA MOTORUNA (GLOBAL_INDEX) VE SAĞ İKİZ EKRAN VERİTABANINA (LAW_DB) SÖZLÜK TERİMLERİNİ KAYDET
+  function registerGlossaryInGlobalSearchAndLawDB() {
+    if (typeof LAW_DB !== 'undefined') {
+      KD_GLOSSARY_DB.forEach(item => {
+        LAW_DB['sozluk-' + item.id] = {
+          title: `📖 Sözlük Terimi: ${item.term}`,
+          ref: `Gayrimenkul, Tapu, Kentsel Dönüşüm ve İnşaat Hukuku Terimler Sözlüğü • Kategori: ${item.cat}`,
+          body: `<p style="font-size:0.95rem; line-height:1.65;"><strong>Tanımı ve Uygulamadaki Hukuki/Teknik Karşılığı:</strong><br>${item.def}</p>
+                 <div style="margin-top:12px; padding-top:10px; border-top:1px dashed #cbd5e1; display:flex; justify-content:space-between; align-items:center;">
+                   <span style="font-size:0.78rem; color:#64748b;">Kategori: <strong>${item.cat}</strong></span>
+                   <button type="button" class="ek-link" onclick="openGlossaryModal('${item.id}')">📖 Tüm Sözlüğü Aç (${KD_GLOSSARY_DB.length} Terim)</button>
+                 </div>`
+        };
+      });
+    }
+
+    if (typeof GLOBAL_INDEX !== 'undefined' && Array.isArray(GLOBAL_INDEX)) {
+      KD_GLOSSARY_DB.forEach(item => {
+        const urlStr = `javascript:openGlossaryModal("${item.id}")`;
+        if (!GLOBAL_INDEX.some(x => x.url === urlStr)) {
+          GLOBAL_INDEX.push({
+            cilt: '📖 Sözlük',
+            title: `📖 ${item.term} (${item.cat})`,
+            url: urlStr,
+            keys: `${item.term.toLowerCase()} ${item.cat.toLowerCase()} ${item.def.toLowerCase()}`
+          });
+        }
+      });
+    }
+  }
+
+  // 3. STİL TANIMLARI (SÖZLÜK MODALI, SATIR İÇİ ALTI ÇİZGİLİ KELİMELER VE HOVER AÇIKLAMA BALONCUĞU)
+  function injectGlossaryStyles() {
+    if (document.getElementById('kdGlossarySystemStyles')) return;
+    const st = document.createElement('style');
+    st.id = 'kdGlossarySystemStyles';
+    st.textContent = `
+      body:not(.kd-inline-glossary-off) .kd-glossary-term {
+        border-bottom: 1.8px dashed #0284c7;
+        color: inherit;
+        cursor: help;
+        padding-bottom: 1px;
+        transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+        border-radius: 3px;
+      }
+      body:not(.kd-inline-glossary-off) .kd-glossary-term:hover {
+        background-color: #fef08a;
+        color: #0f172a;
+        border-bottom-color: #d97706;
+        border-bottom-style: solid;
+      }
+      body.kd-inline-glossary-off .kd-glossary-term {
+        border-bottom: none !important;
+        cursor: inherit !important;
+      }
+
+      #kdGlossaryHoverTooltip {
+        display: none;
+        position: fixed;
+        z-index: 6000;
+        width: 370px;
+        max-width: 92vw;
+        background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+        color: #f8fafc;
+        border: 1.5px solid #fbbf24;
+        border-radius: 10px;
+        padding: 12px 14px;
+        box-shadow: 0 14px 34px rgba(15, 23, 42, 0.55);
+        pointer-events: none;
+        font-family: 'Segoe UI', system-ui, sans-serif;
+        line-height: 1.48;
+      }
+      #kdGlossaryHoverTooltip .tt-cat {
+        display: inline-block;
+        background: #fbbf24;
+        color: #0f172a;
+        font-size: 0.68rem;
+        font-weight: 900;
+        padding: 2px 8px;
+        border-radius: 99px;
+        margin-bottom: 5px;
+        text-transform: uppercase;
+      }
+      #kdGlossaryHoverTooltip .tt-title {
+        display: block;
+        font-size: 0.94rem;
+        font-weight: 800;
+        color: #38bdf8;
+        margin-bottom: 5px;
+        padding-bottom: 4px;
+        border-bottom: 1px solid rgba(148,163,184,0.25);
+      }
+      #kdGlossaryHoverTooltip .tt-def {
+        font-size: 0.8rem;
+        color: #e2e8f0;
+      }
+      #kdGlossaryHoverTooltip .tt-hint {
+        display: block;
+        margin-top: 7px;
+        padding-top: 5px;
+        border-top: 1px dashed rgba(148,163,184,0.25);
+        font-size: 0.7rem;
+        color: #fde047;
+        font-weight: 700;
+      }
+
+      #kdGlossaryModal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.84);
+        z-index: 4800;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+        backdrop-filter: blur(3px);
+      }
+      .kd-gl-cat-btn {
+        background: #e2e8f0;
+        color: #1e293b;
+        border: 1px solid #cbd5e1;
+        padding: 5px 11px;
+        border-radius: 99px;
+        font-size: 0.75rem;
+        font-weight: 800;
+        cursor: pointer;
+        transition: 0.15s;
+      }
+      .kd-gl-cat-btn.active, .kd-gl-cat-btn:hover {
+        background: #0f172a;
+        color: #fbbf24;
+        border-color: #0f172a;
+      }
+      .kd-gl-item-card {
+        background: #ffffff;
+        border: 1.5px solid #cbd5e1;
+        border-left: 5px solid #0284c7;
+        border-radius: 9px;
+        padding: 11px 14px;
+        margin-bottom: 9px;
+        cursor: pointer;
+        transition: all 0.15s ease;
+      }
+      .kd-gl-item-card:hover {
+        border-color: #2563eb;
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
+      }
+      .kd-gl-item-card.expanded {
+        border-left-color: #d97706;
+        background: #fffbeb;
+      }
+      .kd-exec-pill.p-sozluk {
+        background: linear-gradient(135deg, #0ea5e9 0%, #0369a1 100%) !important;
+        color: #ffffff !important;
+        border: 1px solid #7dd3fc !important;
+      }
+    `;
+    document.head.appendChild(st);
+  }
+
+  // 4. İNTERAKTİF SÖZLÜK MODALINI OLUŞTURMA VE AÇMA/KAPATMA FONKSİYONLARI
+  let currentGlossaryCat = 'Tümü';
+
+  function buildGlossaryModalIfNeeded() {
+    let modal = document.getElementById('kdGlossaryModal');
+    if (modal) return modal;
+
+    const categories = ['Tümü', 'Tapu & Mülkiyet', 'Takyidatlar & Haklar', 'İmar & 6306', 'Kat Karşılığı Sözleşme', 'Gayrimenkul Davaları', 'Teknik Rapor & Usul'];
+    const isInlineOff = localStorage.getItem('kd_inline_glossary_off') === '1';
+    if (isInlineOff) document.body.classList.add('kd-inline-glossary-off');
+
+    modal = document.createElement('div');
+    modal.id = 'kdGlossaryModal';
+    modal.onclick = (e) => { if (e.target === modal) closeGlossaryModal(); };
+    modal.innerHTML = `
+      <div style="background:#f8fafc; max-width:1040px; width:94vw; max-height:90vh; border-radius:12px; border:2px solid #38bdf8; box-shadow:0 20px 50px rgba(0,0,0,0.5); display:flex; flex-direction:column; overflow:hidden;">
+        <div style="background:linear-gradient(135deg,#0f172a 0%,#1e3a8a 100%); color:#ffffff; padding:13px 18px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; border-bottom:2px solid #fbbf24;">
+          <div>
+            <span style="background:#fbbf24; color:#0f172a; font-size:0.7rem; font-weight:900; padding:2px 8px; border-radius:4px;">UYGULAMALI BAŞVURU REHBERİ VE MEVZUAT SÖZLÜĞÜ</span>
+            <h3 style="color:#ffffff; margin:4px 0 0 0; font-size:1.05rem;">📖 Gayrimenkul, Tapu, Kentsel Dönüşüm ve İnşaat Hukuku Terimler Sözlüğü (${KD_GLOSSARY_DB.length} Terim)</h3>
+          </div>
+          <div style="display:flex; gap:8px; align-items:center;">
+            <button type="button" id="kdInlineGlossaryToggleBtn" onclick="toggleInlineGlossaryUnderlines()" style="background:${isInlineOff?'#475569':'#059669'}; color:#fff; border:1px solid #94a3b8; padding:6px 11px; border-radius:6px; font-size:0.76rem; font-weight:800; cursor:pointer;">
+              💬 Satır İçi Çizgiler: ${isInlineOff ? 'KAPALI' : 'AÇIK'}
+            </button>
+            <button type="button" onclick="closeGlossaryModal()" style="background:#dc2626; color:#fff; border:none; padding:6px 14px; border-radius:6px; font-weight:800; cursor:pointer; font-size:0.82rem;">✕ Kapat</button>
+          </div>
+        </div>
+
+        <div style="background:#ffffff; padding:12px 18px; border-bottom:1px solid #e2e8f0;">
+          <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom:10px;">
+            <input type="text" id="kdGlossarySearchInput" placeholder="🔍 Terim veya açıklama içinde ara (Örn: kat irtifakı, kat mülkiyeti, iskân, ferağ, muhdesat, cezai şart, nama ifa, ecrimisil)..." oninput="renderGlossaryList()" style="flex:1; min-width:260px; padding:9px 13px; border:2px solid #93c5fd; border-radius:8px; font-size:0.88rem; outline:none; font-weight:600; color:#0f172a;">
+            <button type="button" onclick="document.getElementById('kdGlossarySearchInput').value=''; renderGlossaryList();" style="background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; padding:8px 12px; border-radius:8px; font-size:0.78rem; font-weight:700; cursor:pointer;">Temizle</button>
+            <span id="kdGlossaryCountBadge" style="background:#0f172a; color:#38bdf8; padding:6px 12px; border-radius:99px; font-size:0.78rem; font-weight:800;">${KD_GLOSSARY_DB.length} Terim</span>
+          </div>
+          <div id="kdGlossaryCatBar" style="display:flex; gap:6px; flex-wrap:wrap;">
+            ${categories.map(c => `<button type="button" class="kd-gl-cat-btn ${c==='Tümü'?'active':''}" data-cat="${c}" onclick="setGlossaryCategory('${c}')">${c}</button>`).join('')}
+          </div>
+        </div>
+
+        <div id="kdGlossaryListBody" style="padding:14px 18px; overflow-y:auto; flex:1;"></div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+    return modal;
+  }
+
+  window.setGlossaryCategory = function(cat) {
+    currentGlossaryCat = cat;
+    document.querySelectorAll('#kdGlossaryCatBar .kd-gl-cat-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-cat') === cat);
+    });
+    renderGlossaryList();
+  };
+
+  window.renderGlossaryList = function(highlightId) {
+    const listEl = document.getElementById('kdGlossaryListBody');
+    const searchEl = document.getElementById('kdGlossarySearchInput');
+    const countEl = document.getElementById('kdGlossaryCountBadge');
+    if (!listEl) return;
+
+    const q = (searchEl ? searchEl.value : '').trim().toLocaleLowerCase('tr-TR');
+    const filtered = KD_GLOSSARY_DB.filter(item => {
+      const catMatch = (currentGlossaryCat === 'Tümü' || item.cat === currentGlossaryCat);
+      if (!catMatch) return false;
+      if (!q) return true;
+      return item.term.toLocaleLowerCase('tr-TR').includes(q) ||
+             item.def.toLocaleLowerCase('tr-TR').includes(q) ||
+             item.cat.toLocaleLowerCase('tr-TR').includes(q);
+    });
+
+    if (countEl) countEl.textContent = `${filtered.length} Terim`;
+
+    if (filtered.length === 0) {
+      listEl.innerHTML = `<div style="text-align:center; padding:30px; color:#64748b; font-size:0.9rem;">Aradığınız ifadeye uygun terim bulunamadı.</div>`;
+      return;
+    }
+
+    listEl.innerHTML = filtered.map(item => {
+      const isExpanded = (highlightId && item.id === highlightId) || q.length > 0 || filtered.length <= 15;
+      return `
+        <div class="kd-gl-item-card ${isExpanded ? 'expanded' : ''}" id="gl-card-${item.id}" onclick="this.classList.toggle('expanded'); const d=this.querySelector('.gl-card-detail'); if(d) d.style.display=this.classList.contains('expanded')?'block':'none';">
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap;">
+            <strong style="font-size:0.94rem; color:#0f172a;">📘 ${item.term}</strong>
+            <div style="display:flex; gap:6px; align-items:center;">
+              <span style="font-size:0.71rem; font-weight:800; background:#e0f2fe; color:#0369a1; padding:2px 8px; border-radius:99px;">${item.cat}</span>
+              <span style="font-size:0.72rem; color:#64748b; font-weight:700;">▾ Açıklamayı Gör</span>
+            </div>
+          </div>
+          <div class="gl-card-detail" style="display:${isExpanded ? 'block' : 'none'}; margin-top:8px; padding-top:8px; border-top:1px dashed #cbd5e1; font-size:0.86rem; color:#1e293b; line-height:1.58;">
+            ${item.def}
+            <div style="margin-top:8px; display:flex; gap:8px; justify-content:flex-end;" onclick="event.stopPropagation();">
+              <button type="button" class="ek-link" onclick="closeGlossaryModal(); openSplitLaw('sozluk-${item.id}');">◫ Sağ İkiz Ekranda Sabitle</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    if (highlightId) {
+      const targetCard = document.getElementById('gl-card-' + highlightId);
+      if (targetCard) {
+        setTimeout(() => targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' }), 80);
+      }
+    }
+  };
+
+  window.openGlossaryModal = function(termId) {
+    const modal = buildGlossaryModalIfNeeded();
+    currentGlossaryCat = 'Tümü';
+    document.querySelectorAll('#kdGlossaryCatBar .kd-gl-cat-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-cat') === 'Tümü');
+    });
+    const searchEl = document.getElementById('kdGlossarySearchInput');
+    if (searchEl) searchEl.value = '';
+    renderGlossaryList(termId);
+    modal.style.display = 'flex';
+    if (searchEl && !termId) setTimeout(() => searchEl.focus(), 100);
+  };
+
+  window.closeGlossaryModal = function() {
+    const modal = document.getElementById('kdGlossaryModal');
+    if (modal) modal.style.display = 'none';
+  };
+
+  window.toggleInlineGlossaryUnderlines = function() {
+    const isNowOff = document.body.classList.toggle('kd-inline-glossary-off');
+    localStorage.setItem('kd_inline_glossary_off', isNowOff ? '1' : '0');
+    const btn = document.getElementById('kdInlineGlossaryToggleBtn');
+    if (btn) {
+      btn.style.background = isNowOff ? '#475569' : '#059669';
+      btn.innerHTML = `💬 Satır İçi Çizgiler: ${isNowOff ? 'KAPALI' : 'AÇIK'}`;
+    }
+  };
+
+  // 5. HOVER AÇIKLAMA BALONCUĞU (TOOLTIP) VE SAYFA İÇİ OTOMATİK ALTI ÇİZGİLİ TERİM İŞARETLEYİCİ
+  let tooltipEl = null;
+
+  function ensureHoverTooltipElement() {
+    if (tooltipEl) return tooltipEl;
+    tooltipEl = document.createElement('div');
+    tooltipEl.id = 'kdGlossaryHoverTooltip';
+    document.body.appendChild(tooltipEl);
+    return tooltipEl;
+  }
+
+  function showGlossaryTooltip(targetSpan) {
+    if (document.body.classList.contains('kd-inline-glossary-off')) return;
+    const termId = targetSpan.getAttribute('data-gl-id');
+    const item = KD_GLOSSARY_DB.find(x => x.id === termId);
+    if (!item) return;
+
+    const tt = ensureHoverTooltipElement();
+    tt.innerHTML = `
+      <span class="tt-cat">${item.cat}</span>
+      <strong class="tt-title">📖 ${item.term}</strong>
+      <div class="tt-def">${item.def}</div>
+      <span class="tt-hint">💡 Sağ ikiz ekranda sabitlemek için kelimeye tıklayın</span>
+    `;
+    tt.style.display = 'block';
+    positionGlossaryTooltip(targetSpan);
+  }
+
+  function positionGlossaryTooltip(targetSpan) {
+    if (!tooltipEl || tooltipEl.style.display === 'none') return;
+    const rect = targetSpan.getBoundingClientRect();
+    const ttRect = tooltipEl.getBoundingClientRect();
+    const pad = 10;
+
+    let top = rect.top - ttRect.height - 8;
+    if (top < pad) {
+      top = rect.bottom + 8;
+    }
+    let left = rect.left + (rect.width / 2) - (ttRect.width / 2);
+    if (left < pad) left = pad;
+    if (left + ttRect.width > window.innerWidth - pad) {
+      left = window.innerWidth - ttRect.width - pad;
+    }
+
+    tooltipEl.style.top = `${Math.round(top)}px`;
+    tooltipEl.style.left = `${Math.round(left)}px`;
+  }
+
+  function hideGlossaryTooltip() {
+    if (tooltipEl) tooltipEl.style.display = 'none';
+  }
+
+  function underlineGlossaryTermsInDocument() {
+    if (localStorage.getItem('kd_inline_glossary_off') === '1') {
+      document.body.classList.add('kd-inline-glossary-off');
+    }
+
+    const patternMap = new Map();
+    const allPatterns = [];
+    KD_GLOSSARY_DB.forEach(item => {
+      (item.patterns || []).forEach(p => {
+        const key = p.toLocaleLowerCase('tr-TR');
+        if (!patternMap.has(key)) {
+          patternMap.set(key, item.id);
+          allPatterns.push(p);
+        }
+      });
+    });
+    allPatterns.sort((a, b) => b.length - a.length);
+
+    const escaped = allPatterns.map(p => p.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+    const masterRegex = new RegExp(`(?<![a-zA-Z0-9çğıöşüÇĞİÖŞÜ])(${escaped.join('|')})(?![a-zA-Z0-9çğıöşüÇĞİÖŞÜ])`, 'gi');
+
+    const skipTags = new Set(['A', 'BUTTON', 'H1', 'H2', 'H3', 'H4', 'SCRIPT', 'STYLE', 'SVG', 'CODE', 'INPUT', 'TEXTAREA', 'SELECT', 'OPTION', 'SUMMARY']);
+
+    document.querySelectorAll('.section-card').forEach(section => {
+      if (section.dataset.glProcessed === '1') return;
+      section.dataset.glProcessed = '1';
+
+      const seenInSection = new Set();
+
+      const walker = document.createTreeWalker(section, NodeFilter.SHOW_TEXT, {
+        acceptNode(node) {
+          if (!node.nodeValue || node.nodeValue.trim().length < 3) return NodeFilter.FILTER_REJECT;
+          let p = node.parentElement;
+          while (p && p !== section) {
+            if (skipTags.has(p.tagName) ||
+                p.classList.contains('kd-glossary-term') ||
+                p.classList.contains('yon-ek-chip') ||
+                p.classList.contains('ek-link') ||
+                p.classList.contains('law-link') ||
+                p.classList.contains('template-box') ||
+                p.classList.contains('ppt-module-banner')) {
+              return NodeFilter.FILTER_REJECT;
+            }
+            p = p.parentElement;
+          }
+          return NodeFilter.FILTER_ACCEPT;
+        }
+      });
+
+      const textNodes = [];
+      let current;
+      while ((current = walker.nextNode())) textNodes.push(current);
+
+      textNodes.forEach(textNode => {
+        const text = textNode.nodeValue;
+        masterRegex.lastIndex = 0;
+        if (!masterRegex.test(text)) return;
+
+        masterRegex.lastIndex = 0;
+        let lastIdx = 0;
+        let match;
+        let changed = false;
+        const frag = document.createDocumentFragment();
+
+        while ((match = masterRegex.exec(text)) !== null) {
+          const matchedWord = match[0];
+          const normKey = matchedWord.toLocaleLowerCase('tr-TR');
+          const termId = patternMap.get(normKey);
+
+          if (termId && !seenInSection.has(termId)) {
+            seenInSection.add(termId);
+            changed = true;
+            if (match.index > lastIdx) {
+              frag.appendChild(document.createTextNode(text.slice(lastIdx, match.index)));
+            }
+            const span = document.createElement('span');
+            span.className = 'kd-glossary-term';
+            span.setAttribute('data-gl-id', termId);
+            span.textContent = matchedWord;
+            frag.appendChild(span);
+            lastIdx = masterRegex.lastIndex;
+          }
+        }
+
+        if (changed) {
+          if (lastIdx < text.length) {
+            frag.appendChild(document.createTextNode(text.slice(lastIdx)));
+          }
+          textNode.parentNode.replaceChild(frag, textNode);
+        }
+      });
+    });
+
+    if (!document.body.dataset.glHoverBound) {
+      document.body.dataset.glHoverBound = '1';
+      document.addEventListener('mouseover', (e) => {
+        const span = e.target.closest('.kd-glossary-term');
+        if (span) showGlossaryTooltip(span);
+      });
+      document.addEventListener('mouseout', (e) => {
+        const span = e.target.closest('.kd-glossary-term');
+        if (span) hideGlossaryTooltip();
+      });
+      document.addEventListener('click', (e) => {
+        const span = e.target.closest('.kd-glossary-term');
+        if (span && !document.body.classList.contains('kd-inline-glossary-off')) {
+          const termId = span.getAttribute('data-gl-id');
+          if (termId && typeof openSplitLaw === 'function') {
+            hideGlossaryTooltip();
+            openSplitLaw('sozluk-' + termId);
+          }
+        }
+      });
+      window.addEventListener('scroll', hideGlossaryTooltip, { passive: true });
+    }
+  }
+
+  // 6. ÜST KOMUTA BARINA VE SAĞ İKİZ EKRANA "📖 SÖZLÜK" BUTONUNU EKLE
+  function injectGlossaryButtonsIntoTopBarAndSplitPanel() {
+    const actionsRow = document.querySelector('.kd-exec-actions-row, .top-actions');
+    if (actionsRow && !document.getElementById('kdTopGlossaryBtn')) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.id = 'kdTopGlossaryBtn';
+      btn.className = 'kd-exec-pill p-sozluk';
+      btn.onclick = () => openGlossaryModal();
+      btn.innerHTML = `📖 Sözlük (${KD_GLOSSARY_DB.length})`;
+
+      const semaBtn = actionsRow.querySelector('.p-sema');
+      if (semaBtn && semaBtn.nextSibling) {
+        actionsRow.insertBefore(btn, semaBtn.nextSibling);
+      } else {
+        actionsRow.appendChild(btn);
+      }
+
+      const st = document.createElement('style');
+      st.textContent = `
+        .kd-exec-actions-row { grid-template-columns: repeat(10, minmax(0, 1fr)) !important; }
+        body.split-open .kd-exec-actions-row { grid-template-columns: repeat(5, minmax(0, 1fr)) !important; }
+        body.split-open .kd-exec-pill.p-video { display: none !important; }
+        body.split-open.kd-split-drawer-open .kd-exec-pill.p-video { display: inline-flex !important; }
+      `;
+      document.head.appendChild(st);
+
+      const moreBtn = document.getElementById('kdSplitMoreBtn');
+      if (moreBtn) moreBtn.innerHTML = '🔽 +6 Araç Aç';
+    }
+
+    const splitTabs = document.querySelector('.split-panel .split-tabs');
+    if (splitTabs && !document.getElementById('splitTabGlossaryBtn')) {
+      splitTabs.style.gridTemplateColumns = 'repeat(4, minmax(0, 1fr))';
+      const sBtn = document.createElement('button');
+      sBtn.type = 'button';
+      sBtn.id = 'splitTabGlossaryBtn';
+      sBtn.className = 'split-tab-btn';
+      sBtn.onclick = () => openGlossaryModal();
+      sBtn.innerHTML = `📖 Sözlük (${KD_GLOSSARY_DB.length})`;
+      splitTabs.appendChild(sBtn);
+    }
+
+    const heroKBtn = document.getElementById('heroTopKilavuzBtn');
+    if (heroKBtn && !document.getElementById('heroTopGlossaryBtn')) {
+      const gBtn = document.createElement('button');
+      gBtn.id = 'heroTopGlossaryBtn';
+      gBtn.type = 'button';
+      gBtn.onclick = () => openGlossaryModal();
+      gBtn.style.cssText = 'background:linear-gradient(135deg,#f59e0b 0%,#b45309 100%); color:#ffffff; border:1.5px solid #fde68a; padding:5px 14px; border-radius:99px; font-size:0.75rem; font-weight:800; cursor:pointer; box-shadow:0 3px 10px rgba(245,158,11,0.35); margin-right:6px;';
+      gBtn.innerHTML = `📖 Hukuk & İmar Terimler Sözlüğü (${KD_GLOSSARY_DB.length} Terim)`;
+      heroKBtn.parentNode.insertBefore(gBtn, heroKBtn);
+    }
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    injectGlossaryStyles();
+    registerGlossaryInGlobalSearchAndLawDB();
+    setTimeout(() => {
+      injectGlossaryButtonsIntoTopBarAndSplitPanel();
+      underlineGlossaryTermsInDocument();
+    }, 520);
+  });
+})();
+// 27. AKILLI TÜRKÇE ARAMA MOTORU: ŞAPKALI HARF (Â/Î/Û), TÜRKÇE KARAKTER VE YANLIŞ YAZIM (FUZZY / FONETİK) ALGILAYICI
+(function initSmartTurkishFuzzySearchEngine() {
+
+  // 1. ŞAPKALI HARF VE NOKTALAMA TEMİZLEYİCİ (iskân -> iskan, re'sen -> resen)
+  function normalizeCircumflexTR(str) {
+    if (!str) return '';
+    return String(str)
+      .toLocaleLowerCase('tr-TR')
+      .replace(/[âáàäã]/g, 'a')
+      .replace(/[îíìï]/g, 'i')
+      .replace(/[ûúùü]/g, (m) => (m === 'ü' ? 'ü' : 'u'))
+      .replace(/[êéèë]/g, 'e')
+      .replace(/[ôóòõ]/g, 'o')
+      .replace(/['’´`\-_/.,;:()[\]{}]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  // 2. TAM ASCII / TÜRKÇE KARAKTER EŞİTLEYİCİ (şufa -> sufa, ferağ -> ferag, ı -> i)
+  function normalizeAsciiTR(str) {
+    return normalizeCircumflexTR(str)
+      .replace(/ç/g, 'c')
+      .replace(/ğ/g, 'g')
+      .replace(/ı/g, 'i')
+      .replace(/ö/g, 'o')
+      .replace(/ş/g, 's')
+      .replace(/ü/g, 'u');
+  }
+
+  // 3. FONETİK VE SIK YAPILAN HUKUKİ/İMAR YAZIM HATASI DÜZELTİCİ (muhtesat -> muhdesat, tevhid -> tevhit vb.)
+  function normalizePhoneticTR(str) {
+    let s = normalizeAsciiTR(str);
+    const commonTypos = [
+      [/muhtesat/g, 'muhdesat'],
+      [/takyitat/g, 'takyidat'],
+      [/tevhid/g, 'tevhit'],
+      [/tesbit/g, 'tespit'],
+      [/roleve/g, 'rolove'],
+      [/subazman/g, 'subasman'],
+      [/mutahit|muteahit/g, 'muteahhit'],
+      [/ecrimisal|ecrimisli/g, 'ecrimisil'],
+      [/izalei\s*suyu|izale\s*suyu/g, 'izale i suyu'],
+      [/katirtifak/g, 'kat irtifak'],
+      [/katmulkiyet/g, 'kat mulkiyet'],
+      [/ferag\s*icbar/g, 'feraga icbar'],
+      [/ipotege|ipotegin/g, 'ipotek'],
+      [/serefyie|serefye/g, 'serefiye'],
+      [/müspet|musbet/g, 'muspet'],
+      [/menfii/g, 'menfi']
+    ];
+    commonTypos.forEach(([rgx, rep]) => { s = s.replace(rgx, rep); });
+    // Çift harfleri tekilleştir ve kelime sonu d/t, b/p, g/k yumuşamalarını eşitle
+    return s
+      .replace(/([a-z])\1+/g, '$1')
+      .replace(/d\b/g, 't')
+      .replace(/b\b/g, 'p')
+      .replace(/g\b/g, 'k');
+  }
+
+  // 4. LEVENSHTEIN HARF MESAFESİ HESABI (KLAVYEDE YANLIŞ / EKSİK / YER DEĞİŞTİRMİŞ HARF ALGILAMA)
+  function levenshteinDistance(a, b) {
+    if (a === b) return 0;
+    if (!a.length) return b.length;
+    if (!b.length) return a.length;
+    const matrix = [];
+    for (let i = 0; i <= b.length; i++) matrix[i] = [i];
+    for (let j = 0; j <= a.length; j++) matrix[0][j] = j;
+    for (let i = 1; i <= b.length; i++) {
+      for (let j = 1; j <= a.length; j++) {
+        const cost = b.charAt(i - 1) === a.charAt(j - 1) ? 0 : 1;
+        matrix[i][j] = Math.min(
+          matrix[i - 1][j] + 1,      // silme
+          matrix[i][j - 1] + 1,      // ekleme
+          matrix[i - 1][j - 1] + cost // değiştirme
+        );
+        // Yan yana iki harfin yer değiştirmesi (transposition: örn. isakn -> iskan)
+        if (i > 1 && j > 1 && b.charAt(i - 1) === a.charAt(j - 2) && b.charAt(i - 2) === a.charAt(j - 1)) {
+          matrix[i][j] = Math.min(matrix[i][j], matrix[i - 2][j - 2] + cost);
+        }
+      }
+    }
+    return matrix[b.length][a.length];
+  }
+
+  // Bir arama sorgusunun hedef metinle eşleşme puanını hesaplar (0 = eşleşmedi, 100 = tam eşleşme, 40 = yazım hatası toleranslı eşleşme)
+  function computeSmartMatchScore(queryRaw, targetTitle, targetFullText) {
+    const qNorm = normalizeCircumflexTR(queryRaw);
+    if (!qNorm) return 100;
+
+    const qAscii = normalizeAsciiTR(queryRaw);
+    const qPhon = normalizePhoneticTR(queryRaw);
+
+    const tNorm = normalizeCircumflexTR(targetTitle);
+    const tAscii = normalizeAsciiTR(targetTitle);
+    const tPhon = normalizePhoneticTR(targetTitle);
+
+    const fNorm = normalizeCircumflexTR(targetFullText);
+    const fAscii = normalizeAsciiTR(targetFullText);
+    const fPhon = normalizePhoneticTR(targetFullText);
+
+    // 1. Kademe: Şapkasız / Türkçe karaktersiz / Fonetik doğrudan içerme
+    if (tNorm.includes(qNorm) || tAscii.includes(qAscii)) return 100;
+    if (tPhon.includes(qPhon)) return 90;
+    if (fNorm.includes(qNorm) || fAscii.includes(qAscii)) return 80;
+    if (fPhon.includes(qPhon)) return 70;
+
+    // 2. Kademe: Kelime kelime bulanık (Fuzzy / Levenshtein) kontrol
+    const qWords = qAscii.split(' ').filter(w => w.length >= 2);
+    if (qWords.length === 0) return 0;
+
+    const targetTokens = (tAscii + ' ' + fAscii).split(' ').filter(w => w.length >= 3);
+    let matchedWords = 0;
+
+    for (const qw of qWords) {
+      if (fAscii.includes(qw) || fPhon.includes(normalizePhoneticTR(qw))) {
+        matchedWords++;
+        continue;
+      }
+      if (qw.length < 3) continue;
+
+      const maxAllowedDist = qw.length <= 5 ? 1 : 2;
+      let wordFuzzyMatched = false;
+
+      for (const tok of targetTokens) {
+        // Kelime başı karşılaştırması veya tam kelime mesafesi
+        const subTok = tok.length > qw.length + 1 ? tok.slice(0, qw.length + 1) : tok;
+        if (Math.abs(subTok.length - qw.length) <= maxAllowedDist) {
+          const dist = levenshteinDistance(qw, subTok);
+          if (dist <= maxAllowedDist) {
+            wordFuzzyMatched = true;
+            break;
+          }
+        }
+      }
+      if (wordFuzzyMatched) matchedWords++;
+    }
+
+    if (matchedWords === qWords.length) return 45; // Yazım hatası toleransıyla eşleşti
+    return 0;
+  }
+
+  // 5. SÖZLÜK ARAMA MOTORUNU (renderGlossaryList) AKILLI ARAMA İLE DEĞİŞTİR
+  const _origRenderGlossary = window.renderGlossaryList;
+  window.renderGlossaryList = function(highlightId) {
+    const listEl = document.getElementById('kdGlossaryListBody');
+    const searchEl = document.getElementById('kdGlossarySearchInput');
+    const countEl = document.getElementById('kdGlossaryCountBadge');
+    if (!listEl) return;
+
+    // Mevcut aktif kategoriyi bul
+    const activeCatBtn = document.querySelector('#kdGlossaryCatBar .kd-gl-cat-btn.active');
+    const activeCat = activeCatBtn ? activeCatBtn.getAttribute('data-cat') : 'Tümü';
+    const qRaw = (searchEl ? searchEl.value : '').trim();
+
+    // Sözlük kartlarını DOM üzerinden veya KD_GLOSSARY_DB üzerinden filtrele
+    // İlk kez oluşturulması için boş sorguyla orijinal fonksiyonu 1 kez çalıştırıp kartları alabiliriz
+    if (!window._kdCachedGlossaryItems && typeof _origRenderGlossary === 'function') {
+      const prevVal = searchEl ? searchEl.value : '';
+      if (searchEl) searchEl.value = '';
+      _origRenderGlossary();
+      if (searchEl) searchEl.value = prevVal;
+
+      window._kdCachedGlossaryItems = [];
+      if (typeof LAW_DB !== 'undefined') {
+        Object.keys(LAW_DB).forEach(k => {
+          if (k.startsWith('sozluk-')) {
+            const id = k.replace('sozluk-', '');
+            const entry = LAW_DB[k];
+            const catMatch = (entry.ref || '').match(/Kategori:\s*(.+)$/);
+            const cleanDef = (entry.body || '')
+              .replace(/<div[\s\S]*?<\/div>/gi, '')
+              .replace(/<[^>]+>/g, '')
+              .replace('Tanımı ve Uygulamadaki Hukuki/Teknik Karşılığı:', '')
+              .trim();
+            window._kdCachedGlossaryItems.push({
+              id: id,
+              term: (entry.title || '').replace('📖 Sözlük Terimi: ', '').trim(),
+              cat: catMatch ? catMatch[1].trim() : 'İmar & 6306',
+              def: cleanDef
+            });
+          }
+        });
+      }
+    }
+
+    const db = window._kdCachedGlossaryItems || [];
+    const scored = [];
+    let hasFuzzyMatch = false;
+
+    db.forEach(item => {
+      if (activeCat !== 'Tümü' && item.cat !== activeCat) return;
+      if (!qRaw) {
+        scored.push({ item, score: 100 });
+        return;
+      }
+      const score = computeSmartMatchScore(qRaw, item.term, `${item.term} ${item.cat} ${item.def}`);
+      if (score > 0) {
+        if (score < 60) hasFuzzyMatch = true;
+        scored.push({ item, score });
+      }
+    });
+
+    scored.sort((a, b) => b.score - a.score);
+
+    if (countEl) countEl.textContent = `${scored.length} Terim`;
+
+    if (scored.length === 0) {
+      listEl.innerHTML = `<div style="text-align:center; padding:30px; color:#64748b; font-size:0.9rem;">Aradığınız ifadeye uygun terim bulunamadı.</div>`;
+      return;
+    }
+
+    const fuzzyBanner = (qRaw && hasFuzzyMatch && scored[0].score < 65)
+      ? `<div style="background:#fef3c7; border:1px solid #f59e0b; color:#92400e; padding:7px 12px; border-radius:7px; font-size:0.8rem; font-weight:700; margin-bottom:10px;">💡 Yazım farkı / şapkalı harf toleransıyla en yakın eşleşmeler gösteriliyor:</div>`
+      : '';
+
+    listEl.innerHTML = fuzzyBanner + scored.map(({ item }) => {
+      const isExpanded = (highlightId && item.id === highlightId) || qRaw.length > 0 || scored.length <= 15;
+      return `
+        <div class="kd-gl-item-card ${isExpanded ? 'expanded' : ''}" id="gl-card-${item.id}" onclick="this.classList.toggle('expanded'); const d=this.querySelector('.gl-card-detail'); if(d) d.style.display=this.classList.contains('expanded')?'block':'none';">
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap;">
+            <strong style="font-size:0.94rem; color:#0f172a;">📘 ${item.term}</strong>
+            <div style="display:flex; gap:6px; align-items:center;">
+              <span style="font-size:0.71rem; font-weight:800; background:#e0f2fe; color:#0369a1; padding:2px 8px; border-radius:99px;">${item.cat}</span>
+              <span style="font-size:0.72rem; color:#64748b; font-weight:700;">▾ Açıklamayı Gör</span>
+            </div>
+          </div>
+          <div class="gl-card-detail" style="display:${isExpanded ? 'block' : 'none'}; margin-top:8px; padding-top:8px; border-top:1px dashed #cbd5e1; font-size:0.86rem; color:#1e293b; line-height:1.58;">
+            ${item.def}
+            <div style="margin-top:8px; display:flex; gap:8px; justify-content:flex-end;" onclick="event.stopPropagation();">
+              <button type="button" class="ek-link" onclick="closeGlossaryModal(); openSplitLaw('sozluk-${item.id}');">◫ Sağ İkiz Ekranda Sabitle</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    if (highlightId) {
+      const targetCard = document.getElementById('gl-card-' + highlightId);
+      if (targetCard) {
+        setTimeout(() => targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' }), 80);
+      }
+    }
+  };
+
+  // 6. SOL FİHRİSTTEKİ GENEL ARAMA KUTUSUNU DA (.search-box) ŞAPKASIZ VE YANLIŞ YAZIM DUYARLI YAP
+  function upgradeSidebarGlobalSearchBox() {
+    const searchInput = document.getElementById('fihristSearch');
+    if (!searchInput || searchInput.dataset.fuzzyUpgraded === '1') return;
+    searchInput.dataset.fuzzyUpgraded = '1';
+
+    searchInput.addEventListener('input', function() {
+      const qRaw = this.value.trim();
+      let globalResBox = document.getElementById('globalSearchResults');
+      if (!globalResBox) return;
+
+      if (qRaw.length < 2) {
+        globalResBox.style.display = 'none';
+        return;
+      }
+
+      // Sol fihrist linklerini şapkasız/Türkçe karaktersiz filtrele
+      document.querySelectorAll('.cilt-group').forEach(group => {
+        const items = group.querySelectorAll('.cilt-links li');
+        items.forEach(li => {
+          const score = computeSmartMatchScore(qRaw, li.textContent, li.textContent);
+          if (score > 0) li.style.display = 'block';
+        });
+      });
+
+      // GLOBAL_INDEX içinde şapkasız ve yazım hatası toleranslı arama yap
+      if (typeof GLOBAL_INDEX !== 'undefined' && Array.isArray(GLOBAL_INDEX)) {
+        const matches = [];
+        GLOBAL_INDEX.forEach(item => {
+          const score = computeSmartMatchScore(qRaw, item.title, `${item.title} ${item.keys || ''}`);
+          if (score > 0) matches.push({ item, score });
+        });
+        matches.sort((a, b) => b.score - a.score);
+
+        if (matches.length > 0) {
+          globalResBox.style.display = 'block';
+          globalResBox.innerHTML = `<div style="font-size:0.71rem; color:#fbbf24; font-weight:700; padding:4px 6px; border-bottom:1px solid #334155; margin-bottom:4px;">🌐 Akıllı Arama Sonuçları (${matches.length})</div>` +
+            matches.slice(0, 18).map(({ item }) => `
+              <a href="${item.url}" style="display:block; padding:6px 8px; color:#f1f5f9; text-decoration:none; font-size:0.76rem; border-radius:5px; margin-bottom:3px; background:#0f172a; border-left:3px solid #fbbf24;">
+                <strong style="color:#38bdf8;">[${item.cilt}]</strong> ${item.title}
+              </a>
+            `).join('');
+        }
+      }
+    });
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    setTimeout(upgradeSidebarGlobalSearchBox, 560);
+  });
+})();
