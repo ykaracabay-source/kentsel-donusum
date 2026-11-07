@@ -7784,10 +7784,10 @@ B) KİRACI / SINIRLI AYNİ HAK SAHİBİ / KAPICI BAŞVURUSU İÇİN:
     setTimeout(rebuildTopCommandBarAndHeroGrid, 420);
   });
 })();
-// 26. GAYRİMENKUL, TAPU, KENTSEL DÖNÜŞÜM VE İNŞAAT HUKUKU TERİMLER SÖZLÜĞÜ + SATIR İÇİ ALTI ÇİZGİLİ HOVER BALONCUK MOTORU
-(function initGlossaryAndInlineTooltipEngine() {
+// 26. BİRLEŞİK SÖZLÜK (100 TERİM), AKILLI TÜRKÇE/FUZZY ARAMA VE TÜM EKRANLARDA (HIZLI MADDE SEÇ / İKİZ EKRAN DAHİL) ALTI ÇİZGİLİ BALONCUK MOTORU
+(function initUnifiedGlossaryAndSplitScreenUnderlineEngine() {
 
-  // 1. TAM SÖZLÜK VERİTABANI (HER TERİM MÜSTAKİL MADDE + TÜM TÜRKÇE EK KALIPLARIYLA)
+  // 1. TAM SÖZLÜK VERİTABANI (PDF'TEKİ TÜM TERİMLER + CİLT 1-4 VE MADDE METİNLERİNDEKİ TÜM ÇEKİMLİ KALIPLAR)
   const KD_GLOSSARY_DB = [
     // --- BÖLÜM 1: TAPU SİCİL İŞLEMLERİ VE MÜLKİYET KAVRAMLARI ---
     {
@@ -7815,7 +7815,7 @@ B) KİRACI / SINIRLI AYNİ HAK SAHİBİ / KAPICI BAŞVURUSU İÇİN:
       id: 'resen-tescil',
       term: "Re'sen Tescil / Terkin",
       cat: 'Tapu & Mülkiyet',
-      patterns: ['resen tescil', "re'sen tescil", 'resen terkin', 'resen ifraz'],
+      patterns: ['resen tescil', "re'sen tescil", 'resen terkin', 'resen ifraz', 'resen'],
       def: 'Maliklerin tapuya gidip talepte bulunmasına gerek kalmaksızın; doğrudan kanun hükmü, kesinleşmiş mahkeme kararı veya yetkili idarenin (Kentsel Dönüşüm Başkanlığı, Belediye, İcra Müdürlüğü) resmi yazısı üzerine Tapu Müdürlüğünce kendiliğinden yapılan kayıt veya silme işlemidir.'
     },
     {
@@ -7829,14 +7829,14 @@ B) KİRACI / SINIRLI AYNİ HAK SAHİBİ / KAPICI BAŞVURUSU İÇİN:
       id: 'ifraz',
       term: 'İfraz (Ayırma)',
       cat: 'Tapu & Mülkiyet',
-      patterns: ['ifraz', 'ifrazı', 'ifrazında', 'ifrazla', 'ifrazına'],
+      patterns: ['ifraz', 'ifrazı', 'ifrazında', 'ifrazla', 'ifrazına', 'ifraz포'],
       def: 'Tek bir parselin imar planına uygun olarak birden fazla parsele bölünmesidir. Bir parselde yalnız bazı yapılar riskli ise riskli yapıların bulunduğu alanın risksiz yapılardan ayrılması için resen ifraz yapılabilir (6306 Yön. m.15/7-ç).'
     },
     {
       id: 'tevhit',
       term: 'Tevhit (Birleştirme)',
       cat: 'Tapu & Mülkiyet',
-      patterns: ['tevhit', 'tevhidi', 'tevhidinde', 'tevhide', 'tevhitten'],
+      patterns: ['tevhit', 'tevhidi', 'tevhidinde', 'tevhide', 'tevhitten', 'birleştirilmesi'],
       def: 'Bitişik birden fazla parselin imar uygulaması veya maliklerin talebiyle tek bir parsel haline getirilmesidir. Üzerindeki yapıların tamamı riskli olan parsellerde her parselde ayrı ayrı >%50 salt çoğunlukla tevhit kararı alınabilir (6306 Yön. m.15/8).'
     },
     {
@@ -7862,10 +7862,10 @@ B) KİRACI / SINIRLI AYNİ HAK SAHİBİ / KAPICI BAŞVURUSU İÇİN:
     },
     {
       id: 'payli-mulkiyet',
-      term: 'Paylı (Müşterek) Mülkiyet',
+      term: 'Paylı (Müşterek) Mülkiyet ve Paydaş (Hissedar)',
       cat: 'Tapu & Mülkiyet',
-      patterns: ['paylı mülkiyet', 'paylı mülkiyette', 'müşterek mülkiyet'],
-      def: 'Birden fazla kişinin bir taşınmaza belirli matematiksel hisselerle (örneğin 1/4, 3/10) sahip olduğu ve her hissedarın kendi payını diğerlerinin iznine ihtiyaç duymadan satabildiği veya ipotek edebildiği mülkiyet türüdür (Diğer paydaşların TMK m.732 şufa/önalım hakkı saklıdır).'
+      patterns: ['paylı mülkiyet', 'paylı mülkiyette', 'müşterek mülkiyet', 'paydaşların', 'paydaşlara', 'paydaş', 'hissedarların', 'hissedar'],
+      def: 'Birden fazla kişinin (paydaşın/hissedarın) bir taşınmaza belirli matematiksel hisselerle (örneğin 1/4, 20/100) sahip olduğu mülkiyet türüdür. 6306 sayılı Kanun uygulamalarında kararlar kişi sayısına göre değil, paydaşların tapudaki hisse/arsa payı oranına göre (>%50 salt çoğunlukla) alınır.'
     },
     {
       id: 'ihdas',
@@ -7876,10 +7876,10 @@ B) KİRACI / SINIRLI AYNİ HAK SAHİBİ / KAPICI BAŞVURUSU İÇİN:
     },
     {
       id: 'yola-terk',
-      term: 'Yola / Yeşil Alana Terk',
+      term: 'Terk (Yola / Yeşil Alana Terk)',
       cat: 'Tapu & Mülkiyet',
-      patterns: ['yola terk', 'bedelsiz terk', 'terk işlemi'],
-      def: 'Kadastro parselinin uygulama imar planında yol, park veya yeşil alan gibi kamu hizmetlerine ayrılan kısımlarının tapu kütüğünden bedelsiz olarak düşülerek kamuya bırakılması işlemidir. TAKS ve KAKS her zaman terk sonrası kalan Net İmar Parseli üzerinden hesaplanır.'
+      patterns: ['yola terk', 'bedelsiz terk', 'terk işlemi', 'terk edilmesi', 'terke', 'terk'],
+      def: 'Kadastro parselinin uygulama imar planında yol, park veya yeşil alan gibi kamu hizmetlerine ayrılan kısımlarının tapu kütüğünden düşülerek kamuya bırakılması işlemidir. TAKS ve KAKS her zaman terk sonrası kalan Net İmar Parseli üzerinden hesaplanır.'
     },
     {
       id: 'suyulandirma',
@@ -7887,6 +7887,13 @@ B) KİRACI / SINIRLI AYNİ HAK SAHİBİ / KAPICI BAŞVURUSU İÇİN:
       cat: 'Tapu & Mülkiyet',
       patterns: ['şuyulandırma', 'şuyulandırılması', '18. madde uygulaması'],
       def: 'Belediye veya valiliklerce imar sınırları içindeki binalı veya binasız arsa ve arazilerin maliklerin rızası aranmaksızın birbirleriyle, yol fazlalarıyla veya kamu yerleriyle birleştirilip imar planına uygun yeni parsellere ayrılması ve DOP kesintisi sonrası hak sahiplerine dağıtılması işlemidir.'
+    },
+    {
+      id: 'oybirligi',
+      term: 'Oybirliği (%100 Tam Muvafakat)',
+      cat: 'Tapu & Mülkiyet',
+      patterns: ['oybirliği', 'oy birliği', 'tam muvafakat'],
+      def: 'Taşınmazdaki tüm maliklerin (%100 hissenin tamamının) aynı yönde karar almasıdır. 6306 Yön. m.15/8 uyarınca iki riskli yapı parselinin tevhidinde her parselde >%50 salt çoğunluk yeterli iken, aradaki veya bitişikteki yapılaşmamış BOŞ parselin tevhide dahil edilebilmesi için boş parseldeki bütün maliklerin oybirliği (%100) ile karar alması gerekir.'
     },
 
     // --- BÖLÜM 2: TAPUDAKİ KISITLAMALAR, ŞERHLER VE HAKLAR (TAKYİDATLAR) ---
@@ -7916,7 +7923,7 @@ B) KİRACI / SINIRLI AYNİ HAK SAHİBİ / KAPICI BAŞVURUSU İÇİN:
       term: 'Muhdesat Kaydı',
       cat: 'Takyidatlar & Haklar',
       patterns: ['muhdesat kaydı', 'muhdesat', 'muhdesatın', 'muhdesatları'],
-      def: 'Bir arsa veya arazi üzerinde bulunan kalıcı yapıların (bina, ev, depo) ya da dikili bitkilerin (meyve ağaçları, zeytinlik), arsa sahiplerinin tamamına değil; hissedarlardan sadece birine veya üçüncü bir kişiye ait olduğunu göstermek üzere tapunun beyanlar hanesine işlenen kayıttır. Kamulaştırma veya satışta bina bedelinin muhdesat sahibine ödenmesini sağlar.'
+      def: 'Bir arsa veya arazi üzerinde bulunan kalıcı yapıların (bina, ev, depo) ya da dikili bitkilerin (meyve ağaçları, zeytinlik), arsa sahiplerinin tamamına değil; hissedarlardan sadece birine veya üçüncü bir kişiye ait olduğunu göstermek üzere tapunun beyanlar hanesine işlenen kayıttır.'
     },
     {
       id: 'ipotek',
@@ -7943,7 +7950,7 @@ B) KİRACI / SINIRLI AYNİ HAK SAHİBİ / KAPICI BAŞVURUSU İÇİN:
       id: 'intifa-hakki',
       term: 'İntifa Hakkı (Kullanım ve Yararlanma Hakkı)',
       cat: 'Takyidatlar & Haklar',
-      patterns: ['intifa hakkı', 'intifa hakkının', 'intifa'],
+      patterns: ['intifa hakkı', 'intifa hakkının', 'intifa', 'sınırlı ayni hak'],
       def: 'Hak sahibine o taşınmazı ömür boyu veya belirli bir süre kullanma, kiraya verme ve semerelerinden yararlanma yetkisi veren sınırlı ayni haktır. 6306 kira yardımında sınırlı ayni hak sahibi olarak ikamet edenlere aylık kira bedelinin 5 katı kadar defaten yardım ödenir (Yön. m.16/3).'
     },
     {
@@ -7989,7 +7996,14 @@ B) KİRACI / SINIRLI AYNİ HAK SAHİBİ / KAPICI BAŞVURUSU İÇİN:
       def: 'Bir kişiye taşınmazı belirli bir süre içinde tek taraflı irade beyanıyla satın alma yetkisi tanıyan ve tapuya şerh edilebilen (şerh etkisi en fazla 10 yıl olan) kişisel haktır.'
     },
 
-    // --- BÖLÜM 3: İMAR, İNŞAAT VE KENTSEL DÖNÜŞÜM TERİMLERİ (KAT İRTİFAKI, KAT MÜLKİYETİ VE İSKÂN AYRI AYRI) ---
+    // --- BÖLÜM 3: İMAR, İNŞAAT VE KENTSEL DÖNÜŞÜM TERİMLERİ ---
+    {
+      id: 'riskli-yapi',
+      term: 'Riskli Yapı (6306 Sayılı Kanun)',
+      cat: 'İmar & 6306',
+      patterns: ['riskli yapı', 'riskli yapılar', 'riskli yapıların', 'riskli yapının', 'riskli yapılarda'],
+      def: 'Riskli alan içinde veya dışında olup ekonomik ömrünü tamamlamış olan ya da yıkılma veya ağır hasar görme riski taşıdığı ilmî ve teknik verilere (Ek-2 RYTEİE esaslarına) dayanılarak lisanslı kuruluşlarca tespit edilen yapıdır. Tespiti için tek bir malikin başvurusu yeterlidir; ruhsatsız binalar da riskli yapı tespitine konu olabilir (inşaat halindeki ikamet edilmeyen veya metruk yapılar hariç - Yön. m.7/1).'
+    },
     {
       id: 'kat-irtifaki',
       term: 'Kat İrtifakı',
@@ -8012,6 +8026,13 @@ B) KİRACI / SINIRLI AYNİ HAK SAHİBİ / KAPICI BAŞVURUSU İÇİN:
       def: 'İnşaatı tamamlanan binanın ruhsat ve onaylı projelerine uygun yapıldığını gösteren belediye onay belgesidir. Arsa Sahiplerinin 3 İskân Kalkanı: 1) 5 yıllık ruhsat süresi içinde uygun bitmiş yapıya yeniden ruhsat alınmadan iskân verilir (PAİY m.54/7), 2) Müteahhit haksız yere imzadan kaçınırsa imzası olmadan iskân verilir (PAİY m.64/12), 3) Müteahhidin SGK/vergi borcu varsa müteahhit daireleri hariç tutularak arsa sahiplerinin dairelerine kısmi iskân verilir (İmar K. m.28/10)!'
     },
     {
+      id: 'bagimsiz-bolum',
+      term: 'Bağımsız Bölüm',
+      cat: 'İmar & 6306',
+      patterns: ['bağımsız bölüm', 'bağımsız bölümler', 'bağımsız bölümlerin', 'bağımsız birimlerin'],
+      def: 'Ana gayrimenkulün ayrı ve başlı başına kullanılmaya elverişli olup, 634 sayılı Kat Mülkiyeti Kanunu hükümlerine göre bağımsız mülkiyete konu olan bölümleridir (konut, daire, büro, dükkân, mağaza, depo vb.).'
+    },
+    {
       id: 'arsa-payi',
       term: 'Arsa Payı',
       cat: 'İmar & 6306',
@@ -8024,6 +8045,13 @@ B) KİRACI / SINIRLI AYNİ HAK SAHİBİ / KAPICI BAŞVURUSU İÇİN:
       cat: 'İmar & 6306',
       patterns: ['salt çoğunluk', 'salt çoğunluğu', 'salt çoğunlukla', 'salt çoğunluğun'],
       def: '09.11.2023 tarihli (7471 sayılı) 6306 sayılı Kanun değişikliği uyarınca; riskli yapılarda binanın yıktırılarak yeniden yaptırılması, müteahhit seçimi, tevhit ve kat karşılığı inşaat sözleşmesi şartlarının belirlenmesi için gereken arsa payı çoğunluğudur. Toplam parsel payının (100/100) yarısından fazlasıdır (>%50); tam %50 yeterli değildir.'
+    },
+    {
+      id: 'acik-artirma-rayic',
+      term: 'Açık Artırma Usulü Pay Satışı (m.15/A) ve Rayiç Değer',
+      cat: 'İmar & 6306',
+      patterns: ['açık artırma', 'rayiç değer', 'rayiç değerden', 'rayiç bedel'],
+      def: '6306 kapsamında >%50 salt çoğunlukla alınan karara ve anlaşma teklifine 15 günlük sürede katılmayan maliklerin arsa paylarının, SPK lisanslı değerleme raporu da gözetilerek Bedel Tespiti Komisyonunca belirlenen rayiç değerden az olmamak üzere ilk satışta (Ek-9) anlaşan paydaşlara, alınmazsa sonraki satışlarda (Ek-13 ile %10 nakit teminat yatıran) 3. şahıslara ihale yoluyla satılmasıdır.'
     },
     {
       id: 'dbybhy',
@@ -8079,7 +8107,7 @@ B) KİRACI / SINIRLI AYNİ HAK SAHİBİ / KAPICI BAŞVURUSU İÇİN:
       term: 'EK-5 Satın Alma / Trampa Tutanağı',
       cat: 'İmar & 6306',
       patterns: ['ek-5 tutanağı', 'ek-5', 'satın alma tutanağı'],
-      def: '6306 sayılı Kanun (m.6/5-b) ve Uygulama Yönetmeliği (m.13/7) uyarınca; kentsel dönüşüm kapsamındaki taşınmazın Kentsel Dönüşüm Başkanlığınca anlaşma yoluyla satın alınması veya trampa edilmesi halinde imzalanan tutanaktır. Tapuda ferağ beyanı ve resen tescilin hukuki sebebi sayılır; mevcut haciz ve ipotekler satış bedeli üzerinde devam eder.'
+      def: '6306 sayılı Kanun (m.6/5-b) ve Uygulama Yönetmeliği (m.13/7) uyarınca; kentsel dönüşüm kapsamındaki taşınmazın Kentsel Dönüşüm Başkanlığınca anlaşma yoluyla satın alınması veya trampa edilmesi halinde imzalanan tutanaktır. Tapuda ferağ beyanı ve resen tescilin hukuki sebebi sayılır.'
     },
     {
       id: 'taks',
@@ -8092,7 +8120,7 @@ B) KİRACI / SINIRLI AYNİ HAK SAHİBİ / KAPICI BAŞVURUSU İÇİN:
       id: 'kaks-emsal',
       term: 'KAKS (Katlar Alanı Kat Sayısı) / Emsal',
       cat: 'İmar & 6306',
-      patterns: ['kaks', 'emsale esas alan', 'katlar alanı'],
+      patterns: ['kaks', 'emsale esas alan', 'katlar alanı', 'emsal'],
       def: 'Yapının bütün katlarındaki emsale dahil alanlar toplamının net imar parseli alanına oranıdır (Emsale Esas Alan = Net İmar Parseli × KAKS). Planlı Alanlar İmar Yönetmeliği m.22 kapsamındaki emsal harici alanlar toplamı emsalin %30\'unu aşamaz.'
     },
     {
@@ -8150,7 +8178,7 @@ B) KİRACI / SINIRLI AYNİ HAK SAHİBİ / KAPICI BAŞVURUSU İÇİN:
       id: 'apkis',
       term: 'Arsa Payı (Kat) Karşılığı İnşaat Sözleşmesi (APKİS)',
       cat: 'Kat Karşılığı Sözleşme',
-      patterns: ['arsa payı karşılığı inşaat sözleşmesi', 'kat karşılığı inşaat sözleşmesi'],
+      patterns: ['arsa payı karşılığı inşaat sözleşmesi', 'kat karşılığı inşaat sözleşmesi', 'kat karşılığı sözleşme', 'kat karşılığı'],
       def: 'Arsa sahibinin belirli arsa paylarını müteahhide devretmeyi, müteahhidin ise bunun karşılığında kendi finansmanıyla arsa üzerinde bina inşa ederek arsa sahibine düşen bağımsız bölümleri (anahtar teslim ve iskânlı olarak) teslim etmeyi üstlendiği çifte tipli karma sözleşmedir. Geçerliliği Noterde Düzenleme Şeklinde yapılmasına bağlıdır.'
     },
     {
@@ -8262,7 +8290,7 @@ B) KİRACI / SINIRLI AYNİ HAK SAHİBİ / KAPICI BAŞVURUSU İÇİN:
       id: 'idari-fesih-6306',
       term: '6306 S.K. Kapsamında İdari Fesih (Yön. m.13/11)',
       cat: 'Kat Karşılığı Sözleşme',
-      patterns: ['idari fesih', 'resen fesih', 'sözleşmenin feshi'],
+      patterns: ['idari fesih', 'resen fesih', 'sözleşmenin feshi', 'sözleşmelerin feshi'],
       def: 'Kentsel dönüşüm kapsamındaki yapılarda müteahhitten kaynaklanan sebeplerle 1 yıl içinde işe başlanmaması veya inşaatın en az 6 ay durdurulması halinde; maliklerin >%50 salt çoğunluk kararıyla Kentsel Dönüşüm Müdürlüğüne başvurması, müteahhide 15 gün savunma ve 30 gün işe başlama ihtarı çekilmesi ve işe başlanmazsa sözleşmelerin mahkemeye gitmeden resen feshedilmesi prosedürüdür (Feshe kadar ödenen kiralar geri istenemez).'
     },
     {
@@ -8276,7 +8304,7 @@ B) KİRACI / SINIRLI AYNİ HAK SAHİBİ / KAPICI BAŞVURUSU İÇİN:
       id: 'bina-tamamlama-teminat',
       term: 'Bina Tamamlama Sigortası ve %6 Müteahhit Teminatı (m.13/9)',
       cat: 'Kat Karşılığı Sözleşme',
-      patterns: ['bina tamamlama sigortası', '%6 teminat', 'kesin teminat'],
+      patterns: ['bina tamamlama sigortası', '%6 teminat', 'kesin teminat', 'teminat mektubu'],
       def: '6306 Yön. m.13/9-c ve Geçici Madde 5 uyarınca riskli yapı parsellerinde yapı ruhsatı alınmadan önce müteahhidin yapı yaklaşık maliyet bedelinin %6\'sı oranında İdareye vermesi zorunlu olan teminattır (1/1/2024 sonrası ruhsatlardaki eski %10 teminatlar da talep üzerine %6\'ya indirilir). Bina tamamlama sigortası yaptırılırsa ayrıca %6 teminat aranmaz.'
     },
     {
@@ -8297,10 +8325,10 @@ B) KİRACI / SINIRLI AYNİ HAK SAHİBİ / KAPICI BAŞVURUSU İÇİN:
     },
     {
       id: 'aynen-taksim',
-      term: 'Aynen Taksim',
+      term: 'Taksim ve Aynen Taksim',
       cat: 'Gayrimenkul Davaları',
-      patterns: ['aynen taksim'],
-      def: 'Ortaklığın giderilmesi davasında taşınmazın satış memurluğunca satılmadan; imar mevzuatı, yüzölçümü ve bağımsız bölüm sayısı elveriyorsa hissedarlar arasında fiilen parsel veya daire olarak bölüştürülmesidir.'
+      patterns: ['aynen taksim', 'taksim'],
+      def: 'Müşterek (paylı) veya elbirliği mülkiyetindeki bir taşınmazın hissedarlar arasında parsel veya bağımsız bölüm olarak fiilen bölüştürülmesi (paylaştırılması) işlemidir. Ortaklığın giderilmesi davasında taşınmazın satılmadan aynen bölüştürülmesine "aynen taksim" denir.'
     },
     {
       id: 'muhdesatin-aidiyeti',
@@ -8406,7 +8434,7 @@ B) KİRACI / SINIRLI AYNİ HAK SAHİBİ / KAPICI BAŞVURUSU İÇİN:
       id: 'ahzu-kabz-tevkil',
       term: 'Ahzu Kabz, Tevkil ve Sulh-İbra (Vekaletname Terimleri)',
       cat: 'Teknik Rapor & Usul',
-      patterns: ['ahzu kabz', 'ahzu kabza', 'tevkil', 'sulh ve ibra', 'ibraya'],
+      patterns: ['ahzu kabz', 'ahzu kabza', 'tevkil', 'sulh ve ibra', 'ibraya', 'vekaletname', 'vekâletname'],
       def: 'Ahzu Kabz: Vekilin müvekkil adına para, bedel veya harç iadesi tahsil etme yetkisidir. Tevkil: Vekilin kendi yetkilerini başka bir vekile (alt vekile) devredebilme yetkisidir. Sulh ve İbra: Vekilin uyuşmazlığı anlaşmayla sonlandırma ve karşı tarafı borçtan kurtarma yetkisidir (Sınırlı dönüşüm vekaletnamesinde bu üç yetki sınırlandırılmalıdır!).'
     },
     {
@@ -8418,7 +8446,119 @@ B) KİRACI / SINIRLI AYNİ HAK SAHİBİ / KAPICI BAŞVURUSU İÇİN:
     }
   ];
 
-  // 2. GENEL ARAMA MOTORUNA (GLOBAL_INDEX) VE SAĞ İKİZ EKRAN VERİTABANINA (LAW_DB) SÖZLÜK TERİMLERİNİ KAYDET
+  window.KD_GLOSSARY_DB = KD_GLOSSARY_DB;
+
+  // 2. ŞAPKALI HARF (Â/Î/Û), TÜRKÇE KARAKTER VE YANLIŞ YAZIM (FUZZY / FONETİK) ARAMA MOTORU
+  function normalizeCircumflexTR(str) {
+    if (!str) return '';
+    return String(str)
+      .toLocaleLowerCase('tr-TR')
+      .replace(/[âáàäã]/g, 'a')
+      .replace(/[îíìï]/g, 'i')
+      .replace(/[ûúù]/g, 'u')
+      .replace(/[êéèë]/g, 'e')
+      .replace(/[ôóòõ]/g, 'o')
+      .replace(/['’´`\-_/.,;:()[\]{}]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  function normalizeAsciiTR(str) {
+    return normalizeCircumflexTR(str)
+      .replace(/ç/g, 'c')
+      .replace(/ğ/g, 'g')
+      .replace(/ı/g, 'i')
+      .replace(/ö/g, 'o')
+      .replace(/ş/g, 's')
+      .replace(/ü/g, 'u');
+  }
+
+  function normalizePhoneticTR(str) {
+    let s = normalizeAsciiTR(str);
+    const commonTypos = [
+      [/muhtesat/g, 'muhdesat'],
+      [/takyitat/g, 'takyidat'],
+      [/tevhid/g, 'tevhit'],
+      [/tesbit/g, 'tespit'],
+      [/roleve/g, 'rolove'],
+      [/subazman/g, 'subasman'],
+      [/mutahit|muteahit/g, 'muteahhit'],
+      [/ecrimisal|ecrimisli/g, 'ecrimisil'],
+      [/izalei\s*suyu|izale\s*suyu/g, 'izale i suyu'],
+      [/katirtifak/g, 'kat irtifak'],
+      [/katmulkiyet/g, 'kat mulkiyet'],
+      [/ferag\s*icbar/g, 'feraga icbar'],
+      [/ipotege|ipotegin/g, 'ipotek'],
+      [/serefyie|serefye/g, 'serefiye'],
+      [/musbet/g, 'muspet'],
+      [/menfii/g, 'menfi']
+    ];
+    commonTypos.forEach(([rgx, rep]) => { s = s.replace(rgx, rep); });
+    return s.replace(/([a-z])\1+/g, '$1').replace(/d\b/g, 't').replace(/b\b/g, 'p').replace(/g\b/g, 'k');
+  }
+
+  function levenshteinDistance(a, b) {
+    if (a === b) return 0;
+    if (!a.length) return b.length;
+    if (!b.length) return a.length;
+    const matrix = [];
+    for (let i = 0; i <= b.length; i++) matrix[i] = [i];
+    for (let j = 0; j <= a.length; j++) matrix[0][j] = j;
+    for (let i = 1; i <= b.length; i++) {
+      for (let j = 1; j <= a.length; j++) {
+        const cost = b.charAt(i - 1) === a.charAt(j - 1) ? 0 : 1;
+        matrix[i][j] = Math.min(matrix[i - 1][j] + 1, matrix[i][j - 1] + 1, matrix[i - 1][j - 1] + cost);
+        if (i > 1 && j > 1 && b.charAt(i - 1) === a.charAt(j - 2) && b.charAt(i - 2) === a.charAt(j - 1)) {
+          matrix[i][j] = Math.min(matrix[i][j], matrix[i - 2][j - 2] + cost);
+        }
+      }
+    }
+    return matrix[b.length][a.length];
+  }
+
+  function computeSmartMatchScore(queryRaw, targetTitle, targetFullText) {
+    const qNorm = normalizeCircumflexTR(queryRaw);
+    if (!qNorm) return 100;
+    const qAscii = normalizeAsciiTR(queryRaw);
+    const qPhon = normalizePhoneticTR(queryRaw);
+    const tNorm = normalizeCircumflexTR(targetTitle);
+    const tAscii = normalizeAsciiTR(targetTitle);
+    const tPhon = normalizePhoneticTR(targetTitle);
+    const fNorm = normalizeCircumflexTR(targetFullText);
+    const fAscii = normalizeAsciiTR(targetFullText);
+    const fPhon = normalizePhoneticTR(targetFullText);
+
+    if (tNorm.includes(qNorm) || tAscii.includes(qAscii)) return 100;
+    if (tPhon.includes(qPhon)) return 90;
+    if (fNorm.includes(qNorm) || fAscii.includes(qAscii)) return 80;
+    if (fPhon.includes(qPhon)) return 70;
+
+    const qWords = qAscii.split(' ').filter(w => w.length >= 2);
+    if (qWords.length === 0) return 0;
+    const targetTokens = (tAscii + ' ' + fAscii).split(' ').filter(w => w.length >= 3);
+    let matchedWords = 0;
+
+    for (const qw of qWords) {
+      if (fAscii.includes(qw) || fPhon.includes(normalizePhoneticTR(qw))) {
+        matchedWords++;
+        continue;
+      }
+      if (qw.length < 3) continue;
+      const maxAllowedDist = qw.length <= 5 ? 1 : 2;
+      let wordFuzzyMatched = false;
+      for (const tok of targetTokens) {
+        const subTok = tok.length > qw.length + 1 ? tok.slice(0, qw.length + 1) : tok;
+        if (Math.abs(subTok.length - qw.length) <= maxAllowedDist && levenshteinDistance(qw, subTok) <= maxAllowedDist) {
+          wordFuzzyMatched = true;
+          break;
+        }
+      }
+      if (wordFuzzyMatched) matchedWords++;
+    }
+    return matchedWords === qWords.length ? 45 : 0;
+  }
+
+  // 3. GENEL ARAMA MOTORUNA VE LAW_DB'YE SÖZLÜK TERİMLERİNİ KAYDET
   function registerGlossaryInGlobalSearchAndLawDB() {
     if (typeof LAW_DB !== 'undefined') {
       KD_GLOSSARY_DB.forEach(item => {
@@ -8449,43 +8589,71 @@ B) KİRACI / SINIRLI AYNİ HAK SAHİBİ / KAPICI BAŞVURUSU İÇİN:
     }
   }
 
-  // 3. STİL TANIMLARI (SÖZLÜK MODALI, SATIR İÇİ ALTI ÇİZGİLİ KELİMELER VE HOVER AÇIKLAMA BALONCUĞU)
+  // 4. STİLLER (ALTI ÇİZGİLİ TERİMLER, HOVER BALONCUK, SÖZLÜK MODALI VE SAĞ ÜST 4 SEKME SİMETRİSİ)
   function injectGlossaryStyles() {
     if (document.getElementById('kdGlossarySystemStyles')) return;
     const st = document.createElement('style');
     st.id = 'kdGlossarySystemStyles';
     st.textContent = `
+      /* Satır içi altı çizgili sözlük kelimeleri (Hem beyaz kartlarda hem sağ ikiz ekranda net görünür) */
       body:not(.kd-inline-glossary-off) .kd-glossary-term {
-        border-bottom: 1.8px dashed #0284c7;
-        color: inherit;
-        cursor: help;
-        padding-bottom: 1px;
-        transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+        border-bottom: 2px dashed #0284c7 !important;
+        color: #0369a1;
+        font-weight: 600;
+        background-color: rgba(2, 132, 199, 0.07);
+        padding: 0 3px;
         border-radius: 3px;
+        cursor: help;
+        transition: all 0.15s ease;
+      }
+      /* Koyu arka planlı kartların (Hero kartı vb.) içindeki altı çizili terimler altın sarısı görünür */
+      body:not(.kd-inline-glossary-off) .section-card[style*="gradient"] .kd-glossary-term {
+        border-bottom: 2px dashed #fbbf24 !important;
+        color: #fde047 !important;
+        background-color: rgba(251, 191, 36, 0.15);
       }
       body:not(.kd-inline-glossary-off) .kd-glossary-term:hover {
-        background-color: #fef08a;
-        color: #0f172a;
-        border-bottom-color: #d97706;
-        border-bottom-style: solid;
+        background-color: #fef08a !important;
+        color: #0f172a !important;
+        border-bottom: 2px solid #d97706 !important;
       }
       body.kd-inline-glossary-off .kd-glossary-term {
         border-bottom: none !important;
+        color: inherit !important;
+        background: transparent !important;
+        padding: 0 !important;
+        font-weight: inherit !important;
         cursor: inherit !important;
       }
 
+      /* Sağ İkiz Ekran Üst Sekme Çubuğu 4 Buton Tek Satır Hizalaması */
+      .split-header .split-tabs {
+        display: grid !important;
+        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+        gap: 5px !important;
+        width: 100% !important;
+      }
+      .split-header .split-tab-btn {
+        padding: 0 6px !important;
+        font-size: 0.72rem !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+      }
+
+      /* Hover Açıklama Baloncuğu */
       #kdGlossaryHoverTooltip {
         display: none;
         position: fixed;
-        z-index: 6000;
-        width: 370px;
+        z-index: 6500;
+        width: 380px;
         max-width: 92vw;
         background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
         color: #f8fafc;
         border: 1.5px solid #fbbf24;
         border-radius: 10px;
         padding: 12px 14px;
-        box-shadow: 0 14px 34px rgba(15, 23, 42, 0.55);
+        box-shadow: 0 14px 34px rgba(15, 23, 42, 0.6);
         pointer-events: none;
         font-family: 'Segoe UI', system-ui, sans-serif;
         line-height: 1.48;
@@ -8524,12 +8692,13 @@ B) KİRACI / SINIRLI AYNİ HAK SAHİBİ / KAPICI BAŞVURUSU İÇİN:
         font-weight: 700;
       }
 
+      /* Sözlük Modalı */
       #kdGlossaryModal {
         display: none;
         position: fixed;
         inset: 0;
         background: rgba(15, 23, 42, 0.84);
-        z-index: 4800;
+        z-index: 5000;
         align-items: center;
         justify-content: center;
         padding: 16px;
@@ -8578,7 +8747,7 @@ B) KİRACI / SINIRLI AYNİ HAK SAHİBİ / KAPICI BAŞVURUSU İÇİN:
     document.head.appendChild(st);
   }
 
-  // 4. İNTERAKTİF SÖZLÜK MODALINI OLUŞTURMA VE AÇMA/KAPATMA FONKSİYONLARI
+  // 5. İNTERAKTİF SÖZLÜK MODALI
   let currentGlossaryCat = 'Tümü';
 
   function buildGlossaryModalIfNeeded() {
@@ -8609,7 +8778,7 @@ B) KİRACI / SINIRLI AYNİ HAK SAHİBİ / KAPICI BAŞVURUSU İÇİN:
 
         <div style="background:#ffffff; padding:12px 18px; border-bottom:1px solid #e2e8f0;">
           <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom:10px;">
-            <input type="text" id="kdGlossarySearchInput" placeholder="🔍 Terim veya açıklama içinde ara (Örn: kat irtifakı, kat mülkiyeti, iskân, ferağ, muhdesat, cezai şart, nama ifa, ecrimisil)..." oninput="renderGlossaryList()" style="flex:1; min-width:260px; padding:9px 13px; border:2px solid #93c5fd; border-radius:8px; font-size:0.88rem; outline:none; font-weight:600; color:#0f172a;">
+            <input type="text" id="kdGlossarySearchInput" placeholder="🔍 Terim veya açıklama ara (Şapka/yazım hatası duyarsız: örn. iskan, kat irtifaki, muhtesat, sufa, ferag, tevhid)..." oninput="renderGlossaryList()" style="flex:1; min-width:260px; padding:9px 13px; border:2px solid #93c5fd; border-radius:8px; font-size:0.88rem; outline:none; font-weight:600; color:#0f172a;">
             <button type="button" onclick="document.getElementById('kdGlossarySearchInput').value=''; renderGlossaryList();" style="background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; padding:8px 12px; border-radius:8px; font-size:0.78rem; font-weight:700; cursor:pointer;">Temizle</button>
             <span id="kdGlossaryCountBadge" style="background:#0f172a; color:#38bdf8; padding:6px 12px; border-radius:99px; font-size:0.78rem; font-weight:800;">${KD_GLOSSARY_DB.length} Terim</span>
           </div>
@@ -8639,509 +8808,17 @@ B) KİRACI / SINIRLI AYNİ HAK SAHİBİ / KAPICI BAŞVURUSU İÇİN:
     const countEl = document.getElementById('kdGlossaryCountBadge');
     if (!listEl) return;
 
-    const q = (searchEl ? searchEl.value : '').trim().toLocaleLowerCase('tr-TR');
-    const filtered = KD_GLOSSARY_DB.filter(item => {
-      const catMatch = (currentGlossaryCat === 'Tümü' || item.cat === currentGlossaryCat);
-      if (!catMatch) return false;
-      if (!q) return true;
-      return item.term.toLocaleLowerCase('tr-TR').includes(q) ||
-             item.def.toLocaleLowerCase('tr-TR').includes(q) ||
-             item.cat.toLocaleLowerCase('tr-TR').includes(q);
-    });
-
-    if (countEl) countEl.textContent = `${filtered.length} Terim`;
-
-    if (filtered.length === 0) {
-      listEl.innerHTML = `<div style="text-align:center; padding:30px; color:#64748b; font-size:0.9rem;">Aradığınız ifadeye uygun terim bulunamadı.</div>`;
-      return;
-    }
-
-    listEl.innerHTML = filtered.map(item => {
-      const isExpanded = (highlightId && item.id === highlightId) || q.length > 0 || filtered.length <= 15;
-      return `
-        <div class="kd-gl-item-card ${isExpanded ? 'expanded' : ''}" id="gl-card-${item.id}" onclick="this.classList.toggle('expanded'); const d=this.querySelector('.gl-card-detail'); if(d) d.style.display=this.classList.contains('expanded')?'block':'none';">
-          <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap;">
-            <strong style="font-size:0.94rem; color:#0f172a;">📘 ${item.term}</strong>
-            <div style="display:flex; gap:6px; align-items:center;">
-              <span style="font-size:0.71rem; font-weight:800; background:#e0f2fe; color:#0369a1; padding:2px 8px; border-radius:99px;">${item.cat}</span>
-              <span style="font-size:0.72rem; color:#64748b; font-weight:700;">▾ Açıklamayı Gör</span>
-            </div>
-          </div>
-          <div class="gl-card-detail" style="display:${isExpanded ? 'block' : 'none'}; margin-top:8px; padding-top:8px; border-top:1px dashed #cbd5e1; font-size:0.86rem; color:#1e293b; line-height:1.58;">
-            ${item.def}
-            <div style="margin-top:8px; display:flex; gap:8px; justify-content:flex-end;" onclick="event.stopPropagation();">
-              <button type="button" class="ek-link" onclick="closeGlossaryModal(); openSplitLaw('sozluk-${item.id}');">◫ Sağ İkiz Ekranda Sabitle</button>
-            </div>
-          </div>
-        </div>
-      `;
-    }).join('');
-
-    if (highlightId) {
-      const targetCard = document.getElementById('gl-card-' + highlightId);
-      if (targetCard) {
-        setTimeout(() => targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' }), 80);
-      }
-    }
-  };
-
-  window.openGlossaryModal = function(termId) {
-    const modal = buildGlossaryModalIfNeeded();
-    currentGlossaryCat = 'Tümü';
-    document.querySelectorAll('#kdGlossaryCatBar .kd-gl-cat-btn').forEach(btn => {
-      btn.classList.toggle('active', btn.getAttribute('data-cat') === 'Tümü');
-    });
-    const searchEl = document.getElementById('kdGlossarySearchInput');
-    if (searchEl) searchEl.value = '';
-    renderGlossaryList(termId);
-    modal.style.display = 'flex';
-    if (searchEl && !termId) setTimeout(() => searchEl.focus(), 100);
-  };
-
-  window.closeGlossaryModal = function() {
-    const modal = document.getElementById('kdGlossaryModal');
-    if (modal) modal.style.display = 'none';
-  };
-
-  window.toggleInlineGlossaryUnderlines = function() {
-    const isNowOff = document.body.classList.toggle('kd-inline-glossary-off');
-    localStorage.setItem('kd_inline_glossary_off', isNowOff ? '1' : '0');
-    const btn = document.getElementById('kdInlineGlossaryToggleBtn');
-    if (btn) {
-      btn.style.background = isNowOff ? '#475569' : '#059669';
-      btn.innerHTML = `💬 Satır İçi Çizgiler: ${isNowOff ? 'KAPALI' : 'AÇIK'}`;
-    }
-  };
-
-  // 5. HOVER AÇIKLAMA BALONCUĞU (TOOLTIP) VE SAYFA İÇİ OTOMATİK ALTI ÇİZGİLİ TERİM İŞARETLEYİCİ
-  let tooltipEl = null;
-
-  function ensureHoverTooltipElement() {
-    if (tooltipEl) return tooltipEl;
-    tooltipEl = document.createElement('div');
-    tooltipEl.id = 'kdGlossaryHoverTooltip';
-    document.body.appendChild(tooltipEl);
-    return tooltipEl;
-  }
-
-  function showGlossaryTooltip(targetSpan) {
-    if (document.body.classList.contains('kd-inline-glossary-off')) return;
-    const termId = targetSpan.getAttribute('data-gl-id');
-    const item = KD_GLOSSARY_DB.find(x => x.id === termId);
-    if (!item) return;
-
-    const tt = ensureHoverTooltipElement();
-    tt.innerHTML = `
-      <span class="tt-cat">${item.cat}</span>
-      <strong class="tt-title">📖 ${item.term}</strong>
-      <div class="tt-def">${item.def}</div>
-      <span class="tt-hint">💡 Sağ ikiz ekranda sabitlemek için kelimeye tıklayın</span>
-    `;
-    tt.style.display = 'block';
-    positionGlossaryTooltip(targetSpan);
-  }
-
-  function positionGlossaryTooltip(targetSpan) {
-    if (!tooltipEl || tooltipEl.style.display === 'none') return;
-    const rect = targetSpan.getBoundingClientRect();
-    const ttRect = tooltipEl.getBoundingClientRect();
-    const pad = 10;
-
-    let top = rect.top - ttRect.height - 8;
-    if (top < pad) {
-      top = rect.bottom + 8;
-    }
-    let left = rect.left + (rect.width / 2) - (ttRect.width / 2);
-    if (left < pad) left = pad;
-    if (left + ttRect.width > window.innerWidth - pad) {
-      left = window.innerWidth - ttRect.width - pad;
-    }
-
-    tooltipEl.style.top = `${Math.round(top)}px`;
-    tooltipEl.style.left = `${Math.round(left)}px`;
-  }
-
-  function hideGlossaryTooltip() {
-    if (tooltipEl) tooltipEl.style.display = 'none';
-  }
-
-  function underlineGlossaryTermsInDocument() {
-    if (localStorage.getItem('kd_inline_glossary_off') === '1') {
-      document.body.classList.add('kd-inline-glossary-off');
-    }
-
-    const patternMap = new Map();
-    const allPatterns = [];
-    KD_GLOSSARY_DB.forEach(item => {
-      (item.patterns || []).forEach(p => {
-        const key = p.toLocaleLowerCase('tr-TR');
-        if (!patternMap.has(key)) {
-          patternMap.set(key, item.id);
-          allPatterns.push(p);
-        }
-      });
-    });
-    allPatterns.sort((a, b) => b.length - a.length);
-
-    const escaped = allPatterns.map(p => p.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
-    const masterRegex = new RegExp(`(?<![a-zA-Z0-9çğıöşüÇĞİÖŞÜ])(${escaped.join('|')})(?![a-zA-Z0-9çğıöşüÇĞİÖŞÜ])`, 'gi');
-
-    const skipTags = new Set(['A', 'BUTTON', 'H1', 'H2', 'H3', 'H4', 'SCRIPT', 'STYLE', 'SVG', 'CODE', 'INPUT', 'TEXTAREA', 'SELECT', 'OPTION', 'SUMMARY']);
-
-    document.querySelectorAll('.section-card').forEach(section => {
-      if (section.dataset.glProcessed === '1') return;
-      section.dataset.glProcessed = '1';
-
-      const seenInSection = new Set();
-
-      const walker = document.createTreeWalker(section, NodeFilter.SHOW_TEXT, {
-        acceptNode(node) {
-          if (!node.nodeValue || node.nodeValue.trim().length < 3) return NodeFilter.FILTER_REJECT;
-          let p = node.parentElement;
-          while (p && p !== section) {
-            if (skipTags.has(p.tagName) ||
-                p.classList.contains('kd-glossary-term') ||
-                p.classList.contains('yon-ek-chip') ||
-                p.classList.contains('ek-link') ||
-                p.classList.contains('law-link') ||
-                p.classList.contains('template-box') ||
-                p.classList.contains('ppt-module-banner')) {
-              return NodeFilter.FILTER_REJECT;
-            }
-            p = p.parentElement;
-          }
-          return NodeFilter.FILTER_ACCEPT;
-        }
-      });
-
-      const textNodes = [];
-      let current;
-      while ((current = walker.nextNode())) textNodes.push(current);
-
-      textNodes.forEach(textNode => {
-        const text = textNode.nodeValue;
-        masterRegex.lastIndex = 0;
-        if (!masterRegex.test(text)) return;
-
-        masterRegex.lastIndex = 0;
-        let lastIdx = 0;
-        let match;
-        let changed = false;
-        const frag = document.createDocumentFragment();
-
-        while ((match = masterRegex.exec(text)) !== null) {
-          const matchedWord = match[0];
-          const normKey = matchedWord.toLocaleLowerCase('tr-TR');
-          const termId = patternMap.get(normKey);
-
-          if (termId && !seenInSection.has(termId)) {
-            seenInSection.add(termId);
-            changed = true;
-            if (match.index > lastIdx) {
-              frag.appendChild(document.createTextNode(text.slice(lastIdx, match.index)));
-            }
-            const span = document.createElement('span');
-            span.className = 'kd-glossary-term';
-            span.setAttribute('data-gl-id', termId);
-            span.textContent = matchedWord;
-            frag.appendChild(span);
-            lastIdx = masterRegex.lastIndex;
-          }
-        }
-
-        if (changed) {
-          if (lastIdx < text.length) {
-            frag.appendChild(document.createTextNode(text.slice(lastIdx)));
-          }
-          textNode.parentNode.replaceChild(frag, textNode);
-        }
-      });
-    });
-
-    if (!document.body.dataset.glHoverBound) {
-      document.body.dataset.glHoverBound = '1';
-      document.addEventListener('mouseover', (e) => {
-        const span = e.target.closest('.kd-glossary-term');
-        if (span) showGlossaryTooltip(span);
-      });
-      document.addEventListener('mouseout', (e) => {
-        const span = e.target.closest('.kd-glossary-term');
-        if (span) hideGlossaryTooltip();
-      });
-      document.addEventListener('click', (e) => {
-        const span = e.target.closest('.kd-glossary-term');
-        if (span && !document.body.classList.contains('kd-inline-glossary-off')) {
-          const termId = span.getAttribute('data-gl-id');
-          if (termId && typeof openSplitLaw === 'function') {
-            hideGlossaryTooltip();
-            openSplitLaw('sozluk-' + termId);
-          }
-        }
-      });
-      window.addEventListener('scroll', hideGlossaryTooltip, { passive: true });
-    }
-  }
-
-  // 6. ÜST KOMUTA BARINA VE SAĞ İKİZ EKRANA "📖 SÖZLÜK" BUTONUNU EKLE
-  function injectGlossaryButtonsIntoTopBarAndSplitPanel() {
-    const actionsRow = document.querySelector('.kd-exec-actions-row, .top-actions');
-    if (actionsRow && !document.getElementById('kdTopGlossaryBtn')) {
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.id = 'kdTopGlossaryBtn';
-      btn.className = 'kd-exec-pill p-sozluk';
-      btn.onclick = () => openGlossaryModal();
-      btn.innerHTML = `📖 Sözlük (${KD_GLOSSARY_DB.length})`;
-
-      const semaBtn = actionsRow.querySelector('.p-sema');
-      if (semaBtn && semaBtn.nextSibling) {
-        actionsRow.insertBefore(btn, semaBtn.nextSibling);
-      } else {
-        actionsRow.appendChild(btn);
-      }
-
-      const st = document.createElement('style');
-      st.textContent = `
-        .kd-exec-actions-row { grid-template-columns: repeat(10, minmax(0, 1fr)) !important; }
-        body.split-open .kd-exec-actions-row { grid-template-columns: repeat(5, minmax(0, 1fr)) !important; }
-        body.split-open .kd-exec-pill.p-video { display: none !important; }
-        body.split-open.kd-split-drawer-open .kd-exec-pill.p-video { display: inline-flex !important; }
-      `;
-      document.head.appendChild(st);
-
-      const moreBtn = document.getElementById('kdSplitMoreBtn');
-      if (moreBtn) moreBtn.innerHTML = '🔽 +6 Araç Aç';
-    }
-
-    const splitTabs = document.querySelector('.split-panel .split-tabs');
-    if (splitTabs && !document.getElementById('splitTabGlossaryBtn')) {
-      splitTabs.style.gridTemplateColumns = 'repeat(4, minmax(0, 1fr))';
-      const sBtn = document.createElement('button');
-      sBtn.type = 'button';
-      sBtn.id = 'splitTabGlossaryBtn';
-      sBtn.className = 'split-tab-btn';
-      sBtn.onclick = () => openGlossaryModal();
-      sBtn.innerHTML = `📖 Sözlük (${KD_GLOSSARY_DB.length})`;
-      splitTabs.appendChild(sBtn);
-    }
-
-    const heroKBtn = document.getElementById('heroTopKilavuzBtn');
-    if (heroKBtn && !document.getElementById('heroTopGlossaryBtn')) {
-      const gBtn = document.createElement('button');
-      gBtn.id = 'heroTopGlossaryBtn';
-      gBtn.type = 'button';
-      gBtn.onclick = () => openGlossaryModal();
-      gBtn.style.cssText = 'background:linear-gradient(135deg,#f59e0b 0%,#b45309 100%); color:#ffffff; border:1.5px solid #fde68a; padding:5px 14px; border-radius:99px; font-size:0.75rem; font-weight:800; cursor:pointer; box-shadow:0 3px 10px rgba(245,158,11,0.35); margin-right:6px;';
-      gBtn.innerHTML = `📖 Hukuk & İmar Terimler Sözlüğü (${KD_GLOSSARY_DB.length} Terim)`;
-      heroKBtn.parentNode.insertBefore(gBtn, heroKBtn);
-    }
-  }
-
-  window.addEventListener('DOMContentLoaded', () => {
-    injectGlossaryStyles();
-    registerGlossaryInGlobalSearchAndLawDB();
-    setTimeout(() => {
-      injectGlossaryButtonsIntoTopBarAndSplitPanel();
-      underlineGlossaryTermsInDocument();
-    }, 520);
-  });
-})();
-// 27. AKILLI TÜRKÇE ARAMA MOTORU: ŞAPKALI HARF (Â/Î/Û), TÜRKÇE KARAKTER VE YANLIŞ YAZIM (FUZZY / FONETİK) ALGILAYICI
-(function initSmartTurkishFuzzySearchEngine() {
-
-  // 1. ŞAPKALI HARF VE NOKTALAMA TEMİZLEYİCİ (iskân -> iskan, re'sen -> resen)
-  function normalizeCircumflexTR(str) {
-    if (!str) return '';
-    return String(str)
-      .toLocaleLowerCase('tr-TR')
-      .replace(/[âáàäã]/g, 'a')
-      .replace(/[îíìï]/g, 'i')
-      .replace(/[ûúùü]/g, (m) => (m === 'ü' ? 'ü' : 'u'))
-      .replace(/[êéèë]/g, 'e')
-      .replace(/[ôóòõ]/g, 'o')
-      .replace(/['’´`\-_/.,;:()[\]{}]/g, ' ')
-      .replace(/\s+/g, ' ')
-      .trim();
-  }
-
-  // 2. TAM ASCII / TÜRKÇE KARAKTER EŞİTLEYİCİ (şufa -> sufa, ferağ -> ferag, ı -> i)
-  function normalizeAsciiTR(str) {
-    return normalizeCircumflexTR(str)
-      .replace(/ç/g, 'c')
-      .replace(/ğ/g, 'g')
-      .replace(/ı/g, 'i')
-      .replace(/ö/g, 'o')
-      .replace(/ş/g, 's')
-      .replace(/ü/g, 'u');
-  }
-
-  // 3. FONETİK VE SIK YAPILAN HUKUKİ/İMAR YAZIM HATASI DÜZELTİCİ (muhtesat -> muhdesat, tevhid -> tevhit vb.)
-  function normalizePhoneticTR(str) {
-    let s = normalizeAsciiTR(str);
-    const commonTypos = [
-      [/muhtesat/g, 'muhdesat'],
-      [/takyitat/g, 'takyidat'],
-      [/tevhid/g, 'tevhit'],
-      [/tesbit/g, 'tespit'],
-      [/roleve/g, 'rolove'],
-      [/subazman/g, 'subasman'],
-      [/mutahit|muteahit/g, 'muteahhit'],
-      [/ecrimisal|ecrimisli/g, 'ecrimisil'],
-      [/izalei\s*suyu|izale\s*suyu/g, 'izale i suyu'],
-      [/katirtifak/g, 'kat irtifak'],
-      [/katmulkiyet/g, 'kat mulkiyet'],
-      [/ferag\s*icbar/g, 'feraga icbar'],
-      [/ipotege|ipotegin/g, 'ipotek'],
-      [/serefyie|serefye/g, 'serefiye'],
-      [/müspet|musbet/g, 'muspet'],
-      [/menfii/g, 'menfi']
-    ];
-    commonTypos.forEach(([rgx, rep]) => { s = s.replace(rgx, rep); });
-    // Çift harfleri tekilleştir ve kelime sonu d/t, b/p, g/k yumuşamalarını eşitle
-    return s
-      .replace(/([a-z])\1+/g, '$1')
-      .replace(/d\b/g, 't')
-      .replace(/b\b/g, 'p')
-      .replace(/g\b/g, 'k');
-  }
-
-  // 4. LEVENSHTEIN HARF MESAFESİ HESABI (KLAVYEDE YANLIŞ / EKSİK / YER DEĞİŞTİRMİŞ HARF ALGILAMA)
-  function levenshteinDistance(a, b) {
-    if (a === b) return 0;
-    if (!a.length) return b.length;
-    if (!b.length) return a.length;
-    const matrix = [];
-    for (let i = 0; i <= b.length; i++) matrix[i] = [i];
-    for (let j = 0; j <= a.length; j++) matrix[0][j] = j;
-    for (let i = 1; i <= b.length; i++) {
-      for (let j = 1; j <= a.length; j++) {
-        const cost = b.charAt(i - 1) === a.charAt(j - 1) ? 0 : 1;
-        matrix[i][j] = Math.min(
-          matrix[i - 1][j] + 1,      // silme
-          matrix[i][j - 1] + 1,      // ekleme
-          matrix[i - 1][j - 1] + cost // değiştirme
-        );
-        // Yan yana iki harfin yer değiştirmesi (transposition: örn. isakn -> iskan)
-        if (i > 1 && j > 1 && b.charAt(i - 1) === a.charAt(j - 2) && b.charAt(i - 2) === a.charAt(j - 1)) {
-          matrix[i][j] = Math.min(matrix[i][j], matrix[i - 2][j - 2] + cost);
-        }
-      }
-    }
-    return matrix[b.length][a.length];
-  }
-
-  // Bir arama sorgusunun hedef metinle eşleşme puanını hesaplar (0 = eşleşmedi, 100 = tam eşleşme, 40 = yazım hatası toleranslı eşleşme)
-  function computeSmartMatchScore(queryRaw, targetTitle, targetFullText) {
-    const qNorm = normalizeCircumflexTR(queryRaw);
-    if (!qNorm) return 100;
-
-    const qAscii = normalizeAsciiTR(queryRaw);
-    const qPhon = normalizePhoneticTR(queryRaw);
-
-    const tNorm = normalizeCircumflexTR(targetTitle);
-    const tAscii = normalizeAsciiTR(targetTitle);
-    const tPhon = normalizePhoneticTR(targetTitle);
-
-    const fNorm = normalizeCircumflexTR(targetFullText);
-    const fAscii = normalizeAsciiTR(targetFullText);
-    const fPhon = normalizePhoneticTR(targetFullText);
-
-    // 1. Kademe: Şapkasız / Türkçe karaktersiz / Fonetik doğrudan içerme
-    if (tNorm.includes(qNorm) || tAscii.includes(qAscii)) return 100;
-    if (tPhon.includes(qPhon)) return 90;
-    if (fNorm.includes(qNorm) || fAscii.includes(qAscii)) return 80;
-    if (fPhon.includes(qPhon)) return 70;
-
-    // 2. Kademe: Kelime kelime bulanık (Fuzzy / Levenshtein) kontrol
-    const qWords = qAscii.split(' ').filter(w => w.length >= 2);
-    if (qWords.length === 0) return 0;
-
-    const targetTokens = (tAscii + ' ' + fAscii).split(' ').filter(w => w.length >= 3);
-    let matchedWords = 0;
-
-    for (const qw of qWords) {
-      if (fAscii.includes(qw) || fPhon.includes(normalizePhoneticTR(qw))) {
-        matchedWords++;
-        continue;
-      }
-      if (qw.length < 3) continue;
-
-      const maxAllowedDist = qw.length <= 5 ? 1 : 2;
-      let wordFuzzyMatched = false;
-
-      for (const tok of targetTokens) {
-        // Kelime başı karşılaştırması veya tam kelime mesafesi
-        const subTok = tok.length > qw.length + 1 ? tok.slice(0, qw.length + 1) : tok;
-        if (Math.abs(subTok.length - qw.length) <= maxAllowedDist) {
-          const dist = levenshteinDistance(qw, subTok);
-          if (dist <= maxAllowedDist) {
-            wordFuzzyMatched = true;
-            break;
-          }
-        }
-      }
-      if (wordFuzzyMatched) matchedWords++;
-    }
-
-    if (matchedWords === qWords.length) return 45; // Yazım hatası toleransıyla eşleşti
-    return 0;
-  }
-
-  // 5. SÖZLÜK ARAMA MOTORUNU (renderGlossaryList) AKILLI ARAMA İLE DEĞİŞTİR
-  const _origRenderGlossary = window.renderGlossaryList;
-  window.renderGlossaryList = function(highlightId) {
-    const listEl = document.getElementById('kdGlossaryListBody');
-    const searchEl = document.getElementById('kdGlossarySearchInput');
-    const countEl = document.getElementById('kdGlossaryCountBadge');
-    if (!listEl) return;
-
-    // Mevcut aktif kategoriyi bul
-    const activeCatBtn = document.querySelector('#kdGlossaryCatBar .kd-gl-cat-btn.active');
-    const activeCat = activeCatBtn ? activeCatBtn.getAttribute('data-cat') : 'Tümü';
     const qRaw = (searchEl ? searchEl.value : '').trim();
-
-    // Sözlük kartlarını DOM üzerinden veya KD_GLOSSARY_DB üzerinden filtrele
-    // İlk kez oluşturulması için boş sorguyla orijinal fonksiyonu 1 kez çalıştırıp kartları alabiliriz
-    if (!window._kdCachedGlossaryItems && typeof _origRenderGlossary === 'function') {
-      const prevVal = searchEl ? searchEl.value : '';
-      if (searchEl) searchEl.value = '';
-      _origRenderGlossary();
-      if (searchEl) searchEl.value = prevVal;
-
-      window._kdCachedGlossaryItems = [];
-      if (typeof LAW_DB !== 'undefined') {
-        Object.keys(LAW_DB).forEach(k => {
-          if (k.startsWith('sozluk-')) {
-            const id = k.replace('sozluk-', '');
-            const entry = LAW_DB[k];
-            const catMatch = (entry.ref || '').match(/Kategori:\s*(.+)$/);
-            const cleanDef = (entry.body || '')
-              .replace(/<div[\s\S]*?<\/div>/gi, '')
-              .replace(/<[^>]+>/g, '')
-              .replace('Tanımı ve Uygulamadaki Hukuki/Teknik Karşılığı:', '')
-              .trim();
-            window._kdCachedGlossaryItems.push({
-              id: id,
-              term: (entry.title || '').replace('📖 Sözlük Terimi: ', '').trim(),
-              cat: catMatch ? catMatch[1].trim() : 'İmar & 6306',
-              def: cleanDef
-            });
-          }
-        });
-      }
-    }
-
-    const db = window._kdCachedGlossaryItems || [];
     const scored = [];
     let hasFuzzyMatch = false;
 
-    db.forEach(item => {
-      if (activeCat !== 'Tümü' && item.cat !== activeCat) return;
+    KD_GLOSSARY_DB.forEach(item => {
+      if (currentGlossaryCat !== 'Tümü' && item.cat !== currentGlossaryCat) return;
       if (!qRaw) {
         scored.push({ item, score: 100 });
         return;
       }
-      const score = computeSmartMatchScore(qRaw, item.term, `${item.term} ${item.cat} ${item.def}`);
+      const score = computeSmartMatchScore(qRaw, item.term, `${item.term} ${item.cat} ${item.def} ${(item.patterns || []).join(' ')}`);
       if (score > 0) {
         if (score < 60) hasFuzzyMatch = true;
         scored.push({ item, score });
@@ -9149,7 +8826,6 @@ B) KİRACI / SINIRLI AYNİ HAK SAHİBİ / KAPICI BAŞVURUSU İÇİN:
     });
 
     scored.sort((a, b) => b.score - a.score);
-
     if (countEl) countEl.textContent = `${scored.length} Terim`;
 
     if (scored.length === 0) {
@@ -9184,60 +8860,450 @@ B) KİRACI / SINIRLI AYNİ HAK SAHİBİ / KAPICI BAŞVURUSU İÇİN:
 
     if (highlightId) {
       const targetCard = document.getElementById('gl-card-' + highlightId);
-      if (targetCard) {
-        setTimeout(() => targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' }), 80);
-      }
+      if (targetCard) setTimeout(() => targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' }), 80);
     }
   };
 
-  // 6. SOL FİHRİSTTEKİ GENEL ARAMA KUTUSUNU DA (.search-box) ŞAPKASIZ VE YANLIŞ YAZIM DUYARLI YAP
-  function upgradeSidebarGlobalSearchBox() {
-    const searchInput = document.getElementById('fihristSearch');
-    if (!searchInput || searchInput.dataset.fuzzyUpgraded === '1') return;
-    searchInput.dataset.fuzzyUpgraded = '1';
+  window.openGlossaryModal = function(termId) {
+    const modal = buildGlossaryModalIfNeeded();
+    currentGlossaryCat = 'Tümü';
+    document.querySelectorAll('#kdGlossaryCatBar .kd-gl-cat-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-cat') === 'Tümü');
+    });
+    const searchEl = document.getElementById('kdGlossarySearchInput');
+    if (searchEl) searchEl.value = '';
+    renderGlossaryList(termId);
+    modal.style.display = 'flex';
+    if (searchEl && !termId) setTimeout(() => searchEl.focus(), 100);
+  };
 
-    searchInput.addEventListener('input', function() {
-      const qRaw = this.value.trim();
-      let globalResBox = document.getElementById('globalSearchResults');
-      if (!globalResBox) return;
+  window.closeGlossaryModal = function() {
+    const modal = document.getElementById('kdGlossaryModal');
+    if (modal) modal.style.display = 'none';
+  };
 
-      if (qRaw.length < 2) {
-        globalResBox.style.display = 'none';
-        return;
+  window.toggleInlineGlossaryUnderlines = function() {
+    const isNowOff = document.body.classList.toggle('kd-inline-glossary-off');
+    localStorage.setItem('kd_inline_glossary_off', isNowOff ? '1' : '0');
+    const btn = document.getElementById('kdInlineGlossaryToggleBtn');
+    if (btn) {
+      btn.style.background = isNowOff ? '#475569' : '#059669';
+      btn.innerHTML = `💬 Satır İçi Çizgiler: ${isNowOff ? 'KAPALI' : 'AÇIK'}`;
+    }
+  };
+
+  // 6. HOVER AÇIKLAMA BALONCUĞU (TOOLTIP) VE TÜM PANELLERDE (SAĞ İKİZ EKRAN DAHİL) ALTI ÇİZİLİ İŞARETLEYİCİ
+  let tooltipEl = null;
+  let masterPatternMap = null;
+  let masterRegex = null;
+
+  function buildMasterRegex() {
+    if (masterRegex && masterPatternMap) return;
+    masterPatternMap = new Map();
+    const allPatterns = [];
+    KD_GLOSSARY_DB.forEach(item => {
+      (item.patterns || []).forEach(p => {
+        const key = p.toLocaleLowerCase('tr-TR');
+        if (!masterPatternMap.has(key)) {
+          masterPatternMap.set(key, item.id);
+          allPatterns.push(p);
+        }
+      });
+    });
+    allPatterns.sort((a, b) => b.length - a.length);
+    const escaped = allPatterns.map(p => p.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+    masterRegex = new RegExp(`(?<![a-zA-Z0-9çğıöşüÇĞİÖŞÜ])(${escaped.join('|')})(?![a-zA-Z0-9çğıöşüÇĞİÖŞÜ])`, 'gi');
+  }
+
+  function ensureHoverTooltipElement() {
+    if (tooltipEl) return tooltipEl;
+    tooltipEl = document.createElement('div');
+    tooltipEl.id = 'kdGlossaryHoverTooltip';
+    document.body.appendChild(tooltipEl);
+    return tooltipEl;
+  }
+
+  function showGlossaryTooltip(targetSpan) {
+    if (document.body.classList.contains('kd-inline-glossary-off')) return;
+    const termId = targetSpan.getAttribute('data-gl-id');
+    const item = KD_GLOSSARY_DB.find(x => x.id === termId);
+    if (!item) return;
+
+    const inSplit = !!targetSpan.closest('.split-panel');
+    const tt = ensureHoverTooltipElement();
+    tt.innerHTML = `
+      <span class="tt-cat">${item.cat}</span>
+      <strong class="tt-title">📖 ${item.term}</strong>
+      <div class="tt-def">${item.def}</div>
+      <span class="tt-hint">${inSplit ? '💡 Sözlükte açmak için kelimeye tıklayın' : '💡 Sağ ikiz ekranda sabitlemek için kelimeye tıklayın'}</span>
+    `;
+    tt.style.display = 'block';
+
+    const rect = targetSpan.getBoundingClientRect();
+    const ttRect = tt.getBoundingClientRect();
+    const pad = 10;
+    let top = rect.top - ttRect.height - 8;
+    if (top < pad) top = rect.bottom + 8;
+    let left = rect.left + (rect.width / 2) - (ttRect.width / 2);
+    if (left < pad) left = pad;
+    if (left + ttRect.width > window.innerWidth - pad) left = window.innerWidth - ttRect.width - pad;
+
+    tt.style.top = `${Math.round(top)}px`;
+    tt.style.left = `${Math.round(left)}px`;
+  }
+
+  function hideGlossaryTooltip() {
+    if (tooltipEl) tooltipEl.style.display = 'none';
+  }
+
+  // Verilen bir kök eleman (ana sayfa kartı, sağ ikiz ekran .split-body veya rehber modalı) içindeki metinlerin altını çizer
+  function underlineGlossaryInRoot(rootEl) {
+    if (!rootEl) return;
+    buildMasterRegex();
+
+    const skipTags = new Set(['A', 'BUTTON', 'H1', 'H2', 'H3', 'H4', 'SCRIPT', 'STYLE', 'SVG', 'CODE', 'INPUT', 'TEXTAREA', 'SELECT', 'OPTION', 'SUMMARY']);
+
+    const walker = document.createTreeWalker(rootEl, NodeFilter.SHOW_TEXT, {
+      acceptNode(node) {
+        if (!node.nodeValue || node.nodeValue.trim().length < 3) return NodeFilter.FILTER_REJECT;
+        let p = node.parentElement;
+        while (p && p !== rootEl) {
+          if (skipTags.has(p.tagName) ||
+              p.classList.contains('kd-glossary-term') ||
+              p.classList.contains('yon-ek-chip') ||
+              p.classList.contains('ek-link') ||
+              p.classList.contains('law-link') ||
+              p.classList.contains('live-link') ||
+              p.classList.contains('template-box') ||
+              p.classList.contains('ppt-module-banner') ||
+              p.classList.contains('split-header')) {
+            return NodeFilter.FILTER_REJECT;
+          }
+          p = p.parentElement;
+        }
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+
+    const textNodes = [];
+    let current;
+    while ((current = walker.nextNode())) textNodes.push(current);
+
+    // Her paragraf/liste satırında (p, li, td) aynı terimi en fazla 1 kez çizerek okunaklılığı koru
+    const blockSeenMap = new WeakMap();
+
+    textNodes.forEach(textNode => {
+      const text = textNode.nodeValue;
+      masterRegex.lastIndex = 0;
+      if (!masterRegex.test(text)) return;
+
+      const blockEl = textNode.parentElement.closest('p, li, td, blockquote, div') || rootEl;
+      let seenInBlock = blockSeenMap.get(blockEl);
+      if (!seenInBlock) {
+        seenInBlock = new Set();
+        blockSeenMap.set(blockEl, seenInBlock);
       }
 
-      // Sol fihrist linklerini şapkasız/Türkçe karaktersiz filtrele
-      document.querySelectorAll('.cilt-group').forEach(group => {
-        const items = group.querySelectorAll('.cilt-links li');
-        items.forEach(li => {
-          const score = computeSmartMatchScore(qRaw, li.textContent, li.textContent);
-          if (score > 0) li.style.display = 'block';
-        });
-      });
+      masterRegex.lastIndex = 0;
+      let lastIdx = 0;
+      let match;
+      let changed = false;
+      const frag = document.createDocumentFragment();
 
-      // GLOBAL_INDEX içinde şapkasız ve yazım hatası toleranslı arama yap
-      if (typeof GLOBAL_INDEX !== 'undefined' && Array.isArray(GLOBAL_INDEX)) {
-        const matches = [];
-        GLOBAL_INDEX.forEach(item => {
-          const score = computeSmartMatchScore(qRaw, item.title, `${item.title} ${item.keys || ''}`);
-          if (score > 0) matches.push({ item, score });
-        });
-        matches.sort((a, b) => b.score - a.score);
+      while ((match = masterRegex.exec(text)) !== null) {
+        const matchedWord = match[0];
+        const normKey = matchedWord.toLocaleLowerCase('tr-TR');
+        const termId = masterPatternMap.get(normKey);
 
-        if (matches.length > 0) {
-          globalResBox.style.display = 'block';
-          globalResBox.innerHTML = `<div style="font-size:0.71rem; color:#fbbf24; font-weight:700; padding:4px 6px; border-bottom:1px solid #334155; margin-bottom:4px;">🌐 Akıllı Arama Sonuçları (${matches.length})</div>` +
-            matches.slice(0, 18).map(({ item }) => `
-              <a href="${item.url}" style="display:block; padding:6px 8px; color:#f1f5f9; text-decoration:none; font-size:0.76rem; border-radius:5px; margin-bottom:3px; background:#0f172a; border-left:3px solid #fbbf24;">
-                <strong style="color:#38bdf8;">[${item.cilt}]</strong> ${item.title}
-              </a>
-            `).join('');
+        if (termId && !seenInBlock.has(termId)) {
+          seenInBlock.add(termId);
+          changed = true;
+          if (match.index > lastIdx) {
+            frag.appendChild(document.createTextNode(text.slice(lastIdx, match.index)));
+          }
+          const span = document.createElement('span');
+          span.className = 'kd-glossary-term';
+          span.setAttribute('data-gl-id', termId);
+          span.textContent = matchedWord;
+          frag.appendChild(span);
+          lastIdx = masterRegex.lastIndex;
         }
+      }
+
+      if (changed) {
+        if (lastIdx < text.length) {
+          frag.appendChild(document.createTextNode(text.slice(lastIdx)));
+        }
+        textNode.parentNode.replaceChild(frag, textNode);
       }
     });
   }
 
+  // 7. ANA SAYFA VE SAĞ İKİZ EKRAN ("HIZLI MADDE / FORM SEÇ") CANLI İZLEME VE EVENT BAĞLANTILARI
+  function setupLiveGlossaryUnderliningEverywhere() {
+    if (localStorage.getItem('kd_inline_glossary_off') === '1') {
+      document.body.classList.add('kd-inline-glossary-off');
+    }
+
+    // 1) Ana sayfadaki tüm kartları (.section-card) tara
+    document.querySelectorAll('.section-card').forEach(sec => underlineGlossaryInRoot(sec));
+
+    // 2) Sağ İkiz Ekran (.split-body ve .split-panel) içini hemen tara ve her madde değişiminde otomatik tara!
+    const splitBody = document.querySelector('.split-panel .split-body') || document.querySelector('.split-panel');
+    if (splitBody) {
+      underlineGlossaryInRoot(splitBody);
+
+      if (!splitBody.dataset.glObserverAttached) {
+        splitBody.dataset.glObserverAttached = '1';
+        let timer = null;
+        const obs = new MutationObserver(() => {
+          clearTimeout(timer);
+          timer = setTimeout(() => {
+            obs.disconnect();
+            underlineGlossaryInRoot(splitBody);
+            obs.observe(splitBody, { childList: true, subtree: true });
+          }, 35);
+        });
+        obs.observe(splitBody, { childList: true, subtree: true });
+      }
+    }
+
+    // 3) openSplitLaw, openYonEk ve openSplitEk çağrıldığında da sağ ikiz ekranı garantili olarak çiz
+    ['openSplitLaw', 'openYonEk', 'openSplitEk'].forEach(fnName => {
+      const origFn = window[fnName];
+      if (typeof origFn === 'function' && !origFn._glWrapped) {
+        const wrapped = function(...args) {
+          const res = origFn.apply(this, args);
+          setTimeout(() => {
+            const sb = document.querySelector('.split-panel .split-body') || document.querySelector('.split-panel');
+            if (sb) underlineGlossaryInRoot(sb);
+          }, 50);
+          return res;
+        };
+        wrapped._glWrapped = true;
+        window[fnName] = wrapped;
+      }
+    });
+
+    // 4) Hover ve Tıklama Dinleyicileri
+    if (!document.body.dataset.glEventsAttached) {
+      document.body.dataset.glEventsAttached = '1';
+      document.addEventListener('mouseover', (e) => {
+        const span = e.target.closest('.kd-glossary-term');
+        if (span) showGlossaryTooltip(span);
+      });
+      document.addEventListener('mouseout', (e) => {
+        const span = e.target.closest('.kd-glossary-term');
+        if (span) hideGlossaryTooltip();
+      });
+      document.addEventListener('click', (e) => {
+        const span = e.target.closest('.kd-glossary-term');
+        if (span && !document.body.classList.contains('kd-inline-glossary-off')) {
+          e.stopPropagation();
+          const termId = span.getAttribute('data-gl-id');
+          hideGlossaryTooltip();
+          if (span.closest('.split-panel')) {
+            openGlossaryModal(termId);
+          } else if (typeof openSplitLaw === 'function') {
+            openSplitLaw('sozluk-' + termId);
+          }
+        }
+      });
+      window.addEventListener('scroll', hideGlossaryTooltip, { passive: true });
+    }
+  }
+
+  // 8. ÜST BARA, İKİZ EKRANA VE SOL GENEL ARAMA KUTUSUNA ENTEGRASYON
+  function injectGlossaryButtonsAndUpgradeSidebarSearch() {
+    const actionsRow = document.querySelector('.kd-exec-actions-row, .top-actions');
+    if (actionsRow && !document.getElementById('kdTopGlossaryBtn')) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.id = 'kdTopGlossaryBtn';
+      btn.className = 'kd-exec-pill p-sozluk';
+      btn.onclick = () => openGlossaryModal();
+      btn.innerHTML = `📖 Sözlük (${KD_GLOSSARY_DB.length})`;
+      const semaBtn = actionsRow.querySelector('.p-sema');
+      if (semaBtn && semaBtn.nextSibling) actionsRow.insertBefore(btn, semaBtn.nextSibling);
+      else actionsRow.appendChild(btn);
+
+      const st = document.createElement('style');
+      st.textContent = `
+        .kd-exec-actions-row { grid-template-columns: repeat(10, minmax(0, 1fr)) !important; }
+        body.split-open .kd-exec-actions-row { grid-template-columns: repeat(5, minmax(0, 1fr)) !important; }
+        body.split-open .kd-exec-pill.p-video { display: none !important; }
+        body.split-open.kd-split-drawer-open .kd-exec-pill.p-video { display: inline-flex !important; }
+      `;
+      document.head.appendChild(st);
+      const moreBtn = document.getElementById('kdSplitMoreBtn');
+      if (moreBtn) moreBtn.innerHTML = '🔽 +6 Araç Aç';
+    } else {
+      const topBtn = document.getElementById('kdTopGlossaryBtn');
+      if (topBtn) topBtn.innerHTML = `📖 Sözlük (${KD_GLOSSARY_DB.length})`;
+    }
+
+    const splitTabs = document.querySelector('.split-panel .split-tabs');
+    if (splitTabs) {
+      let sBtn = document.getElementById('splitTabGlossaryBtn');
+      if (!sBtn) {
+        sBtn = document.createElement('button');
+        sBtn.type = 'button';
+        sBtn.id = 'splitTabGlossaryBtn';
+        sBtn.className = 'split-tab-btn';
+        sBtn.onclick = () => openGlossaryModal();
+        splitTabs.appendChild(sBtn);
+      }
+      sBtn.innerHTML = `📖 Sözlük (${KD_GLOSSARY_DB.length})`;
+    }
+
+    const heroKBtn = document.getElementById('heroTopKilavuzBtn');
+    if (heroKBtn) {
+      let gBtn = document.getElementById('heroTopGlossaryBtn');
+      if (!gBtn) {
+        gBtn = document.createElement('button');
+        gBtn.id = 'heroTopGlossaryBtn';
+        gBtn.type = 'button';
+        gBtn.onclick = () => openGlossaryModal();
+        gBtn.style.cssText = 'background:linear-gradient(135deg,#f59e0b 0%,#b45309 100%); color:#ffffff; border:1.5px solid #fde68a; padding:5px 14px; border-radius:99px; font-size:0.75rem; font-weight:800; cursor:pointer; box-shadow:0 3px 10px rgba(245,158,11,0.35); margin-right:6px;';
+        heroKBtn.parentNode.insertBefore(gBtn, heroKBtn);
+      }
+      gBtn.innerHTML = `📖 Hukuk & İmar Terimler Sözlüğü (${KD_GLOSSARY_DB.length} Terim)`;
+    }
+
+    // Sol Fihrist Genel Arama Kutusunu Şapkasız ve Fuzzy Duyarlı Yap
+    const searchInput = document.getElementById('fihristSearch');
+    if (searchInput && !searchInput.dataset.fuzzyUpgraded) {
+      searchInput.dataset.fuzzyUpgraded = '1';
+      searchInput.addEventListener('input', function() {
+        const qRaw = this.value.trim();
+        const globalResBox = document.getElementById('globalSearchResults');
+        if (!globalResBox || qRaw.length < 2) return;
+
+        if (typeof GLOBAL_INDEX !== 'undefined' && Array.isArray(GLOBAL_INDEX)) {
+          const matches = [];
+          GLOBAL_INDEX.forEach(item => {
+            const score = computeSmartMatchScore(qRaw, item.title, `${item.title} ${item.keys || ''}`);
+            if (score > 0) matches.push({ item, score });
+          });
+          matches.sort((a, b) => b.score - a.score);
+          if (matches.length > 0) {
+            globalResBox.style.display = 'block';
+            globalResBox.innerHTML = `<div style="font-size:0.71rem; color:#fbbf24; font-weight:700; padding:4px 6px; border-bottom:1px solid #334155; margin-bottom:4px;">🌐 Akıllı Arama Sonuçları (${matches.length})</div>` +
+              matches.slice(0, 18).map(({ item }) => `
+                <a href="${item.url}" style="display:block; padding:6px 8px; color:#f1f5f9; text-decoration:none; font-size:0.76rem; border-radius:5px; margin-bottom:3px; background:#0f172a; border-left:3px solid #fbbf24;">
+                  <strong style="color:#38bdf8;">[${item.cilt}]</strong> ${item.title}
+                </a>
+              `).join('');
+          }
+        }
+      });
+    }
+  }
+
   window.addEventListener('DOMContentLoaded', () => {
-    setTimeout(upgradeSidebarGlobalSearchBox, 560);
+    injectGlossaryStyles();
+    registerGlossaryInGlobalSearchAndLawDB();
+    setTimeout(() => {
+      injectGlossaryButtonsAndUpgradeSidebarSearch();
+      setupLiveGlossaryUnderliningEverywhere();
+    }, 550);
+  });
+})();
+// 27. ŞEMA 26 (AŞAMA 0–10 KUTULARI) TIKLAMA YÖNLENDİRİCİSİ VE SVG İÇİ SÖZLÜK ÇAKIŞMASI KORUMASI
+(function initSema26BoxClickFixAndSvgProtection() {
+
+  // 1. AŞAMA 0–10 KUTULARINA TIKLANDIĞINDA REHBERİ AÇIP İLGİLİ AŞAMA KARTINA İNEN MERKEZİ FONKSİYON
+  window.goToAzStageCard = function(stageIdx, ev) {
+    if (ev && ev.stopPropagation) ev.stopPropagation();
+
+    // Tam Ekran Şema veya Şema Galerisi açıksa önce onları kapat
+    if (typeof closeSchemaFullscreen === 'function') closeSchemaFullscreen(true);
+    if (typeof closeSemaGalleryModal === 'function') closeSemaGalleryModal();
+
+    // A'dan Z'ye Rehber penceresini 1. Sekmede aç
+    if (typeof openMasterGuideModal === 'function') {
+      openMasterGuideModal(1);
+    }
+
+    // Hedef Aşama (0–10) kartını bul, kaydır ve altın çerçeveyle vurgula
+    setTimeout(() => {
+      const targetCard = document.getElementById('az-stage-card-' + stageIdx);
+      const guideBody = document.getElementById('masterGuideBody');
+      if (!targetCard) return;
+
+      document.querySelectorAll('.kd-target-arrived').forEach(el => el.classList.remove('kd-target-arrived'));
+      targetCard.classList.add('kd-target-arrived');
+
+      if (guideBody) {
+        const bodyRect = guideBody.getBoundingClientRect();
+        const cardRect = targetCard.getBoundingClientRect();
+        const scrollTarget = guideBody.scrollTop + (cardRect.top - bodyRect.top) - 18;
+        guideBody.scrollTo({ top: Math.max(0, scrollTarget), behavior: 'smooth' });
+      } else {
+        targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+
+      setTimeout(() => {
+        targetCard.classList.remove('kd-target-arrived');
+      }, 3200);
+    }, 90);
+  };
+
+  // 2. SVG ŞEMALARININ İÇİNDEKİ METİNLERE YANLIŞLIKLA EKLENEN SÖZLÜK SPAN'LARINI TEMİZLE
+  function cleanGlossarySpansInsideAllSvgs(rootEl) {
+    const scope = rootEl || document;
+    scope.querySelectorAll('svg .kd-glossary-term').forEach(span => {
+      const parent = span.parentNode;
+      if (parent) {
+        parent.replaceChild(document.createTextNode(span.textContent), span);
+        parent.normalize();
+      }
+    });
+  }
+
+  // 3. ŞEMA 26 İÇİNDEKİ 11 KUTUNUN (AŞAMA 0..10) ONCLICK BAĞLANTILARINI GÜNCELLE
+  function rebindSema26StageBoxes(rootEl) {
+    const scope = rootEl || document;
+    cleanGlossarySpansInsideAllSvgs(scope);
+
+    // Veri tabanındaki Şema 26 metnini de güncelle (Galeri ve Tam Ekran için)
+    if (typeof VISUAL_DIAGRAMS_DB !== 'undefined' && Array.isArray(VISUAL_DIAGRAMS_DB)) {
+      const s26 = VISUAL_DIAGRAMS_DB.find(x => x.id === 'sema-26-asama-0-10-master-harita');
+      if (s26 && s26.svgHtml) {
+        s26.svgHtml = s26.svgHtml.replace(
+          /onclick="if\(document\.getElementById\('az-stage-card-(\d+)'\)\)[^"]+"/g,
+          'onclick="goToAzStageCard($1, event)"'
+        );
+      }
+    }
+
+    // Sayfada, Rehberde, Galeride veya Tam Ekranda çizilmiş olan tüm Şema 26 kutularını bağla
+    scope.querySelectorAll('svg g[onclick*="az-stage-card-"], svg g[onclick*="goToAzStageCard"]').forEach(g => {
+      const attr = g.getAttribute('onclick') || '';
+      const match = attr.match(/(?:az-stage-card-|goToAzStageCard\()(\d+)/);
+      if (match) {
+        const idx = parseInt(match[1], 10);
+        g.setAttribute('onclick', `goToAzStageCard(${idx}, event)`);
+        g.style.cursor = 'pointer';
+      }
+    });
+  }
+
+  // Rehber, Şema Galerisi veya Tam Ekran açıldığında da kutuları otomatik bağla
+  ['openMasterGuideModal', 'openSemaGalleryModal', 'openSchemaFullscreenFromCard'].forEach(fnName => {
+    const orig = window[fnName];
+    if (typeof orig === 'function' && !orig._s26Bound) {
+      const wrapped = function(...args) {
+        const res = orig.apply(this, args);
+        setTimeout(() => rebindSema26StageBoxes(document), 60);
+        return res;
+      };
+      wrapped._s26Bound = true;
+      window[fnName] = wrapped;
+    }
+  });
+
+  window.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => rebindSema26StageBoxes(document), 620);
   });
 })();
