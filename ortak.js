@@ -9307,3 +9307,975 @@ B) KİRACI / SINIRLI AYNİ HAK SAHİBİ / KAPICI BAŞVURUSU İÇİN:
     setTimeout(() => rebindSema26StageBoxes(document), 620);
   });
 })();
+// 28. GELİŞMİŞ NOT YÖNETİM MERKEZİ (AKORDEON LİSTE, DÜZENLEME, VAZGEÇ/SIFIRLA, FİLTRE/ARAMA, SEÇİLİ PDF YAZDIRMA) VE DIŞARIDAN KOPYALA-YAPIŞTIR SEMBOLLERİNİ TEMİZLEME MOTORU
+(function initAdvancedNotesManagerAndPasteCleaner() {
+
+  let editingNoteId = null;
+  let activeNoteFilterCat = 'Tümü';
+  let selectedNoteIds = new Set();
+  let expandedNoteIds = new Set();
+  let allNotesExpanded = false;
+
+  // 1. DIŞARIDAN KOPYALA-YAPIŞTIR BOZUK SEMBOL, PDF FONTU VE TÜRKÇE KODLAMA TEMİZLEYİCİ
+  function cleanExternalCopiedText(rawStr) {
+    if (!rawStr) return '';
+    let s = String(rawStr);
+
+    // a) macOS NFD parçalanmış Türkçe karakterleri (i + nokta, s + çengel vb.) tek harfe (NFC) birleştir
+    if (typeof s.normalize === 'function') {
+      s = s.normalize('NFC');
+    }
+
+    // b) Bozuk UTF-8 / Windows-1254 (Mojibake) Türkçe karakter dizilerini düzelt
+    const mojibakeMap = [
+      [/Ä±/g, 'ı'], [/Ä°/g, 'İ'], [/ÅŸ/g, 'ş'], [/Åž/g, 'Ş'],
+      [/ÄŸ/g, 'ğ'], [/Äž/g, 'Ğ'], [/Ã§/g, 'ç'], [/Ã‡/g, 'Ç'],
+      [/Ã¶/g, 'ö'], [/Ã–/g, 'Ö'], [/Ã¼/g, 'ü'], [/Ãœ/g, 'Ü'],
+      [/Ã¢/g, 'â'], [/Ã‚/g, 'Â'], [/Ã®/g, 'î'], [/Ã»/g, 'û'],
+      [/â€œ|â€\u009d|â€ž/g, '"'], [/â€™|â€˜/g, "'"],
+      [/â€“/g, '–'], [/â€”/g, '—'], [/â€¢/g, '•'], [/â€¦/g, '...'],
+      [/Â /g, ' '], [/Â/g, '']
+    ];
+    mojibakeMap.forEach(([rgx, rep]) => { s = s.replace(rgx, rep); });
+
+    // c) PDF birleşik harflerini (Ligatürler: ﬁ, ﬂ, ﬀ, ﬃ, ﬄ) normal harflere dönüştür
+    s = s
+      .replace(/\uFB00/g, 'ff')
+      .replace(/\uFB01/g, 'fi')
+      .replace(/\uFB02/g, 'fl')
+      .replace(/\uFB03/g, 'ffi')
+      .replace(/\uFB04/g, 'ffl');
+
+    // d) Word / PDF Wingdings & Symbol özel alan (PUA \uE000-\uF8FF) madde işaretlerini temiz '• ' yap
+    s = s
+      .replace(/[\uF0B7\uF0A7\uF076\uF0D8\uF0FC\uF0E8\uF0A8\u25AA\u25CF\u25CB\u25A0\u25C6]/g, '• ')
+      .replace(/[\uE000-\uF8FF]/g, '') // Kalan tüm özel PDF font sembollerini sil
+      .replace(/\uFFFD/g, '');         // Bozuk karakter () sembollerini sil
+
+    // e) Ortadan bölünmüş yalnız (yetim) UTF-16 vekil karakterlerini (broken surrogates) temizle
+    s = s.replace(/[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/g, '');
+
+    // f) Görünmez kontrol karakterlerini, sıfır genişlikli boşlukları ve PDF satır sonu gizli tirelerini temizle
+    s = s
+      .replace(/\u00AD\s*\n\s*/g, '') // PDF satır sonu kelime bölme tiresini birleştir
+      .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F-\u009F\u00AD\u200B-\u200F\u2028\u2029\uFEFF]/g, '')
+      .replace(/\u00A0/g, ' ');       // Bölünmez boşlukları normal boşluk yap
+
+    // g) Varsa LaTeX kalıntılarını temizle ve aşırı boşlukları dengele
+    if (typeof cleanLatexString === 'function') {
+      s = cleanLatexString(s);
+    }
+    s = s
+      .replace(/[ \t]{2,}/g, ' ')
+      .replace(/\n{3,}/g, '\n\n')
+      .trim();
+
+    return s;
+  }
+
+  window.cleanExternalCopiedText = cleanExternalCopiedText;
+
+  // Mevcut kayıtlı notlarda daha önceden oluşmuş bozuk semboller varsa açılışta otomatik onar
+  function sanitizeExistingSavedNotesInStorage() {
+    if (typeof getSavedNotes !== 'function') return;
+    const notes = getSavedNotes();
+    if (!Array.isArray(notes) || notes.length === 0) return;
+    let changed = false;
+    notes.forEach(n => {
+      const cCat = cleanExternalCopiedText(n.cat || '📌 Önemli');
+      const cSrc = cleanExternalCopiedText(n.src || 'Çalışma Notu');
+      const cQuote = cleanExternalCopiedText(n.quote || '');
+      const cText = cleanExternalCopiedText(n.text || '');
+      if (cCat !== n.cat || cSrc !== n.src || cQuote !== n.quote || cText !== n.text) {
+        n.cat = cCat; n.src = cSrc; n.quote = cQuote; n.text = cText;
+        changed = true;
+      }
+    });
+    if (changed) {
+      localStorage.setItem(NOTES_STORAGE_KEY, JSON.stringify(notes));
+    }
+  }
+
+  // 2. GELİŞMİŞ NOTLAR BÖLÜMÜ STİLLERİ
+  function injectAdvancedNotesStyles() {
+    if (document.getElementById('kdAdvancedNotesStyles')) return;
+    const st = document.createElement('style');
+    st.id = 'kdAdvancedNotesStyles';
+    st.textContent = `
+      .kd-note-drawer-header {
+        background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+        color: #ffffff;
+        padding: 9px 13px;
+        border-radius: 8px;
+        font-size: 0.82rem;
+        font-weight: 800;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        margin-bottom: 8px;
+        border: 1px solid #3b82f6;
+        user-select: none;
+      }
+      .kd-note-drawer-header.edit-mode {
+        background: linear-gradient(135deg, #b45309 0%, #78350f 100%);
+        border-color: #fbbf24;
+      }
+      .kd-note-filter-bar {
+        background: #ffffff;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        padding: 9px 10px;
+        margin-bottom: 10px;
+      }
+      .kd-note-cat-pill {
+        background: #f1f5f9;
+        color: #334155;
+        border: 1px solid #cbd5e1;
+        padding: 3px 9px;
+        border-radius: 99px;
+        font-size: 0.71rem;
+        font-weight: 800;
+        cursor: pointer;
+        transition: 0.15s;
+      }
+      .kd-note-cat-pill.active, .kd-note-cat-pill:hover {
+        background: #0f172a;
+        color: #fbbf24;
+        border-color: #0f172a;
+      }
+      /* Kompakt Tek Satırlık Akordeon Not Kartı */
+      .kd-acc-note-card {
+        background: #ffffff;
+        border: 1.5px solid #cbd5e1;
+        border-left: 5px solid #d97706;
+        border-radius: 8px;
+        margin-bottom: 7px;
+        overflow: hidden;
+        transition: box-shadow 0.15s ease, border-color 0.15s ease;
+      }
+      .kd-acc-note-card:hover {
+        border-color: #94a3b8;
+        box-shadow: 0 3px 10px rgba(15,23,42,0.07);
+      }
+      .kd-acc-note-card.pinned {
+        border-left-color: #eab308;
+        background: #fefce8;
+      }
+      .kd-acc-note-card.cat-onemli { border-left-color: #dc2626; }
+      .kd-acc-note-card.cat-sinav  { border-left-color: #2563eb; }
+      .kd-acc-note-card.cat-saha   { border-left-color: #059669; }
+      .kd-acc-note-card.cat-risk   { border-left-color: #7c3aed; }
+
+      .kd-acc-note-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 6px;
+        padding: 8px 10px;
+        cursor: pointer;
+        user-select: none;
+      }
+      .kd-acc-note-left {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        min-width: 0;
+        flex: 1;
+      }
+      .kd-acc-cat-badge {
+        font-size: 0.69rem;
+        font-weight: 800;
+        padding: 2px 7px;
+        border-radius: 5px;
+        white-space: nowrap;
+        flex-shrink: 0;
+        background: #f1f5f9;
+        color: #0f172a;
+        border: 1px solid #cbd5e1;
+      }
+      .kd-acc-title-text {
+        font-size: 0.81rem;
+        font-weight: 800;
+        color: #0f172a;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        flex: 1;
+      }
+      .kd-acc-note-right {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        flex-shrink: 0;
+      }
+      .kd-acc-icon-btn {
+        background: #f8fafc;
+        border: 1px solid #cbd5e1;
+        color: #334155;
+        border-radius: 5px;
+        padding: 2px 6px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: 0.15s;
+      }
+      .kd-acc-icon-btn:hover {
+        background: #e2e8f0;
+        color: #0f172a;
+      }
+      .kd-acc-note-body {
+        display: none;
+        padding: 9px 12px 11px 12px;
+        border-top: 1px dashed #cbd5e1;
+        background: #ffffff;
+        font-size: 0.83rem;
+        line-height: 1.55;
+      }
+      .kd-acc-note-card.open .kd-acc-note-body {
+        display: block;
+      }
+    `;
+    document.head.appendChild(st);
+  }
+
+  // 3. SAĞ İKİZ EKRANDAKİ NOTLAR GÖRÜNÜMÜNÜ (#splitNotesView) YENİ MİMARİYE DÖNÜŞTÜR
+  function upgradeSplitNotesViewDOM() {
+    const notesView = document.getElementById('splitNotesView');
+    if (!notesView || notesView.dataset.upgradedNotes === '1') return;
+    notesView.dataset.upgradedNotes = '1';
+
+    const activeCilt = document.body.getAttribute('data-cilt') || '1';
+    const defaultSrc = activeCilt === '0' ? 'Ana Sayfa / Genel Not' : `Cilt ${activeCilt} Notu`;
+
+    notesView.innerHTML = `
+      <!-- AÇILIR/KAPANIR YENİ NOT EKLEME & DÜZENLEME BAŞLIĞI -->
+      <div id="kdNoteDrawerHeader" class="kd-note-drawer-header" onclick="toggleNoteFormDrawer()">
+        <span id="kdNoteDrawerTitle">➕ Yeni Not Ekle / Metin Yapıştır</span>
+        <span id="kdNoteDrawerArrow" style="font-size:0.74rem; color:#fde047;">▾ Formu Gizle / Aç</span>
+      </div>
+
+      <!-- NOT GİRİŞ / DÜZENLEME FORMU -->
+      <div class="note-form" id="kdNoteFormBox" style="display:block; margin-bottom:10px; padding:10px; border:1.5px solid #93c5fd; border-radius:8px; background:#f8fafc;">
+        <div style="display:grid; grid-template-columns: 145px 1fr; gap:7px; margin-bottom:7px;">
+          <select id="noteCat" style="margin:0; font-weight:700;">
+            <option value="📌 Önemli">📌 Önemli</option>
+            <option value="🎓 Sınav / Ders">🎓 Sınav / Ders</option>
+            <option value="🏗️ Saha / Parsel">🏗️ Saha / Parsel</option>
+            <option value="⚠️ Mevzuat / Risk">⚠️ Mevzuat / Risk</option>
+          </select>
+          <input type="text" id="noteSource" value="${defaultSrc}" data-default-src="${defaultSrc}" placeholder="Konu Başlığı / Kaynak (Örn: FİZİBİLİTEYE DAHİL ET, Madde 15/8 vb.)" style="margin:0; font-weight:700;">
+        </div>
+        <textarea id="noteQuote" rows="2" placeholder="Seçilen metin veya dışarıdan yapıştırılan alıntı (Bozuk PDF/Word sembolleri otomatik temizlenir)..." style="background:#fefce8; margin-bottom:6px; resize:vertical;"></textarea>
+        <textarea id="noteText" rows="3" placeholder="Kendi notunuzu, açıklamanızı veya değerlendirmenizi buraya yazın..." style="margin-bottom:8px; resize:vertical;"></textarea>
+
+        <div style="display:flex; gap:6px; flex-wrap:wrap;">
+          <button type="button" id="kdSaveNoteBtn" onclick="saveUserNote()" style="background:#059669; color:#fff; border:none; padding:7px 14px; border-radius:6px; font-weight:800; font-size:0.8rem; cursor:pointer; flex:2;">➕ Notu Kaydet</button>
+          <button type="button" onclick="cleanCurrentNoteFormFields()" style="background:#0284c7; color:#fff; border:none; padding:7px 10px; border-radius:6px; font-weight:700; font-size:0.75rem; cursor:pointer;" title="Yapıştırılan metindeki bozuk sembolleri ve fazla boşlukları temizle">🧹 Metni Temizle</button>
+          <button type="button" id="kdCancelNoteBtn" onclick="cancelAndResetNoteForm()" style="background:#dc2626; color:#fff; border:none; padding:7px 12px; border-radius:6px; font-weight:800; font-size:0.78rem; cursor:pointer; flex:1;" title="Yazılanları iptal et ve kutu boyutlarını varsayılana döndür">✕ Vazgeç / Sıfırla</button>
+        </div>
+      </div>
+
+      <!-- ARAMA, SINIF FİLTRESİ VE TOPLU İŞLEM BARI -->
+      <div class="kd-note-filter-bar">
+        <div style="display:flex; gap:6px; align-items:center; margin-bottom:7px;">
+          <input type="text" id="kdNoteSearchInput" placeholder="🔍 Notlarımda kelime veya konu ara (Örn: fizibilite, tevhit, TAKS)..." oninput="renderUserNotes()" style="flex:1; padding:6px 10px; border:1.5px solid #cbd5e1; border-radius:6px; font-size:0.8rem; outline:none;">
+          <button type="button" onclick="document.getElementById('kdNoteSearchInput').value=''; renderUserNotes();" style="background:#f1f5f9; color:#475569; border:1px solid #cbd5e1; padding:5px 8px; border-radius:6px; font-size:0.73rem; font-weight:700; cursor:pointer;">Temizle</button>
+        </div>
+
+        <!-- Kategori Sekmeleri -->
+        <div id="kdNoteCatFilterBar" style="display:flex; gap:5px; flex-wrap:wrap; margin-bottom:8px; padding-bottom:7px; border-bottom:1px solid #f1f5f9;">
+          <button type="button" class="kd-note-cat-pill active" data-cat="Tümü" onclick="setNoteFilterCat('Tümü')">Tümü</button>
+          <button type="button" class="kd-note-cat-pill" data-cat="⭐ Sabit" onclick="setNoteFilterCat('⭐ Sabit')">⭐ Sabitlenenler</button>
+          <button type="button" class="kd-note-cat-pill" data-cat="📌 Önemli" onclick="setNoteFilterCat('📌 Önemli')">📌 Önemli</button>
+          <button type="button" class="kd-note-cat-pill" data-cat="🎓 Sınav / Ders" onclick="setNoteFilterCat('🎓 Sınav / Ders')">🎓 Sınav / Ders</button>
+          <button type="button" class="kd-note-cat-pill" data-cat="🏗️ Saha / Parsel" onclick="setNoteFilterCat('🏗️ Saha / Parsel')">🏗️ Saha / Parsel</button>
+          <button type="button" class="kd-note-cat-pill" data-cat="⚠️ Mevzuat / Risk" onclick="setNoteFilterCat('⚠️ Mevzuat / Risk')">⚠️ Mevzuat / Risk</button>
+        </div>
+
+        <!-- Seçim, PDF Yazdırma, Kopyalama ve Tümünü Aç/Kapat Barı -->
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px; font-size:0.75rem;">
+          <div style="display:flex; align-items:center; gap:6px;">
+            <button type="button" onclick="toggleSelectAllNotes()" style="background:#f8fafc; color:#0f172a; border:1px solid #94a3b8; padding:4px 8px; border-radius:5px; font-size:0.72rem; font-weight:800; cursor:pointer;">☑️ Tümünü Seç / Kaldır</button>
+            <button type="button" id="kdExpandAllNotesBtn" onclick="toggleExpandAllNotes()" style="background:#f8fafc; color:#0f172a; border:1px solid #94a3b8; padding:4px 8px; border-radius:5px; font-size:0.72rem; font-weight:700; cursor:pointer;">▾ Tümünü Aç</button>
+          </div>
+          <div style="display:flex; align-items:center; gap:5px; flex-wrap:wrap;">
+            <button type="button" id="kdPrintSelectedPdfBtn" onclick="printSelectedUserNotesPDF()" style="background:#2563eb; color:#fff; border:none; padding:5px 10px; border-radius:5px; font-size:0.73rem; font-weight:800; cursor:pointer;">🖨️ Seçilileri PDF Yazdır</button>
+            <button type="button" onclick="copySelectedNotesToClipboard(this)" style="background:#059669; color:#fff; border:none; padding:5px 9px; border-radius:5px; font-size:0.73rem; font-weight:700; cursor:pointer;" title="Seçili notları panoya kopyala">📋 Kopyala</button>
+            <button type="button" onclick="exportNotesTxt()" style="background:#1e293b; color:#fff; border:none; padding:5px 8px; border-radius:5px; font-size:0.72rem; cursor:pointer;">💾 .TXT</button>
+            <button type="button" onclick="clearAllNotes()" style="background:#fef2f2; color:#dc2626; border:1px solid #fecaca; padding:4px 7px; border-radius:5px; font-size:0.71rem; font-weight:700; cursor:pointer;" title="Tüm notları sil">🗑️</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- KAYITLI NOTLAR KOMPAKT AKORDEON LİSTESİ -->
+      <div id="notesListContainer"></div>
+    `;
+
+    // Form içindeki kutulara dışarıdan yapıştırma (paste) yapıldığında anında bozuk sembolleri temizle!
+    ['noteSource', 'noteQuote', 'noteText'].forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.addEventListener('paste', function(e) {
+        const clip = e.clipboardData || window.clipboardData;
+        if (!clip) return;
+        const pastedText = clip.getData('text/plain');
+        if (!pastedText) return;
+        e.preventDefault();
+        const cleaned = cleanExternalCopiedText(pastedText);
+        const start = this.selectionStart || 0;
+        const end = this.selectionEnd || 0;
+        const val = this.value || '';
+        this.value = val.slice(0, start) + cleaned + val.slice(end);
+        this.selectionStart = this.selectionEnd = start + cleaned.length;
+      });
+    });
+  }
+
+  // 4. FORM AÇ/KAPAT, VAZGEÇ/SIFIRLA, METİN TEMİZLE VE DÜZENLEME FONKSİYONLARI
+  window.toggleNoteFormDrawer = function(forceOpen) {
+    const box = document.getElementById('kdNoteFormBox');
+    const arrow = document.getElementById('kdNoteDrawerArrow');
+    if (!box) return;
+    const willOpen = (typeof forceOpen === 'boolean') ? forceOpen : (box.style.display === 'none');
+    box.style.display = willOpen ? 'block' : 'none';
+    if (arrow) arrow.textContent = willOpen ? '▴ Formu Gizle' : '▾ Formu Aç';
+  };
+
+  window.cleanCurrentNoteFormFields = function() {
+    ['noteSource', 'noteQuote', 'noteText'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el && el.value) el.value = cleanExternalCopiedText(el.value);
+    });
+  };
+
+  // VAZGEÇ / SIFIRLA: Alanları temizler, düzenleme modundan çıkar ve büyütülmüş textarea boyutlarını varsayılana döndürür
+  window.cancelAndResetNoteForm = function() {
+    editingNoteId = null;
+    const catEl = document.getElementById('noteCat');
+    const srcEl = document.getElementById('noteSource');
+    const quoteEl = document.getElementById('noteQuote');
+    const textEl = document.getElementById('noteText');
+    const headerEl = document.getElementById('kdNoteDrawerHeader');
+    const titleEl = document.getElementById('kdNoteDrawerTitle');
+    const saveBtn = document.getElementById('kdSaveNoteBtn');
+
+    if (catEl) catEl.value = '📌 Önemli';
+    if (srcEl) srcEl.value = srcEl.getAttribute('data-default-src') || 'Çalışma Notu';
+    if (quoteEl) {
+      quoteEl.value = '';
+      quoteEl.style.height = ''; // Elle büyütülmüş pencere boyutunu varsayılana sıfırlar
+      quoteEl.rows = 2;
+    }
+    if (textEl) {
+      textEl.value = '';
+      textEl.style.height = '';  // Elle büyütülmüş pencere boyutunu varsayılana sıfırlar
+      textEl.rows = 3;
+    }
+    if (headerEl) headerEl.classList.remove('edit-mode');
+    if (titleEl) titleEl.textContent = '➕ Yeni Not Ekle / Metin Yapıştır';
+    if (saveBtn) {
+      saveBtn.textContent = '➕ Notu Kaydet';
+      saveBtn.style.background = '#059669';
+    }
+  };
+
+  window.startEditUserNote = function(noteId, ev) {
+    if (ev && ev.stopPropagation) ev.stopPropagation();
+    const notes = getSavedNotes();
+    const target = notes.find(n => n.id === noteId);
+    if (!target) return;
+
+    editingNoteId = noteId;
+    toggleNoteFormDrawer(true);
+
+    const catEl = document.getElementById('noteCat');
+    const srcEl = document.getElementById('noteSource');
+    const quoteEl = document.getElementById('noteQuote');
+    const textEl = document.getElementById('noteText');
+    const headerEl = document.getElementById('kdNoteDrawerHeader');
+    const titleEl = document.getElementById('kdNoteDrawerTitle');
+    const saveBtn = document.getElementById('kdSaveNoteBtn');
+
+    if (catEl) catEl.value = target.cat || '📌 Önemli';
+    if (srcEl) srcEl.value = target.src || '';
+    if (quoteEl) {
+      quoteEl.value = target.quote || '';
+      quoteEl.style.height = '';
+    }
+    if (textEl) {
+      textEl.value = target.text || '';
+      textEl.style.height = '';
+    }
+    if (headerEl) headerEl.classList.add('edit-mode');
+    if (titleEl) titleEl.textContent = '✏️ Kayıtlı Notu Düzenliyorsunuz';
+    if (saveBtn) {
+      saveBtn.textContent = '💾 Değişiklikleri Güncelle';
+      saveBtn.style.background = '#d97706';
+    }
+
+    const splitBody = document.querySelector('.split-body');
+    if (splitBody) splitBody.scrollTo({ top: 0, behavior: 'smooth' });
+    if (textEl) textEl.focus();
+  };
+
+  window.togglePinUserNote = function(noteId, ev) {
+    if (ev && ev.stopPropagation) ev.stopPropagation();
+    const notes = getSavedNotes();
+    const target = notes.find(n => n.id === noteId);
+    if (!target) return;
+    target.pinned = !target.pinned;
+    localStorage.setItem(NOTES_STORAGE_KEY, JSON.stringify(notes));
+    renderUserNotes();
+  };
+
+  // KAYDET VEYA GÜNCELLE
+  window.saveUserNote = function() {
+    const cat = cleanExternalCopiedText(document.getElementById('noteCat')?.value || '📌 Önemli');
+    const src = cleanExternalCopiedText(document.getElementById('noteSource')?.value || 'Çalışma Notu') || 'Çalışma Notu';
+    const quote = cleanExternalCopiedText(document.getElementById('noteQuote')?.value || '');
+    const text = cleanExternalCopiedText(document.getElementById('noteText')?.value || '');
+
+    if (!quote && !text) {
+      alert('Lütfen bir metin seçin veya not alanına açıklama yazın.');
+      return;
+    }
+
+    const notes = getSavedNotes();
+    if (editingNoteId !== null) {
+      const idx = notes.findIndex(n => n.id === editingNoteId);
+      if (idx >= 0) {
+        notes[idx] = {
+          ...notes[idx],
+          cat,
+          src,
+          quote,
+          text,
+          updatedAt: new Date().toLocaleString('tr-TR')
+        };
+        expandedNoteIds.add(editingNoteId);
+      }
+    } else {
+      const newId = Date.now();
+      notes.unshift({
+        id: newId,
+        date: new Date().toLocaleString('tr-TR'),
+        cat,
+        src,
+        quote,
+        text,
+        pinned: false
+      });
+      expandedNoteIds.add(newId);
+    }
+
+    localStorage.setItem(NOTES_STORAGE_KEY, JSON.stringify(notes));
+    cancelAndResetNoteForm();
+    renderUserNotes();
+  };
+
+  // 5. AKORDEON LİSTE, FİLTRELEME VE SEÇİM YÖNETİMİ
+  window.setNoteFilterCat = function(cat) {
+    activeNoteFilterCat = cat;
+    document.querySelectorAll('#kdNoteCatFilterBar .kd-note-cat-pill').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-cat') === cat);
+    });
+    renderUserNotes();
+  };
+
+  window.toggleNoteAccordionItem = function(noteId) {
+    if (expandedNoteIds.has(noteId)) expandedNoteIds.delete(noteId);
+    else expandedNoteIds.add(noteId);
+    const card = document.getElementById('kd-note-card-' + noteId);
+    if (card) card.classList.toggle('open', expandedNoteIds.has(noteId));
+  };
+
+  window.toggleExpandAllNotes = function() {
+    const filtered = getFilteredNotesList();
+    allNotesExpanded = !allNotesExpanded;
+    if (allNotesExpanded) {
+      filtered.forEach(n => expandedNoteIds.add(n.id));
+    } else {
+      expandedNoteIds.clear();
+    }
+    const btn = document.getElementById('kdExpandAllNotesBtn');
+    if (btn) btn.textContent = allNotesExpanded ? '▴ Tümünü Kapat' : '▾ Tümünü Aç';
+    renderUserNotes();
+  };
+
+  window.toggleSelectSingleNote = function(noteId, cbEl, ev) {
+    if (ev && ev.stopPropagation) ev.stopPropagation();
+    if (cbEl.checked) selectedNoteIds.add(noteId);
+    else selectedNoteIds.delete(noteId);
+    updateSelectedPdfButtonLabel();
+  };
+
+  window.toggleSelectAllNotes = function() {
+    const filtered = getFilteredNotesList();
+    const allSelected = filtered.length > 0 && filtered.every(n => selectedNoteIds.has(n.id));
+    if (allSelected) {
+      filtered.forEach(n => selectedNoteIds.delete(n.id));
+    } else {
+      filtered.forEach(n => selectedNoteIds.add(n.id));
+    }
+    renderUserNotes();
+  };
+
+  function updateSelectedPdfButtonLabel() {
+    const btn = document.getElementById('kdPrintSelectedPdfBtn');
+    if (!btn) return;
+    const count = selectedNoteIds.size;
+    btn.textContent = count > 0 ? `🖨️ Seçilileri PDF Yazdır (${count})` : '🖨️ Tümünü PDF Yazdır';
+  }
+
+  function normSearchTR(s) {
+    return String(s || '')
+      .toLocaleLowerCase('tr-TR')
+      .replace(/[âá]/g, 'a').replace(/[îí]/g, 'i').replace(/[ûú]/g, 'u')
+      .replace(/ç/g, 'c').replace(/ğ/g, 'g').replace(/ı/g, 'i')
+      .replace(/ö/g, 'o').replace(/ş/g, 's').replace(/ü/g, 'u');
+  }
+
+  function getFilteredNotesList() {
+    const notes = getSavedNotes();
+    const qRaw = (document.getElementById('kdNoteSearchInput')?.value || '').trim();
+    const qNorm = normSearchTR(qRaw);
+
+    // Sabitlenenleri (pinned) en üste sırala
+    const sorted = [...notes].sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0));
+
+    return sorted.filter(n => {
+      if (activeNoteFilterCat === '⭐ Sabit' && !n.pinned) return false;
+      if (activeNoteFilterCat !== 'Tümü' && activeNoteFilterCat !== '⭐ Sabit' && n.cat !== activeNoteFilterCat) return false;
+      if (!qNorm) return true;
+      const hay = normSearchTR(`${n.cat} ${n.src} ${n.quote || ''} ${n.text || ''}`);
+      return hay.includes(qNorm);
+    });
+  }
+
+  function getCatColorClass(cat) {
+    if (!cat) return '';
+    if (cat.includes('Önemli')) return 'cat-onemli';
+    if (cat.includes('Sınav')) return 'cat-sinav';
+    if (cat.includes('Saha')) return 'cat-saha';
+    if (cat.includes('Mevzuat') || cat.includes('Risk')) return 'cat-risk';
+    return '';
+  }
+
+  function escapeHtmlSafe(str) {
+    return String(str || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+  }
+
+  // KOMPAKT AKORDEON LİSTE RENDER MOTORU
+  window.renderUserNotes = function() {
+    upgradeSplitNotesViewDOM();
+    const allNotes = getSavedNotes();
+    const b1 = document.getElementById('noteCountBadge');
+    const b2 = document.getElementById('splitNoteCount');
+    if (b1) b1.textContent = allNotes.length;
+    if (b2) b2.textContent = allNotes.length;
+
+    const container = document.getElementById('notesListContainer');
+    if (!container) return;
+
+    const filtered = getFilteredNotesList();
+    updateSelectedPdfButtonLabel();
+
+    if (allNotes.length === 0) {
+      container.innerHTML = `<div style="text-align:center; padding:18px; color:#64748b; font-size:0.82rem; background:#fff; border-radius:8px; border:1px dashed #cbd5e1;">Henüz kayıtlı notunuz yok. Sol ekrandan bir metni fareyle seçip ekleyebilir veya yukarıdan yazabilirsiniz.</div>`;
+      return;
+    }
+
+    if (filtered.length === 0) {
+      container.innerHTML = `<div style="text-align:center; padding:18px; color:#64748b; font-size:0.82rem; background:#fff; border-radius:8px; border:1px dashed #cbd5e1;">Seçili sınıf veya arama kelimesine uygun not bulunamadı.</div>`;
+      return;
+    }
+
+    container.innerHTML = filtered.map(n => {
+      const isOpen = expandedNoteIds.has(n.id);
+      const isChecked = selectedNoteIds.has(n.id);
+      const catClass = getCatColorClass(n.cat);
+      const shortPreview = cleanExternalCopiedText(n.src || n.text || n.quote || 'Not');
+      const shortDate = (n.date || '').split(' ')[0] || n.date || '';
+
+      return `
+        <div class="kd-acc-note-card ${catClass} ${n.pinned ? 'pinned' : ''} ${isOpen ? 'open' : ''}" id="kd-note-card-${n.id}">
+          <div class="kd-acc-note-head" onclick="toggleNoteAccordionItem(${n.id})">
+            <div class="kd-acc-note-left">
+              <input type="checkbox" ${isChecked ? 'checked' : ''} onclick="toggleSelectSingleNote(${n.id}, this, event)" title="PDF yazdırma veya kopyalama için seç" style="width:15px; height:15px; cursor:pointer; flex-shrink:0;">
+              <span class="kd-acc-cat-badge">${escapeHtmlSafe(n.cat)}</span>
+              <span class="kd-acc-title-text" title="${escapeHtmlSafe(shortPreview)}">${n.pinned ? '⭐ ' : ''}${escapeHtmlSafe(shortPreview)}</span>
+            </div>
+            <div class="kd-acc-note-right">
+              <span style="font-size:0.68rem; color:#64748b; margin-right:2px;">${escapeHtmlSafe(shortDate)}</span>
+              <button type="button" class="kd-acc-icon-btn" onclick="togglePinUserNote(${n.id}, event)" title="En üste sabitle / kaldır">${n.pinned ? '⭐' : '☆'}</button>
+              <button type="button" class="kd-acc-icon-btn" style="color:#0284c7; border-color:#7dd3fc;" onclick="startEditUserNote(${n.id}, event)" title="Bu notu düzenle">✏️ Düzenle</button>
+              <button type="button" class="kd-acc-icon-btn" style="color:#dc2626; border-color:#fecaca;" onclick="event.stopPropagation(); deleteUserNote(${n.id})" title="Notu sil">✕</button>
+            </div>
+          </div>
+          <div class="kd-acc-note-body">
+            <div style="font-size:0.72rem; color:#64748b; margin-bottom:6px; display:flex; justify-content:space-between;">
+              <span>📂 <strong>Konu / Kaynak:</strong> ${escapeHtmlSafe(n.src)}</span>
+              <span>🕒 ${escapeHtmlSafe(n.date)}${n.updatedAt ? ' (Güncellendi: ' + escapeHtmlSafe(n.updatedAt) + ')' : ''}</span>
+            </div>
+            ${n.quote ? `<div class="note-quote" style="margin-bottom:7px; white-space:pre-wrap;">"${escapeHtmlSafe(n.quote)}"</div>` : ''}
+            ${n.text ? `<div style="color:#0f172a; white-space:pre-wrap; font-weight:500;">${escapeHtmlSafe(n.text)}</div>` : ''}
+          </div>
+        </div>
+      `;
+    }).join('');
+  };
+
+  // 6. SEÇİLİ NOTLARI KURUMSAL PDF OLARAK YAZDIRMA VE PANOYA KOPYALAMA
+  function getNotesForExportAction() {
+    const filtered = getFilteredNotesList();
+    if (selectedNoteIds.size > 0) {
+      return filtered.filter(n => selectedNoteIds.has(n.id));
+    }
+    return filtered;
+  }
+
+  window.printSelectedUserNotesPDF = function() {
+    const list = getNotesForExportAction();
+    if (list.length === 0) {
+      alert('Yazdırılacak not bulunamadı.');
+      return;
+    }
+    const win = window.open('', '_blank');
+    win.document.write(`
+      <html><head><title>Kentsel Dönüşüm Kütüphanesi - Seçili Çalışma Notları (PDF)</title>
+      <style>
+        @page { size: A4; margin: 16mm; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; color: #0f172a; line-height: 1.55; margin: 0; padding: 0; }
+        .pdf-header { border-bottom: 3px solid #0f172a; padding-bottom: 10px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: flex-end; }
+        .pdf-header h1 { font-size: 1.2rem; margin: 0; color: #0f172a; }
+        .pdf-meta { font-size: 0.78rem; color: #475569; }
+        .pdf-note-card { border: 1.5px solid #cbd5e1; border-left: 5px solid #0284c7; border-radius: 8px; padding: 11px 14px; margin-bottom: 12px; page-break-inside: avoid; background: #ffffff; }
+        .pdf-note-top { display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: 800; color: #1e3a8a; margin-bottom: 6px; border-bottom: 1px solid #f1f5f9; padding-bottom: 4px; }
+        .pdf-quote { background: #fef9c3; border-left: 3px solid #eab308; padding: 7px 10px; font-style: italic; font-size: 0.82rem; margin-bottom: 7px; border-radius: 4px; white-space: pre-wrap; }
+        .pdf-text { font-size: 0.86rem; color: #0f172a; white-space: pre-wrap; }
+      </style></head><body>
+      <div class="pdf-header">
+        <div>
+          <h1>📚 Kentsel Dönüşüm ve İmar Mevzuatı — Çalışma ve Saha Notları Raporu</h1>
+          <div class="pdf-meta">Kategori Filtresi: <b>${escapeHtmlSafe(activeNoteFilterCat)}</b> • Toplam Basılan Not: <b>${list.length} Adet</b></div>
+        </div>
+        <div class="pdf-meta">Rapor Tarihi: ${new Date().toLocaleDateString('tr-TR')}</div>
+      </div>
+      ${list.map((n, i) => `
+        <div class="pdf-note-card">
+          <div class="pdf-note-top">
+            <span>${i + 1}. [${escapeHtmlSafe(n.cat)}] — ${escapeHtmlSafe(n.src)}</span>
+            <span style="color:#64748b; font-weight:600;">${escapeHtmlSafe(n.date)}</span>
+          </div>
+          ${n.quote ? `<div class="pdf-quote">"${escapeHtmlSafe(n.quote)}"</div>` : ''}
+          ${n.text ? `<div class="pdf-text">${escapeHtmlSafe(n.text)}</div>` : ''}
+        </div>
+      `).join('')}
+      </body></html>
+    `);
+    win.document.close();
+    setTimeout(() => win.print(), 150);
+  };
+
+  window.printUserNotes = window.printSelectedUserNotesPDF;
+
+  window.copySelectedNotesToClipboard = function(btnEl) {
+    const list = getNotesForExportAction();
+    if (list.length === 0) {
+      alert('Kopyalanacak not bulunamadı.');
+      return;
+    }
+    const textOut = list.map((n, i) => {
+      let block = `${i + 1}. [${n.cat}] ${n.src} (${n.date})`;
+      if (n.quote) block += `\n   Alıntı: "${n.quote}"`;
+      if (n.text) block += `\n   Not: ${n.text}`;
+      return block;
+    }).join('\n----------------------------------------\n');
+
+    navigator.clipboard.writeText(textOut).then(() => {
+      if (btnEl) {
+        const orig = btnEl.innerHTML;
+        btnEl.innerHTML = '✅ Kopyalandı!';
+        setTimeout(() => { btnEl.innerHTML = orig; }, 1800);
+      }
+    });
+  };
+
+  // Sol ekrandan metin seçilip "Seçimi Notlarıma Ekle" dendiğinde de metni temizleyerek ekle ve formu aç
+  const _origAddSelected = window.addSelectedTextToNotes;
+  if (typeof _origAddSelected === 'function') {
+    window.addSelectedTextToNotes = function(e) {
+      if (typeof selectedQuoteBuffer === 'string') {
+        selectedQuoteBuffer = cleanExternalCopiedText(selectedQuoteBuffer);
+      }
+      _origAddSelected(e);
+      toggleNoteFormDrawer(true);
+    };
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    injectAdvancedNotesStyles();
+    sanitizeExistingSavedNotesInStorage();
+    setTimeout(() => {
+      upgradeSplitNotesViewDOM();
+      renderUserNotes();
+    }, 640);
+  });
+})();
+// 29. SEÇİLİ NOTLARI GÜVENLİ SİLME (TÜMÜNÜ SİL KORUMASI), KART İÇİ DOĞRUDAN DÜZENLE/KAYDET VE BİLGİSAYARA YEDEK KAYDETME MODÜLÜ
+(function initSafeDeleteSelectedAndInlineSaveNotes() {
+
+  let inlineEditingNoteId = null;
+
+  // 1. ARAÇ ÇUBUĞUNU GÜNCELLE: "TÜMÜNÜ SİL" YERİNE "🗑️ SEÇİLİLERİ SİL" VE "💾 YEDEK KAYDET / AÇ" EKLE
+  function upgradeNotesToolbarButtons() {
+    const printBtn = document.getElementById('kdPrintSelectedPdfBtn');
+    if (!printBtn || !printBtn.parentElement) return;
+    const actionGroup = printBtn.parentElement;
+    if (actionGroup.dataset.safeToolbarUpgraded === '1') return;
+    actionGroup.dataset.safeToolbarUpgraded = '1';
+
+    actionGroup.innerHTML = `
+      <button type="button" id="kdPrintSelectedPdfBtn" onclick="printSelectedUserNotesPDF()" style="background:#2563eb; color:#fff; border:none; padding:5px 10px; border-radius:5px; font-size:0.73rem; font-weight:800; cursor:pointer;" title="Seçili notları A4 PDF olarak yazdır veya kaydet">🖨️ PDF Yazdır / Kaydet</button>
+      <button type="button" onclick="copySelectedNotesToClipboard(this)" style="background:#059669; color:#fff; border:none; padding:5px 9px; border-radius:5px; font-size:0.73rem; font-weight:800; cursor:pointer;" title="Seçili notları panoya kopyala">📋 Kopyala</button>
+      <button type="button" onclick="exportNotesTxt()" style="background:#1e293b; color:#fff; border:none; padding:5px 9px; border-radius:5px; font-size:0.72rem; font-weight:800; cursor:pointer;" title="Notları .TXT metin belgesi olarak bilgisayara kaydet">💾 .TXT Kaydet</button>
+      <button type="button" onclick="backupNotesToJsonFile()" style="background:#0d9488; color:#fff; border:none; padding:5px 9px; border-radius:5px; font-size:0.72rem; font-weight:800; cursor:pointer;" title="Tüm notları bilgisayara yedek dosyası (.json) olarak kaydet">📦 Yedek Kaydet</button>
+      <label style="background:#475569; color:#fff; padding:5px 8px; border-radius:5px; font-size:0.72rem; font-weight:800; cursor:pointer; display:inline-flex; align-items:center;" title="Bilgisayardaki yedek not dosyasını (.json) geri yükle">
+        📂 Yedek Aç
+        <input type="file" accept=".json" onchange="restoreNotesFromJsonFile(this.files[0]); this.value='';" style="display:none;">
+      </label>
+      <button type="button" id="kdDeleteSelectedNotesBtn" onclick="deleteSelectedUserNotes()" style="background:#fef2f2; color:#dc2626; border:1.5px solid #f87171; padding:4px 9px; border-radius:5px; font-size:0.72rem; font-weight:800; cursor:pointer;" title="Yalnızca solundaki kutucuğu işaretlediğiniz seçili notları siler (Tüm notları silmez)">🗑️ Seçilileri Sil (0)</button>
+    `;
+  }
+
+  // 2. SEÇİLİ OLANLARI SİL FONKSİYONU (YANLIŞLIKLA TÜM NOTLARIN SİLİNMESİNİ ENGELLER)
+  window.deleteSelectedUserNotes = function() {
+    const checkedBoxes = Array.from(document.querySelectorAll('#notesListContainer input.kd-note-select-cb:checked'));
+    const idsToDelete = checkedBoxes.map(cb => Number(cb.getAttribute('data-note-id')));
+
+    if (idsToDelete.length === 0) {
+      alert('⚠️ Silmek için seçili not bulunamadı!\n\nYanlışlıkla tüm notlarınızın silinmemesi için lütfen önce silmek istediğiniz notların solundaki onay kutucuğunu (☑️) işaretleyin.');
+      return;
+    }
+
+    if (!confirm(`İşaretlediğiniz ${idsToDelete.length} adet notu silmek istediğinize emin misiniz?\n(İşaretlenmeyen diğer notlarınız korunacaktır.)`)) {
+      return;
+    }
+
+    const idSet = new Set(idsToDelete);
+    const remaining = (typeof getSavedNotes === 'function' ? getSavedNotes() : []).filter(n => !idSet.has(Number(n.id)));
+    localStorage.setItem(NOTES_STORAGE_KEY, JSON.stringify(remaining));
+
+    // Seçim setini güncelle ve yeniden çiz
+    document.querySelectorAll('#notesListContainer input.kd-note-select-cb').forEach(cb => { cb.checked = false; });
+    if (typeof renderUserNotes === 'function') renderUserNotes();
+    refreshSelectionCounters();
+  };
+
+  // Eski clearAllNotes fonksiyonunu da güvenli seçili silmeye yönlendir
+  window.clearAllNotes = window.deleteSelectedUserNotes;
+
+  // 3. BİLGİSAYARA YEDEK KAYDETME (.JSON) VE GERİ YÜKLEME
+  window.backupNotesToJsonFile = function() {
+    const notes = typeof getSavedNotes === 'function' ? getSavedNotes() : [];
+    if (notes.length === 0) {
+      alert('Yedeklenecek kayıtlı not bulunamadı.');
+      return;
+    }
+    const dataStr = JSON.stringify(notes, null, 2);
+    const blob = new Blob([dataStr], { type: 'application/json;charset=utf-8' });
+    const a = document.createElement('a');
+    const dateStr = new Date().toISOString().slice(0, 10);
+    a.href = URL.createObjectURL(blob);
+    a.download = `Kentsel_Donusum_Notlar_Yedek_${dateStr}.json`;
+    a.click();
+  };
+
+  window.restoreNotesFromJsonFile = function(file) {
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      try {
+        const imported = JSON.parse(e.target.result);
+        if (!Array.isArray(imported)) throw new Error('Geçersiz format');
+        const current = typeof getSavedNotes === 'function' ? getSavedNotes() : [];
+        const existingIds = new Set(current.map(n => n.id));
+        let added = 0;
+        imported.forEach(item => {
+          if (item && (item.text || item.quote)) {
+            const id = existingIds.has(item.id) ? (Date.now() + Math.floor(Math.random() * 10000)) : (item.id || Date.now());
+            current.push({
+              id,
+              date: item.date || new Date().toLocaleString('tr-TR'),
+              cat: window.cleanExternalCopiedText ? cleanExternalCopiedText(item.cat || '📌 Önemli') : (item.cat || '📌 Önemli'),
+              src: window.cleanExternalCopiedText ? cleanExternalCopiedText(item.src || 'Yedek Not') : (item.src || 'Yedek Not'),
+              quote: window.cleanExternalCopiedText ? cleanExternalCopiedText(item.quote || '') : (item.quote || ''),
+              text: window.cleanExternalCopiedText ? cleanExternalCopiedText(item.text || '') : (item.text || ''),
+              pinned: !!item.pinned
+            });
+            added++;
+          }
+        });
+        localStorage.setItem(NOTES_STORAGE_KEY, JSON.stringify(current));
+        if (typeof renderUserNotes === 'function') renderUserNotes();
+        alert(`✅ ${added} adet not başarıyla yüklendi ve mevcut notlarınıza eklendi.`);
+      } catch (err) {
+        alert('Yedek dosyası okunamadı. Lütfen geçerli bir .json yedek dosyası seçin.');
+      }
+    };
+    reader.readAsText(file);
+  };
+
+  // 4. KART İÇİNDE DOĞRUDAN DÜZENLEME VE "💾 KAYDET / ✕ VAZGEÇ" ÖZELLİĞİ
+  window.openInlineNoteEditor = function(noteId, ev) {
+    if (ev && ev.stopPropagation) ev.stopPropagation();
+    const notes = typeof getSavedNotes === 'function' ? getSavedNotes() : [];
+    const target = notes.find(n => Number(n.id) === Number(noteId));
+    if (!target) return;
+
+    inlineEditingNoteId = Number(noteId);
+    const card = document.getElementById('kd-note-card-' + noteId);
+    if (!card) return;
+    card.classList.add('open');
+
+    const bodyEl = card.querySelector('.kd-acc-note-body');
+    if (!bodyEl) return;
+
+    const cats = ['📌 Önemli', '🎓 Sınav / Ders', '🏗️ Saha / Parsel', '⚠️ Mevzuat / Risk'];
+    const esc = (s) => String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+    bodyEl.innerHTML = `
+      <div style="background:#fffbeb; border:1.5px solid #f59e0b; border-radius:8px; padding:10px; margin-top:4px;" onclick="event.stopPropagation();">
+        <div style="font-size:0.75rem; font-weight:800; color:#b45309; margin-bottom:6px;">✏️ NOTU DÜZENLE VE KAYDET</div>
+        <div style="display:grid; grid-template-columns:140px 1fr; gap:6px; margin-bottom:6px;">
+          <select id="inline-cat-${noteId}" style="padding:5px 7px; border:1px solid #cbd5e1; border-radius:6px; font-size:0.78rem; font-weight:700;">
+            ${cats.map(c => `<option value="${c}" ${target.cat === c ? 'selected' : ''}>${c}</option>`).join('')}
+          </select>
+          <input type="text" id="inline-src-${noteId}" value="${esc(target.src)}" placeholder="Konu Başlığı / Kaynak..." style="padding:5px 8px; border:1px solid #cbd5e1; border-radius:6px; font-size:0.78rem; font-weight:700;">
+        </div>
+        <textarea id="inline-quote-${noteId}" rows="2" placeholder="Alıntı metni (İsteğe bağlı)..." style="width:100%; padding:6px 8px; border:1px solid #fde047; background:#fefce8; border-radius:6px; font-size:0.79rem; margin-bottom:6px; font-family:inherit; resize:vertical;">${esc(target.quote || '')}</textarea>
+        <textarea id="inline-text-${noteId}" rows="3" placeholder="Notunuz / Açıklamanız..." style="width:100%; padding:6px 8px; border:1px solid #93c5fd; background:#ffffff; border-radius:6px; font-size:0.81rem; margin-bottom:8px; font-family:inherit; resize:vertical;">${esc(target.text || '')}</textarea>
+        <div style="display:flex; justify-content:flex-end; gap:6px;">
+          <button type="button" onclick="saveInlineEditedNote(${noteId}, event)" style="background:#059669; color:#ffffff; border:none; padding:6px 14px; border-radius:6px; font-size:0.78rem; font-weight:800; cursor:pointer;">💾 Değişiklikleri Kaydet</button>
+          <button type="button" onclick="cancelInlineEditNote(${noteId}, event)" style="background:#dc2626; color:#ffffff; border:none; padding:6px 12px; border-radius:6px; font-size:0.78rem; font-weight:800; cursor:pointer;">✕ Vazgeç</button>
+        </div>
+      </div>
+    `;
+
+    // Yapıştırma temizleyicisini satır içi kutulara da bağla
+    ['inline-src-' + noteId, 'inline-quote-' + noteId, 'inline-text-' + noteId].forEach(id => {
+      const el = document.getElementById(id);
+      if (!el || !window.cleanExternalCopiedText) return;
+      el.addEventListener('paste', function(e) {
+        const clip = e.clipboardData || window.clipboardData;
+        if (!clip) return;
+        const pasted = clip.getData('text/plain');
+        if (!pasted) return;
+        e.preventDefault();
+        const cleaned = cleanExternalCopiedText(pasted);
+        const start = this.selectionStart || 0;
+        const end = this.selectionEnd || 0;
+        this.value = this.value.slice(0, start) + cleaned + this.value.slice(end);
+        this.selectionStart = this.selectionEnd = start + cleaned.length;
+      });
+    });
+
+    const txtEl = document.getElementById('inline-text-' + noteId);
+    if (txtEl) txtEl.focus();
+  };
+
+  window.saveInlineEditedNote = function(noteId, ev) {
+    if (ev && ev.stopPropagation) ev.stopPropagation();
+    const cleanFn = window.cleanExternalCopiedText || ((x) => String(x || '').trim());
+    const cat = cleanFn(document.getElementById('inline-cat-' + noteId)?.value || '📌 Önemli');
+    const src = cleanFn(document.getElementById('inline-src-' + noteId)?.value || 'Çalışma Notu') || 'Çalışma Notu';
+    const quote = cleanFn(document.getElementById('inline-quote-' + noteId)?.value || '');
+    const text = cleanFn(document.getElementById('inline-text-' + noteId)?.value || '');
+
+    if (!quote && !text) {
+      alert('Not alanı boş bırakılamaz.');
+      return;
+    }
+
+    const notes = typeof getSavedNotes === 'function' ? getSavedNotes() : [];
+    const idx = notes.findIndex(n => Number(n.id) === Number(noteId));
+    if (idx >= 0) {
+      notes[idx] = {
+        ...notes[idx],
+        cat,
+        src,
+        quote,
+        text,
+        updatedAt: new Date().toLocaleString('tr-TR')
+      };
+      localStorage.setItem(NOTES_STORAGE_KEY, JSON.stringify(notes));
+    }
+    inlineEditingNoteId = null;
+    if (typeof renderUserNotes === 'function') renderUserNotes();
+    const card = document.getElementById('kd-note-card-' + noteId);
+    if (card) card.classList.add('open');
+  };
+
+  window.cancelInlineEditNote = function(noteId, ev) {
+    if (ev && ev.stopPropagation) ev.stopPropagation();
+    inlineEditingNoteId = null;
+    if (typeof renderUserNotes === 'function') renderUserNotes();
+  };
+
+  // Hem kart içi düzenlemeyi aç hem de istenirse üst formu hazır tut
+  window.startEditUserNote = function(noteId, ev) {
+    openInlineNoteEditor(noteId, ev);
+  };
+
+  // 5. SEÇİLME SAYACINI ("🖨️ PDF Yazdır (X)" ve "🗑️ Seçilileri Sil (X)") CANLI GÜNCELLE
+  function refreshSelectionCounters() {
+    upgradeNotesToolbarButtons();
+    const allCbs = Array.from(document.querySelectorAll('#notesListContainer input[type="checkbox"]'));
+    allCbs.forEach(cb => {
+      cb.classList.add('kd-note-select-cb');
+      const card = cb.closest('.kd-acc-note-card');
+      if (card && card.id) {
+        cb.setAttribute('data-note-id', card.id.replace('kd-note-card-', ''));
+      }
+    });
+
+    const checkedCount = allCbs.filter(cb => cb.checked).length;
+    const printBtn = document.getElementById('kdPrintSelectedPdfBtn');
+    const delBtn = document.getElementById('kdDeleteSelectedNotesBtn');
+
+    if (printBtn) {
+      printBtn.textContent = checkedCount > 0 ? `🖨️ Seçilileri PDF Yazdır (${checkedCount})` : '🖨️ Tümünü PDF Yazdır';
+    }
+    if (delBtn) {
+      delBtn.textContent = `🗑️ Seçilileri Sil (${checkedCount})`;
+      delBtn.style.background = checkedCount > 0 ? '#dc2626' : '#fef2f2';
+      delBtn.style.color = checkedCount > 0 ? '#ffffff' : '#dc2626';
+    }
+  }
+
+  // renderUserNotes ve checkbox değişimlerini dinle
+  const _origRenderNotes = window.renderUserNotes;
+  if (typeof _origRenderNotes === 'function') {
+    window.renderUserNotes = function() {
+      _origRenderNotes();
+      setTimeout(refreshSelectionCounters, 20);
+    };
+  }
+
+  document.addEventListener('change', (e) => {
+    if (e.target && e.target.closest && e.target.closest('#notesListContainer')) {
+      refreshSelectionCounters();
+    }
+  });
+
+  window.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+      upgradeNotesToolbarButtons();
+      refreshSelectionCounters();
+    }, 700);
+  });
+})();
