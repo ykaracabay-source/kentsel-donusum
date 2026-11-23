@@ -10279,3 +10279,1558 @@ B) KİRACI / SINIRLI AYNİ HAK SAHİBİ / KAPICI BAŞVURUSU İÇİN:
     }, 700);
   });
 })();
+// 30. KENTSEL DÖNÜŞÜM UZMANLIĞI SINAV MERKEZİ (170 SORU • 5 İNTERAKTİF TABLET, KİLİTLİ CEVAP, OPTİK PALET, KESİT ÇİZİMLERİ, ÇÖZÜM/DAYANAK VE KARNE MOTORU)
+(function initCilt4ExamTabletCenter170() {
+  const EXAM_STORAGE_KEY = 'kd_uzmanlik_sinav_merkezi_v1';
+
+  // 1. İKİZ EKRAN İÇİN TAMAMLAYICI EK-1d VE VAKA/KESİT DAYANAK KARTLARI
+  function registerExamSupportLawCards() {
+    if (typeof LAW_DB === 'undefined') return;
+    Object.assign(LAW_DB, {
+      'yon-m5-riskli-alan': {
+        title: '6306 Sayılı Kanun m.2 & Uygulama Yönetmeliği m.5 – Riskli Alanın Cumhurbaşkanı Kararıyla Belirlenmesi',
+        ref: '6306 Sayılı Kanun Madde 2/1-ç & Uygulama Yönetmeliği Madde 5',
+        body: `<p><strong>Riskli Alan Karar Makamı:</strong> Zemin yapısı veya üzerindeki yapılaşma sebebiyle can ve mal kaybına yol açma riski taşıyan alanlar, Bakanlığın teklifi üzerine <strong>Cumhurbaşkanı kararıyla</strong> "Riskli Alan" olarak kararlaştırılır (Resmî Gazete'de yayımlanır).</p>
+        <p><strong>Rezerv Yapı Alanı Farkı (m.4):</strong> Yeni yerleşim alanı olarak veya mevcut yerleşimlerin yerinde dönüştürülmesinde kullanılmak üzere Kentsel Dönüşüm Başkanlığının teklifiyle <strong>Bakanlıkça</strong> belirlenen alanlardır.</p>`
+      },
+      'ek1d-rehber': {
+        title: 'Mekânsal Planlar Yapım Yönetmeliği EK-1d – Uygulama İmar Planı Gösterimleri, Kodlar, Çizgiler ve RGB Renkler',
+        ref: 'Cilt 1 • Sunum 1.1 & Sunum 1.2 (MPYY EK-1d Uygulama İmar Planı Gösterimleri Kataloğu)',
+        body: `<p><strong>1) Sınır ve Geçiş Çizgileri:</strong><br>
+        • <strong>Fonksiyon Sınırı:</strong> İki farklı arazi kullanım kararını (ör. konut ile park veya ticaret) birbirinden ayıran çizgidir.<br>
+        • <strong>Kademe Hattı:</strong> Aynı kullanım alanı içinde kat adedi, yapı yüksekliği veya yapı nizamındaki geçişi (farklılaşmayı) gösteren çizgidir.<br>
+        • <strong>1/1.000 Ölçek Hesabı:</strong> 1 cm = 1.000 cm = <strong>10 metre</strong> (Örn: Paftada 3,6 cm ölçülen yol = <code>3,6 × 10 = 36 m</code>).</p>
+        <p><strong>2) EK-1d Kısaltma ve Sembol Anahtarı:</strong><br>
+        • <strong>TİCT:</strong> Ticaret + Turizm karma kullanım alanı | <strong>TİCK:</strong> Ticaret + Konut | <strong>İBT:</strong> İsteğe Bağlı Ticaret.<br>
+        • <strong>ASM:</strong> Aile Sağlığı Merkezi (Sağlık tesisleri camgöbeği zemin + iç içe çift kare piktogramıyla gösterilir).<br>
+        • <strong>DKK:</strong> Demiryolu Koruma Kuşağı (HKK: Havaalanı, YKK: Karayolu, BHK: Boru Hattı Koruma Kuşağı).<br>
+        • <strong>RGB Sütunu:</strong> Plan gösterim tablosundaki alan renginin sayısal Kırmızı (Red) – Yeşil (Green) – Mavi (Blue) renk bileşenlerini verir. Benzer mor tonlu sanayi/depolama/lojistik alanlarında alt kullanım <strong>tarama deseni ve kullanım kodu lejantla karşılaştırılarak</strong> ayırt edilir.</p>`
+      },
+      'vaka-1272-9943': {
+        title: 'Saha Vakaları ve Bina Kesiti Okuma Dayanağı: Muratpaşa 1291/8 (435 m²), 1272/26 (482 m²) ve 9943/05 Kesiti (9.700 m²)',
+        ref: 'Cilt 1 • Bölüm 4 Saha Analizleri & Proje Krokisi / Bina Kesiti Okuma Rehberi',
+        body: `<p><strong>1) Muratpaşa 1291 Ada 8 Parsel (435 m²):</strong> Plan tadilatı yapılması koşuluyla <code>TAKS = 0,50</code> kabulünde yuvarlanmamış taban alanı <code>435 × 0,50 =</code> <strong><code>217,50 m²</code></strong> (kullanılan 218 m²); <code>435 × 1,5 × 1,7 = 1.109,25 m²</code>. Krokide 1. bodrum katta 3 adet 65 m² mesken (Müt.), <strong>2. bodrum katta Sığınak ve Mekanik Odalar</strong> yer alır.</p>
+        <p><strong>2) Muratpaşa 1272 Ada 26 Parsel (482 m²):</strong> Belgedeki iki açıklama çeliştiği için kullanıcı kabulüyle <code>TAKS = 0,40</code> alındığında zemin oturumu <code>482 × 0,40 =</code> <strong><code>192,80 m²</code></strong>'dir. Zemin sabit + 3 normal kat (<code>192,80 × 1,70 = 327,76 m²/kat</code>) modelinde üst yapı toplamı <code>192,80 + 3 × 327,76 =</code> <strong><code>1.176,08 m²</code></strong> (4 kat × 2 daire = <strong>8 konut</strong>; normal katta <code>(327,76 − 34,00 ortak) ÷ 2 =</code> <strong><code>146,88 m²</code></strong> brüt/daire). Tüm 4 kata 1,70 uygulanırsa alternatif toplam <code>4 × 327,76 =</code> <strong><code>1.311,04 m²</code></strong> olur.</p>
+        <p><strong>3) 9943 Ada 05 Parsel Bina Kesiti:</strong> Toplam inşaat alanı <strong><code>9.700 m²</code></strong>, toplam <strong><code>110 daire</code></strong> (<code>66 adet 1+1</code> = <strong><code>%60</code></strong> ve <code>44 adet 2+1</code> = <code>%40</code>; fark <code>66 − 44 =</code> <strong><code>22 daire</code></strong>). Kat dizilimi alttan üste: <em>2. Bodrum</em> (Sığınak + Hidrofor + Kapalı Otopark = <strong>2.100 m²</strong>) ➔ <em>1. Bodrum</em> (22 adet 1+1, 49 m²) ➔ <em>Zemin Kat</em> (2+1 dubleks, 95 m²) ➔ <strong><em>Asma Kat</em></strong> (Zemin ile 1. kat arasında, 950 m²) ➔ <em>1. ve 2. Kat</em> (her birinde <strong>22 adet 1+1, 55 m²</strong>) ➔ <em>3. Kat</em> (22 adet 2+1 dubleks, 90 m²) ➔ <em>Çatı Kat</em> (900 m²).</p>`
+      }
+    });
+  }
+
+  // 2. GÖRSELLİ SORULAR İÇİN BİREBİR VEKTÖREL (SVG) KROKİ VE BİNA KESİTİ ÇİZİMLERİ (TAM EKRAN BÜYÜTME DESTEKLİ)
+  const EXAM_VISUAL_SVGS = {
+    'kroki_1291_8a': {
+      title: '📐 Proje Krokisi: Antalya Muratpaşa 1291 Ada 8 Parsel — Alan Hesabı ve Plan Notu',
+      svg: `<svg viewBox="0 0 820 330" style="width:100%; height:auto; background:#ffffff; border:1.5px solid #334155; border-radius:8px; font-family:'Segoe UI',sans-serif;">
+        <rect x="14" y="12" width="320" height="196" fill="#fff" stroke="#0f172a" stroke-width="1.5"/>
+        <g font-size="10.5" fill="#0f172a">
+          <line x1="165" y1="12" x2="165" y2="208" stroke="#334155"/>
+          <text x="22" y="27" font-weight="bold">İLİ</text><text x="175" y="27">ANTALYA</text><line x1="14" y1="32" x2="334" y2="32" stroke="#cbd5e1"/>
+          <text x="22" y="45" font-weight="bold">İLÇESİ</text><text x="175" y="45">MURATPAŞA</text><line x1="14" y1="50" x2="334" y2="50" stroke="#cbd5e1"/>
+          <text x="22" y="63" font-weight="bold">MAHALLE</text><text x="175" y="63">MURATPAŞA</text><line x1="14" y1="68" x2="334" y2="68" stroke="#cbd5e1"/>
+          <text x="22" y="81" font-weight="bold">ADA</text><text x="175" y="81">1291</text><line x1="14" y1="86" x2="334" y2="86" stroke="#cbd5e1"/>
+          <text x="22" y="99" font-weight="bold">PARSEL</text><text x="175" y="99">8</text><line x1="14" y1="104" x2="334" y2="104" stroke="#cbd5e1"/>
+          <text x="22" y="117" font-weight="bold">YAPI CİNSİ</text><text x="175" y="117">B.A.K</text><line x1="14" y1="122" x2="334" y2="122" stroke="#cbd5e1"/>
+          <text x="22" y="135" font-weight="bold">KULLANIM AMACI</text><text x="175" y="135">KONUT</text><line x1="14" y1="140" x2="334" y2="140" stroke="#cbd5e1"/>
+          <text x="22" y="153" font-weight="bold">YOL ÜST KAT ADEDİ</text><text x="175" y="153">3</text><line x1="14" y1="158" x2="334" y2="158" stroke="#cbd5e1"/>
+          <text x="22" y="171" font-weight="bold">TOPLAM KAT SAYISI</text><text x="175" y="171">4</text><line x1="14" y1="176" x2="334" y2="176" stroke="#cbd5e1"/>
+          <text x="22" y="194" font-weight="bold">PARSEL ALANI</text><text x="175" y="194" font-weight="bold">435 m²</text>
+        </g>
+        <rect x="14" y="216" width="320" height="104" fill="#f8fafc" stroke="#0f172a" stroke-width="1.5"/>
+        <text x="22" y="232" font-size="10.5" font-weight="bold" fill="#0f172a">TAKS HESABI (KULLANILAN): <tspan font-weight="normal">435x0.5=217.5 m² (kullanılan=218 m²)</tspan></text>
+        <line x1="14" y1="242" x2="334" y2="242" stroke="#94a3b8"/>
+        <text x="22" y="262" font-size="10.5" font-weight="bold" fill="#0f172a">KAKS HESABI (KULLANILAN): <tspan font-weight="normal">435x1.5x1.7=1109.25 m²</tspan></text>
+        <line x1="14" y1="274" x2="334" y2="274" stroke="#94a3b8"/>
+        <text x="22" y="298" font-size="11" font-weight="bold" fill="#0f172a">TOPLAM İNŞAAT ALANI: <tspan fill="#1d4ed8">1109 m²</tspan></text>
+
+        <text x="560" y="68" font-size="17" font-weight="600" fill="#0f172a" text-anchor="middle">1.BODRUM KAT</text>
+        <line x1="380" y1="108" x2="800" y2="108" stroke="#0f172a" stroke-width="1.5"/>
+        <text x="560" y="152" font-size="17" font-weight="600" fill="#0f172a" text-anchor="middle">2.BODRUM KAT</text>
+
+        <rect x="358" y="228" width="445" height="86" rx="6" fill="#fffbeb" stroke="#f59e0b"/>
+        <text x="370" y="248" font-size="11" font-weight="bold" fill="#0f172a">NOT: CEPHELERDE ÇIKMA YAPILMIŞTIR.</text>
+        <text x="370" y="264" font-size="11" font-weight="bold" fill="#0f172a">YAKLAŞIK VERİLER OLUP İLGİLİ HÜKÜMLER GÖRÜŞÜLECEKTİR.</text>
+        <text x="370" y="290" font-size="11.5" font-weight="bold" fill="#b45309">NOT: PLAN TADİLATI YAPILMASI DAHİLİNDE TAKS=0.5 OLARAK</text>
+        <text x="370" y="305" font-size="11.5" font-weight="bold" fill="#b45309">KULLANILACAKTIR.</text>
+      </svg>`
+    },
+    'kroki_1291_8b': {
+      title: '📐 Proje Krokisi: 1291 Ada 8 Parsel — 1. ve 2. Bodrum Katların Kullanımı',
+      svg: `<svg viewBox="0 0 800 220" style="width:100%; height:auto; background:#ffffff; border:1.5px solid #334155; border-radius:8px; font-family:'Segoe UI',sans-serif;">
+        <text x="95" y="68" font-size="16" font-weight="bold" fill="#0f172a">1.BODRUM KAT</text>
+        <rect x="270" y="18" width="160" height="90" fill="#f8fafc" stroke="#0f172a" stroke-width="1.5"/>
+        <text x="350" y="48" font-size="12" font-weight="bold" text-anchor="middle" fill="#0f172a">MESKEN</text>
+        <text x="350" y="68" font-size="10.5" text-anchor="middle" fill="#334155">BRÜT:65 m² (Müt.)</text>
+
+        <rect x="430" y="18" width="160" height="90" fill="#f8fafc" stroke="#0f172a" stroke-width="1.5"/>
+        <text x="510" y="48" font-size="12" font-weight="bold" text-anchor="middle" fill="#0f172a">MESKEN</text>
+        <text x="510" y="68" font-size="10.5" text-anchor="middle" fill="#334155">BRÜT:65 m² (Müt.)</text>
+
+        <rect x="590" y="18" width="160" height="90" fill="#f8fafc" stroke="#0f172a" stroke-width="1.5"/>
+        <text x="670" y="48" font-size="12" font-weight="bold" text-anchor="middle" fill="#0f172a">MESKEN</text>
+        <text x="670" y="68" font-size="10.5" text-anchor="middle" fill="#334155">BRÜT:65 m² (Müt.)</text>
+
+        <line x1="15" y1="108" x2="785" y2="108" stroke="#0f172a" stroke-width="1.5"/>
+        <text x="95" y="162" font-size="16" font-weight="bold" fill="#0f172a">2.BODRUM KAT</text>
+        <rect x="270" y="108" width="480" height="94" fill="#eff6ff" stroke="#0f172a" stroke-width="1.8"/>
+        <text x="510" y="150" font-size="14" font-weight="bold" text-anchor="middle" fill="#1e3a8a">SIĞINAK</text>
+        <text x="510" y="172" font-size="14" font-weight="bold" text-anchor="middle" fill="#1e3a8a">MEKANİK ODALAR</text>
+      </svg>`
+    },
+    'kesit_9943_05': {
+      title: '📐 Mimari Bina Kesiti: 9943 Ada 05 Parsel — Katlar, Daire Dağılımı ve Toplam İnşaat Alanı Özeti',
+      svg: `<svg viewBox="0 0 860 390" style="width:100%; height:auto; background:#e2e8f0; border:2px solid #334155; border-radius:8px; font-family:'Segoe UI',sans-serif;">
+        <!-- Çatı Kat (Tonoz) -->
+        <path d="M 155 68 Q 395 6 635 68 Z" fill="#cbd5e1" stroke="#0f172a" stroke-width="2"/>
+        <text x="290" y="58" font-size="9.5" font-weight="bold" fill="#0f172a">BRÜT ALANI : 900 m2</text>
+        <line x1="690" y1="48" x2="755" y2="48" stroke="#334155" stroke-width="1.5"/><text x="762" y="52" font-size="11" font-weight="bold" fill="#0f172a">ÇATI KAT</text>
+
+        <!-- 3. Kat -->
+        <rect x="160" y="68" width="470" height="36" fill="#cbd5e1" stroke="#0f172a" stroke-width="2"/>
+        <text x="180" y="90" font-size="9.5" font-weight="bold" fill="#0f172a">BRÜT ALANI : 1145 m2</text>
+        <text x="445" y="90" font-size="11.5" font-weight="bold" fill="#0f172a" text-anchor="middle">22 ADET 2+1 DUBLEKS DAİRE.90 m2</text>
+        <line x1="690" y1="86" x2="755" y2="86" stroke="#334155" stroke-width="1.5"/><text x="762" y="90" font-size="11" font-weight="bold" fill="#0f172a">3.KAT</text>
+
+        <!-- 2. Kat -->
+        <rect x="160" y="104" width="470" height="36" fill="#f8fafc" stroke="#0f172a" stroke-width="2"/>
+        <text x="180" y="126" font-size="9.5" font-weight="bold" fill="#0f172a">BRÜT ALANI : 1145 m2</text>
+        <text x="445" y="126" font-size="11.5" font-weight="bold" fill="#1e3a8a" text-anchor="middle">22 ADET 1+1 DAİRE..55m2</text>
+        <line x1="690" y1="122" x2="755" y2="122" stroke="#334155" stroke-width="1.5"/><text x="762" y="126" font-size="11" font-weight="bold" fill="#0f172a">2.KAT</text>
+
+        <!-- 1. Kat -->
+        <rect x="160" y="140" width="470" height="36" fill="#f8fafc" stroke="#0f172a" stroke-width="2"/>
+        <text x="180" y="162" font-size="9.5" font-weight="bold" fill="#0f172a">BRÜT ALANI : 1145 m2</text>
+        <text x="445" y="162" font-size="11.5" font-weight="bold" fill="#1e3a8a" text-anchor="middle">22 ADET 1+1 DAİRE..55</text>
+        <line x1="690" y1="158" x2="755" y2="158" stroke="#334155" stroke-width="1.5"/><text x="762" y="162" font-size="11" font-weight="bold" fill="#0f172a">1.KAT</text>
+
+        <!-- Asma Kat -->
+        <rect x="185" y="176" width="420" height="36" fill="#cbd5e1" stroke="#0f172a" stroke-width="2"/>
+        <text x="202" y="198" font-size="9.5" font-weight="bold" fill="#0f172a">BRÜT TABAN ALANI : 950m2</text>
+        <line x1="690" y1="194" x2="755" y2="194" stroke="#334155" stroke-width="1.5"/><text x="762" y="198" font-size="11" font-weight="bold" fill="#b45309">ASMA KAT</text>
+
+        <!-- Zemin Kat -->
+        <rect x="185" y="212" width="420" height="36" fill="#cbd5e1" stroke="#0f172a" stroke-width="2"/>
+        <text x="202" y="234" font-size="9.5" font-weight="bold" fill="#0f172a">BRÜT TABAN ALANI : 950m2</text>
+        <text x="455" y="234" font-size="11.5" font-weight="bold" fill="#0f172a" text-anchor="middle">22 ADET 2+1 DUBLEKS DAİRE..95</text>
+        <line x1="690" y1="230" x2="755" y2="230" stroke="#334155" stroke-width="1.5"/><text x="762" y="234" font-size="11" font-weight="bold" fill="#0f172a">ZEMİN KAT</text>
+
+        <!-- 1. Bodrum Kat -->
+        <rect x="185" y="248" width="420" height="36" fill="#f8fafc" stroke="#0f172a" stroke-width="2"/>
+        <text x="202" y="270" font-size="9.5" font-weight="bold" fill="#0f172a">BRÜT TABAN ALANI : 1145 m2</text>
+        <text x="455" y="270" font-size="11.5" font-weight="bold" fill="#1e3a8a" text-anchor="middle">22 ADET 1+1 DAİRE..49</text>
+        <line x1="690" y1="266" x2="755" y2="266" stroke="#334155" stroke-width="1.5"/><text x="762" y="270" font-size="11" font-weight="bold" fill="#0f172a">1.BODRUM KAT</text>
+
+        <!-- 2. Bodrum Kat -->
+        <rect x="28" y="284" width="650" height="42" fill="#f1f5f9" stroke="#0f172a" stroke-width="3"/>
+        <text x="420" y="310" font-size="13" font-weight="bold" fill="#0f172a" text-anchor="middle">SIGINAK+HIDR.+KAPALI OTOPARK...2100 m2</text>
+        <line x1="690" y1="305" x2="755" y2="305" stroke="#334155" stroke-width="1.5"/><text x="762" y="309" font-size="11" font-weight="bold" fill="#0f172a">2.BODRUM KAT</text>
+
+        <!-- Alt Özet Kutuları -->
+        <rect x="130" y="336" width="255" height="44" rx="4" fill="#ffffff" stroke="#475569"/>
+        <text x="257" y="354" font-size="12.5" font-weight="bold" fill="#0f172a" text-anchor="middle">9943 ADA 05 PARSEL   KESİT</text>
+        <text x="257" y="373" font-size="12.5" font-weight="bold" fill="#dc2626" text-anchor="middle">TOPLAM İNŞAAT ALANI.9700 M2</text>
+
+        <rect x="400" y="333" width="255" height="50" rx="4" fill="#ffffff" stroke="#475569"/>
+        <text x="412" y="348" font-size="11" font-weight="bold" fill="#0f172a">TOPLAM 110 ADET DAİRE</text>
+        <text x="412" y="363" font-size="11" font-weight="bold" fill="#334155">TOPLAM 44 ADET   2+1 DAİRE</text>
+        <text x="412" y="378" font-size="11" font-weight="bold" fill="#047857">TOPLAM 66 ADET   1+1 DAİRE</text>
+      </svg>`
+    }
+  };
+
+  // 3. KONU KATEGORİLERİ LİSTESİ
+  const TOPICS = [
+    '6306 ve Çok Yapılı Parseller',             // 0
+    'Belgeler ve Uygulama Evrakları',           // 1
+    'E-İmar ve Plan Gösterimleri',              // 2
+    'İnşaat Alanı Hesabı',                      // 3
+    'Proje Krokisi ve Bina Kesiti',             // 4
+    'Riskli Yapı Tespiti, Bildirim ve Yıkım',   // 5
+    'Malik Toplantısı, Arsa Payları ve Tevhit', // 6
+    'Pay Satışı, Vekâlet ve Uygulama Dosyası',  // 7
+    'Beton Dayanımı ve Teknik İnceleme',        // 8
+    'İmar Planı ve İnşaat Alanı Hesabı',        // 9
+    'Bina Kesiti Okuma',                        // 10
+    'Sertifika Deneme Sınavı (Karma)'           // 11
+  ];
+
+  // Şema: [konuIdx, soruMetni, [A, B, C, D], dogruIndeks(0-3), cozumVeDayanak, ikizEkranKodu, gorselKodu]
+  // TABLET 1: 50 SORULUK EĞİTİM SUNUMU (Soru 1–50)
+  const BANK_T1_50 = [
+    [0, '6306 kapsamındaki riskli alanı kararlaştıran makam hangisidir?', ['Belediye meclisi', 'Cumhurbaşkanı', 'İl encümeni', 'Tapu müdürlüğü'], 1, '6306 sayılı Kanun m.2/1-ç ve Uygulama Yönetmeliği m.5 uyarınca riskli alan, Bakanlığın teklifi üzerine Cumhurbaşkanı kararıyla belirlenir.', 'yon-m5-riskli-alan'],
+    [0, 'Bir yapının ruhsatsız olduğunun anlaşılması, 6306 kapsamında riskli yapı tespiti bakımından ne ifade eder?', ['Ruhsatsızlık tek başına riskli yapı tespitine engel oluşturmaz.', 'Ruhsatsız yapılar yalnız yıkım kararı alındıktan sonra incelenebilir.', 'Tespit ancak parsel riskli alan ilan edilirse yapılabilir.', 'Tespit için önce yapı kullanma izni alınması gerekir.'], 0, 'Yönetmelik m.7 uyarınca kullanımda olan ve statik bütünlüğü bozulmamış binalarda ruhsatsızlık tek başına riskli yapı tespitine engel değildir.', 'yon-m7'],
+    [0, 'Bir malik riskli yapı tespiti yaptırmak istediğinde ilk teknik başvuruyu hangi kuruluşa yapar?', ['Yapı sigortasını düzenleyen sigorta şirketine', 'Riskli yapı tespiti için lisanslandırılmış kurum veya kuruluşa', 'Yapı ruhsatını hazırlayan proje çizim bürosuna', 'Taşınmazın rayiç değerini hesaplayan değerleme kuruluşuna'], 1, '6306 Yönetmeliği m.6 ve m.7 uyarınca riskli yapı tespiti başvurusu ARAAD üzerinden Başkanlıkça lisanslandırılmış kurum/kuruluşlara yapılır.', 'yon-m6'],
+    [0, 'Parselde kiracı olarak oturmak ve abonelik faturalarını ödemek, malik oylamasında kişiye hangi hakkı verir?', ['Sürekli kullanıcı olarak bir malik oyu kullanır.', 'Kira ve abonelik, kişiye kendi adına malik oyu vermez.', 'Ev sahibi katılmazsa onun oyunu kendiliğinden kullanır.', 'Sözleşme süresi kadar arsa payına karşılık gelen oy kullanır.'], 1, '6306 Yönetmeliği m.15/2 uyarınca kararlar arsa payı/mülkiyet hissesi oranında maliklerce alınır; kiracılık veya fatura ödemek malik oyu sağlamaz.', 'yon-m15-1-2'],
+    [0, 'Çok yapılı bir parselde hazırlanan yapı envanterinin temel amacı nedir?', ['Mevcut binaların hepsine tek bir resmi risk raporu vermek', 'Yüklenici tekliflerine göre maliklerin arsa paylarını yeniden hesaplamak', 'Her yapının konumunu, kullanıcısını ve hak iddiasının dayanaklarını eşleştirmek', 'Yeni konutların net alanlarını tapuda tescil etmek'], 2, 'Çok yapılı parsellerde saha yapı envanteri; her binanın parseldeki konumunu, fiilî kullanıcısını ve tapu/muhdesat dayanaklarını eşleştirmek için hazırlanır.', 'yon-m15-6-7'],
+    [0, 'Parseldeki üç yapının tamamı riskli tespit edilmiştir. Uygulama kararındaki salt çoğunluk kimin hisseleri üzerinden hesaplanır?', ['Parseldeki bütün paydaşların hisseleri üzerinden', 'Yalnız ilk risk raporunu alan yapının paydaşları üzerinden', 'Her bina için bağımsız bölüm sayısı üzerinden', 'Yalnız mevcut yapılarda ikamet eden paydaşlar üzerinden'], 0, '6306 Yönetmeliği m.15/6 uyarınca parseldeki yapıların tamamı riskli ise yapının paydaşı olup olmadıklarına bakılmaksızın bütün paydaşların hisseleri üzerinden >%50 aranır.', 'yon-m15-6-7'],
+    [0, 'Bir parselde A ve B yapıları riskli, C yapısı için risk tespiti yoktur. A ve B’ye ilişkin uygulama kararında hangi pay grubu esas alınır?', ['Henüz tespit yapılmayan C yapısının paydaşları', 'En büyük yüzölçümüne sahip tek yapının paydaşları', 'Parseldeki tüm yapılar ve bütün paydaşlar', 'Riskli olarak tespit edilen A ve B yapılarının paydaşları'], 3, 'Yönetmelik m.15/7-b uyarınca yalnız bazı yapıların riskli olduğu parselde karar, sadece riskli olarak tespit edilen A ve B yapılarının paydaşlarının salt çoğunluğuyla alınır.', 'yon-m15-6-7'],
+    [0, 'Kısmi dönüşümde riskli yapılar, risk tespiti yapılmamış yapının alanından ayrılabiliyorsa hangi işlem bu ayrımı sağlar?', ['Cins değişikliği', 'Tevhit', 'İfraz', 'Kat irtifakı'], 2, 'Yönetmelik m.15/7-ç uyarınca riskli yapıların bulunduğu alanın risksiz yapıdan imar mevzuatına uygun olarak ayrılması işlemi ifrazdır (gerekirse resen yapılır).', 'yon-m15-6-7'],
+    [0, '91 malik bulunan örnekte 40 malik toplam %55 payı, başka bir oylamada 60 malik toplam %48 payı temsil ediyor. Hangi oylamada hisseye göre salt çoğunluk eşiği aşılır?', ['Yalnız %55 payla kabul verilen oylamada', 'Yalnız 60 malikin kabul verdiği oylamada', 'Her iki oylamada', 'İki oylamada da eşik aşılmaz.'], 0, '6306 m.6/1 ve Yön. m.15/2 uyarınca ölçüt kişi sayısı değil, toplam arsa payının yarısından fazlasıdır (>%50). Bu nedenle %55 pay eşiği aşar, %48 aşamaz.', 'yon-m15-1-2'],
+    [0, 'Örnek 91 hissedarlı parselde ruhsatsız yapının kullanıcısı, ölçüsü ve buna ilişkin belgeler hangi cetvele yazılır?', ['Yeni Proje Cetveline', 'Mevcut Yapı Cetveline', 'Tapu Hak Cetveline', 'Tapu Devir ve İnşaat İlerleme Cetveline'], 1, '3 Hak Cetveli modelinde ruhsatsız/fiilî binaların kullanıcısı, m² ölçüsü ve abonelik/vergi dayanakları Mevcut Yapı Cetveline (Cetvel B) kaydedilir.', 'yon-m15-6-7'],
+    [0, 'Aynı büyüklükteki iki daireye kat ve cephe farkından dolayı farklı ekonomik değer verilmesi hangi kavramla ilişkilidir?', ['Hakediş', 'Şerefiye', 'Emsal', 'Tevhit'], 1, 'Bağımsız bölümlerin kat, cephe, yön ve manzara üstünlüklerinden kaynaklanan ekonomik değer farkı şerefiye katsayısıyla denkleştirilir.', 'urbannest-hesaplar'],
+    [0, 'Örnek sözleşme modelinde yükleniciye yapılacak tapu devirleri hangi ölçüte bağlanır?', ['Sözleşme imzalandığı gün toplu devre', 'Malik toplantısının ilk çağrı tarihine', 'Belgelenen inşaat ilerleme aşamalarına', 'Yalnız imar durumu belgesinin alındığı tarihe'], 2, 'Arsa sahiplerinin korunması ve Yön. m.13/10 kuralı gereği yükleniciye tapu devirleri peşin değil, belgelenen fiziki inşaat ilerleme aşamalarına (kademeli devre) bağlanır.', 'yon-m13'],
+    [1, 'Riskli yapı tespitinin bildirilmesinde kullanılan tebligat tutanağı hangi ektir?', ['Ek-6', 'Ek-9', 'Ek-8', 'Ek-7/A'], 0, 'Yönetmelik m.7/4 uyarınca riskli yapı tespitinin bina kapısına asılması ve muhtarlıkta 15 gün ilanında Ek-6 tutanağı kullanılır.', 'ek:Ek-6'],
+    [1, 'Kesinleşmiş bina bazlı riskli yapı tespitinin ardından tahliye ve yıkım bildirimi için hangi form kullanılır?', ['Ek-7/B', 'Ek-12', 'Ek-7/A', 'Ek-13'], 2, 'Yönetmelik m.8/2 uyarınca parsel/bina bazındaki kesinleşmiş riskli yapıların tahliye ve yıkım bildiriminde Ek-7/A kullanılır (Ek-7/B alan uygulamaları içindir).', 'ek:Ek-7/A'],
+    [1, 'Riskli yapı yerine yapılacak yeni uygulamayı görüşmek için toplantının yeri, tarihi ve saati hangi formla bildirilir?', ['Ek-12', 'Ek-6', 'Ek-13', 'Ek-8'], 0, 'Yönetmelik m.15/2 (04.02.2026 değişikliği) uyarınca malikleri toplantıya çağırmak için yer, tarih ve saat bildirimi Ek-12 formuyla yapılır.', 'ek:Ek-12'],
+    [1, 'Bina bazlı riskli yapı sürecinde salt çoğunluk kararı ve anlaşma teklifini karara katılmayanlara bildiren form hangisidir?', ['Ek-9', 'Ek-10', 'Ek-8', 'Ek-12'], 2, 'Yönetmelik m.15/2 uyarınca riskli yapılarda alınan >%50 karar ve anlaşma teklifi karara katılmayan maliklere Ek-8 formuyla bildirilir (15 gün kabul süresi).', 'ek:Ek-8'],
+    [1, 'İlk satışta anlaşan paydaşlara satılamayan hisselerin yeniden satış yeri ve zamanı hangi formla ilan edilir?', ['Ek-13', 'Ek-9', 'Ek-10', 'Ek-12'], 0, 'Yönetmelik m.15/A-12 uyarınca ilk satışta (Ek-9) paydaşlarca alınmayan hisselerin 3. şahıslara da açık yeniden satış ilanı Ek-13 formuyla yapılır.', 'ek:Ek-13'],
+    [1, '6306 Uygulama Yönetmeliğinin riskli yapı tespitine ilişkin teknik esasları hangi ekte bulunur?', ['Ek-4', 'Ek-5', 'Ek-6', 'Ek-2'], 3, 'Riskli Yapıların Tespit Edilmesine İlişkin Esaslar (RYTEİE), 6306 Uygulama Yönetmeliği Ek-2\'de yer alır.', 'ek:Ek-2'],
+    [1, 'Örnek anahtar teslim tutanağı, bağımsız bölümün fiilî teslimini hangi kayıtlarla belgeler?', ['Ticaret sicili, banka referansı ve müteahhit yetki sınıfı', 'Arsa payı oranı, ihale bedeli ve yapı yüksekliği', 'Emsal, çekme mesafesi ve plan onay tarihi', 'Teslim tarihi ve saati, sayaç bilgileri ve anahtar adedi'], 3, 'Bağımsız bölüm tahliye/anahtar teslim tutanağında (Örnek 14) fiilî teslim tarihi-saati, elektrik/su/gaz sayaç endeks/kapama bilgileri ve teslim edilen anahtar adedi kayıt altına alınır.', 'ek:Ek-3E'],
+    [1, 'Yüklenicinin yetki sınıfının önerilen işe uygunluğunu değerlendirmek için hangi belge kontrol edilir?', ['Yapı kullanma izin belgesi', 'Yapı müteahhitliği yetki belgesi', 'Riskli yapı tespit raporu', 'Taşınmaz değerleme raporu'], 1, 'Müteahhidin üstlenebileceği azami inşaat alanı ve kat grubu (H–A sınıfları), YAMBİS kayıtlı Yapı Müteahhitliği Yetki Belgesi ile kontrol edilir.', 'mut-sinif'],
+    [1, 'Örnek sınırlı vekâletname kontrol listesinde kira yardımıyla ilgili hangi iki yetki ayrı ayrı tanımlanır?', ['Ruhsat başvurusu yapma ve projeyi onaylama', 'Yardım başvurusu yapma ve ödemeyi alma', 'Yıkım şirketi seçme ve abonelikleri kapatma', 'Tapu devri yapma ve ipotek kurma'], 1, 'Sınırlı vekâletname güvenliğinde "kira yardımı başvurusu/evrak takibi yapma" yetkisi ile parayı tahsil etme ("ödemeyi alma / ahzu kabz") yetkisi ayrı ayrı tanımlanır; ödeme doğrudan malikin kendi IBAN\'ına yatmalıdır.', 'vekalet-tbk504'],
+    [1, 'Yeni yapı tamamlandığında binanın kullanımına ilişkin izin için kullanılan belge hangisidir?', ['Yıkım ruhsatı', 'Riskli yapı tespit raporu', 'Yapı ruhsatı', 'Yapı kullanma izin belgesi'], 3, 'İnşaatı ruhsat ve projelerine uygun tamamlanan binanın kullanılmasına izin veren resmi belge Yapı Kullanma İzin Belgesidir (İskân).', 'imark-m28'],
+    [1, 'Kat Karşılığı Yer Gösterme Belgesi örneğinde taşınmazın müşteriye hangi amaçlarla ilk kez gösterildiği yazılır?', ['Satın alma, kiralama veya kat karşılığı sözleşme imzalama', 'Yıkım ruhsatı başvurusu yapma veya yeni projeyi onaylama', 'Yalnız değerleme yaptırma veya tapu kaydı inceleme', 'Sadece satış veya tapuda cins değişikliği yapma'], 0, 'Taşınmaz Ticareti Yönetmeliği ve Ek-3K yer gösterme belgesinde taşınmazın satın alma, kiralama veya kat karşılığı inşaat sözleşmesi imzalama amacıyla ilk kez gösterildiği belirtilir.', 'yergosterme-ek3k'],
+    [1, 'Örnek yer gösterme belgesi, taraflarda birer nüsha kalması için kaç nüsha düzenlenmiştir?', ['3 nüsha', '2 nüsha', '1 nüsha', '4 nüsha'], 1, 'Kat Karşılığı Yer Gösterme Belgesi (Ek-3K / Ek-Uzman-2), emlak işletmesi (Aracı) ve müşteri/müteahhitte birer asıl kalacak şekilde 2 nüsha düzenlenir.', 'yergosterme-ek3k'],
+    [1, 'Kat Karşılığı Yer Gösterme Belgesi örneğinde emlak işletmesi hangi sıfatla tanımlanır?', ['Müşteri', 'Değerleme uzmanı', 'Yüklenici', 'Aracı'], 3, 'Yer gösterme belgesinde taşınmazı gösteren yetkili emlak/danışmanlık işletmesi "Aracı" sıfatıyla tanımlanır.', 'yergosterme-ek3k'],
+    [2, 'E-imar ekranındaki ada ve parsel numaraları hangi kayıtla karşılaştırılarak doğrulanır?', ['Mahallenin posta koduyla', 'Tapu kaydı veya resmî kadastro kaydıyla', 'Plan notlarındaki bina yüksekliğiyle', 'Projedeki bağımsız bölüm numaralarıyla'], 1, 'Adres mahallesi ile tapu mahallesi farklı olabileceğinden e-imar ekranındaki ada/parsel bilgileri güncel tapu kaydı veya resmî kadastro (TKGM) kaydıyla doğrulanır.', 'ek1d-rehber'],
+    [2, '1/1.000 ölçekli paftada 3,6 cm ölçülen yol genişliği arazide kaç metreye karşılık gelir?', ['3,6 m', '18 m', '360 m', '36 m'], 3, '1/1.000 ölçekte paftadaki 1 cm = arazide 1.000 cm = 10 metredir. Buna göre 3,6 cm × 10 m/cm = 36 metre olur.', 'ek1d-rehber'],
+    [2, 'İmar paftasında iki farklı arazi kullanım kararını birbirinden ayıran çizgi hangisidir?', ['Mülkiyet sınırı', 'Plan onama sınırı', 'Fonksiyon sınırı', 'Yapı yaklaşma sınırı'], 2, 'Aynı plan içinde konut, park, ticaret gibi iki farklı arazi kullanım (fonksiyon) kararını birbirinden ayıran çizgi fonksiyon sınırıdır.', 'ek1d-rehber'],
+    [2, 'Bir parselin köşesinde park rengi ve taraması görülüyor. Etkilenen alanı belirlemek için hangi ilk kontrol yapılır?', ['Güncel planın park kararı ile kadastro parseli üst üste karşılaştırılır.', 'Emsal, kadastro alanının tamamına uygulanarak park alanı bulunur.', 'Park alanı, komşu parsellerdeki taban oturumlarının ortalamasından hesaplanır.', 'Plan üzerindeki park işareti yapının çekme çizgisi kabul edilir.'], 0, 'Kadastro parselinin parka veya yola terk edilecek kısmını görmek için güncel imar planı katmanı ile kadastro parsel sınırı çakıştırılarak (üst üste) kontrol edilir.', 'paiy-m4'],
+    [2, 'TAKS hesabı 250 m² taban alanı veriyor. Çekme mesafelerinden sonra yapılaşabilir zarf 220 m² kalıyorsa bu iki sınır birlikte en çok kaç m² oturuma izin verir?', ['470 m²', '220 m²', '250 m²', '1.000 m²'], 1, 'PAİY m.20/3 uyarınca TAKS hesabı (250 m²) ile çekme mesafelerinin oluşturduğu yapı zarfı (220 m²) farklıysa daha kısıtlayıcı (küçük) olan 220 m² uygulanır.', 'paiy-m4'],
+    [2, 'Bir imar planında Yençok veya Hmax değeri hangi bilgiyi verir?', ['İzin verilen azami yapı yüksekliğini', 'İmar yolunun azami genişliğini', 'Arsanın azami taban oturumunu', 'Üst katların toplam net alanını'], 0, 'Yençok (veya Hmax), binanın kot aldığı noktadan saçak seviyesine kadar izin verilen azami yapı yüksekliğini gösterir.', 'ant-m9'],
+    [2, 'Ek-1d eğitim sunumundaki TİCT kodu hangi karma kullanımı ifade eder?', ['Ticaret ve konut', 'Turizm ve konut', 'Ticaret ve turizm', 'Ticaret ve depolama'], 2, 'MPYY EK-1d gösterimlerinde TİCT: Ticaret + Turizm karma kullanım alanını ifade eder (Ticaret + Konut ise TİCK koduyla gösterilir).', 'ek1d-rehber'],
+    [2, 'Ek-1d rehberinde, yükseklik veya kat kararındaki geçişi gösterebilen çizgi hangisidir?', ['Parsel sınırı', 'Kıyı kenar çizgisi', 'Kademe hattı', 'İfraz hattı'], 2, 'Aynı ada/parsel veya kullanım bölgesi içinde kat adedi ya da yapı yüksekliği (gabari) değişimini ayıran çizgi kademe hattıdır.', 'ek1d-rehber'],
+    [2, 'Ek-1d gösterim tablosundaki RGB sütunu hangi bilgiyi verir?', ['Yapının azami yükseklik ve kat sınırlarını', 'Çizginin araziye uygulanacak koordinatlarını', 'Taramanın kapsadığı net parsel alanını', 'Alan renginin sayısal renk bileşenlerini'], 3, 'RGB (Red-Green-Blue) sütunu, imar planındaki her bir arazi kullanım renginin 0–255 arasındaki standart sayısal renk bileşenlerini verir.', 'ek1d-rehber'],
+    [2, 'Ek-1d eğitim sunumunda ASM kodu hangi sağlık tesisini gösterir?', ['Özel sağlık tesisini', 'Açık spor tesisini', 'Hastaneyi', 'Aile sağlığı merkezini'], 3, 'EK-1d sağlık tesisleri grubunda ASM kısaltması "Aile Sağlığı Merkezi"ni ifade eder.', 'ek1d-rehber'],
+    [2, 'Ek-1d eğitim sunumunda DKK kodu hangi koruma kuşağını gösterir?', ['Yer altı su kaynağı koruma kuşağını', 'Havaalanı koruma kuşağını', 'Demiryolu koruma kuşağını', 'Karayolu koruma kuşağını'], 2, 'EK-1d koruma kuşaklarında DKK: Demiryolu Koruma Kuşağını gösterir (HKK: Havaalanı, YKK: Karayolu, YSK: Yeraltı Suyu).', 'ek1d-rehber'],
+    [2, 'Sanayi, depolama ve lojistik alanları benzer mor tonlarla gösterildiğinde alt kullanım nasıl ayırt edilir?', ['Tarama ve kullanım kodu lejantla karşılaştırılır.', 'Rengin doygunluğundan emsal katsayısı hesaplanır.', 'Yol genişliğine bakılarak kullanım türü belirlenir.', 'En büyük alanın rengi bütün parsellere uygulanır.'], 0, 'Benzer mor tonlu çalışma alanlarında (Sanayi, KSA, Depolama D, Lojistik LTA) kesin alt kullanım, üzerindeki tarama deseni ve kutu içi kodun plan lejantıyla karşılaştırılmasıyla bulunur.', 'ek1d-rehber'],
+    [2, 'E-imar ekranındaki parsel koşullarını nihai olarak hangi belgeyle teyit etmek gerekir?', ['Taşınmazın satış ilanındaki kat bilgisiyle', 'Komşu parselin önceki yapı ruhsatıyla', 'Portalın tarih bilgisi görünmeyen ekran görüntüsüyle', 'İlgili idarenin güncel parsel bazlı resmî imar durumu belgesiyle'], 3, 'E-imar portalları bilgilendirme amaçlıdır; sözleşme ve proje öncesinde parsel koşulları ilgili belediyeden alınacak güncel resmî İmar Durumu Belgesi (İmar Çapı) ile teyit edilmelidir.', 'paiy-m4'],
+    [3, '1.700 m² arsa ve 0,30 TAKS kabulünde azami zemin oturumu kaç m²’dir?', ['1.360 m²', '850 m²', '510 m²', '340 m²'], 2, 'Azami Taban Alanı = Net Parsel × TAKS = 1.700 × 0,30 = 510 m² olur.', 'ant-m41'],
+    [3, '1.700 m² arsa ve 0,80 KAKS ile emsale esas toplam kat alanı kaç m² olur?', ['1.445 m²', '1.955 m²', '510 m²', '1.360 m²'], 3, 'Emsale Esas Alan = Net Parsel × KAKS = 1.700 × 0,80 = 1.360 m² olur.', 'ant-m41'],
+    [3, 'Emsale esas toplam alan 1.360 m², zemin oturumu 510 m² ise üst katlara kalan emsal alanı kaç m²’dir?', ['850 m²', '1.360 m²', '1.445 m²', '510 m²'], 0, 'Üst Katlara Kalan Baz Emsal = Toplam Emsal − Zemin Oturumu = 1.360 − 510 = 850 m² olur.', 'ant-m41'],
+    [3, 'Ön fizibilitede zemin 510 m² sabit tutuluyor ve üst katlara kalan 850 m², 1,70 ile çarpılıyor. Bodrum hariç toplam kaç m² olur?', ['2.465 m²', '1.955 m²', '1.445 m²', '2.312 m²'], 1, 'Çıkmalı Üst Katlar = 850 × 1,70 = 1.445 m². Zemin (510 m²) eklendiğinde bodrum hariç üst yapı toplamı = 510 + 1.445 = 1.955 m² olur.', 'ant-m41'],
+    [3, '1.955 m²’lik ön fizibilite hesabına 510 m² tam oturumlu bir bodrum eklenirse varsayımsal fiziksel toplam kaç m² olur?', ['2.805 m²', '1.955 m²', '2.465 m²', '2.312 m²'], 2, 'Fiziksel Toplam İnşaat Alanı = 1.955 m² (üst yapı) + 510 m² (bodrum kat) = 2.465 m² olur.', 'ant-m41'],
+    [3, 'Ön fizibiliteye göre 2,50 m subasman kotu ile KAKS arasında nasıl bir ilişki vardır?', ['Subasman kotu KAKS’ı kendiliğinden artırmaz.', 'KAKS, subasman kotu kadar artar.', 'KAKS, bodrum sayısıyla çarpılarak artar.', 'Subasman 2,50 m ise KAKS, TAKS’a eşitlenir.'], 0, '+2,50 m subasman kotu zemin kat taban döşemesinin yol kotuna göre seviyesini belirler; KAKS (emsal) katsayısını kendiliğinden artırmaz.', 'ant-m41'],
+    [4, '1291 ada 8 parselde 435 m² alan ve 0,50 TAKS için yuvarlanmamış taban alanı kaç m²’dir?', ['217,50 m²', '435,00 m²', '261,00 m²', '218,00 m²'], 0, 'Krokideki TAKS hesabında görüldüğü üzere yuvarlanmamış teorik taban alanı: 435 m² × 0,50 = 217,50 m²’dir (projede kullanılan yuvarlanmış değer 218 m² yazılmıştır).', 'vaka-1272-9943', 'kroki_1291_8a'],
+    [4, '1291 ada 8 parsel krokisindeki nota göre 0,50 TAKS kabulü hangi koşula bağlanmıştır?', ['Parsel alanının 500 m²’ye çıkarılmasına', 'Plan tadilatı yapılmasına', 'Birinci bodrumun konuttan sığınağa çevrilmesine', 'Çatı dublekslerinden vazgeçilmesine'], 1, 'Krokinin sağ alt notunda açıkça "NOT: PLAN TADİLATI YAPILMASI DAHİLİNDE TAKS=0.5 OLARAK KULLANILACAKTIR." koşulu yer almaktadır.', 'vaka-1272-9943', 'kroki_1291_8a'],
+    [4, '1291 ada 8 parsel krokisinde 2. bodrum katta hangi kullanımlar gösteriliyor?', ['Konut ve çatı dubleksi', 'Depo ve yönetim odası', 'Sığınak ve mekanik odalar', 'Ticari alan ve kapalı otopark'], 2, '1291 ada 8 parsel kat krokisinde 1. bodrum katta 3 adet 65 m² mesken, 2. bodrum katta ise "SIĞINAK / MEKANİK ODALAR" gösterilmektedir.', 'vaka-1272-9943', 'kroki_1291_8b'],
+    [4, '9943 ada 05 parselin alt özetinde 110 dairenin 66’sı 1+1’dir. Bu dairelerin oranı nedir?', ['%55', '%40', '%66', '%60'], 3, '1+1 Daire Oranı = (66 ÷ 110) × 100 = %60 olur (Kalan 44 adet 2+1 daire ise %40’tır).', 'vaka-1272-9943', 'kesit_9943_05'],
+    [4, '9943 ada 05 parsel kesitinde zemin kat ile 1. kat arasında hangi kat gösteriliyor?', ['1. bodrum kat', 'Çatı katı', '2. bodrum kat', 'Asma kat'], 3, 'Kesitin sağındaki kat etiketleri incelendiğinde ZEMİN KAT ile 1.KAT arasında 950 m² brüt taban alanlı "ASMA KAT" yer almaktadır.', 'vaka-1272-9943', 'kesit_9943_05'],
+    [4, '9943 ada 05 parsel kesitinin altındaki notta toplam inşaat alanı kaç m² olarak yazılmıştır?', ['8.750 m²', '11.450 m²', '9.700 m²', '9.500 m²'], 2, 'Kesitin sol alt özet başlığında "TOPLAM İNŞAAT ALANI. 9700 M2" olarak yazılmıştır.', 'vaka-1272-9943', 'kesit_9943_05']
+  ];
+
+  // TABLET 2: 100 SORULUK ETKİLEŞİMLİ SUNUM — BÖLÜM A (Soru 1–50)
+  const BANK_T2_50 = [
+    [5, '6306 sayılı Kanun kapsamındaki riskli yapı tespitinde hangi teknik metin esas alınır?', ['Uygulama Yönetmeliği Ek-2’deki Riskli Yapıların Tespit Edilmesine İlişkin Esaslar', 'Türkiye Bina Deprem Yönetmeliği’nin yeni betonarme binalara ilişkin tasarım bölümü', 'Planlı Alanlar İmar Yönetmeliği’nin katlar alanı hükümleri', 'Uygulama Yönetmeliği Ek-4’teki Yapı Değerlendirme Formu'], 0, '6306 Uygulama Yönetmeliği m.7/1 uyarınca riskli yapılar Yönetmelik Ek-2’de yer alan Riskli Yapıların Tespit Edilmesine İlişkin Esaslara (RYTEİE) göre tespit edilir.', 'ek:Ek-2'],
+    [5, 'Yapı malikinin talep ettiği resmî riskli yapı tespit raporunu hangi kuruluş düzenleyebilir?', ['Yapının yeni projesini hazırlamayı üstlenen mimarlık ofisi', 'Kentsel Dönüşüm Başkanlığınca bu iş için lisanslandırılmış kuruluş', 'Taşınmaz için değerleme yapan gayrimenkul değerleme kuruluşu', 'Yapının mevcut sigorta poliçesini düzenleyen sigorta şirketi'], 1, 'Yönetmelik m.6 uyarınca riskli yapı tespiti; Başkanlık, İdare veya Başkanlıkça Ek-1 belgesiyle lisanslandırılmış kurum ve kuruluşlarca düzenlenir.', 'yon-m6'],
+    [5, 'Kat mülkiyetli bir apartmanda maliklerden biri riskli yapı tespiti yaptırmak istiyor. Başvuru için hangi yol mümkündür?', ['Başvuru için maliklerin en az yarısının birlikte talepte bulunması gerekir.', 'Başvuruyu ilk olarak apartmanın anlaşma yaptığı yüklenici yapmalıdır.', 'Başvuru yalnızca kat malikleri kurulunun oy birliği kararıyla yapılabilir.', 'Bir yapı maliki veya kanuni temsilcisi elektronik sistem üzerinden talepte bulunabilir.'], 3, 'Yönetmelik m.7/2-a uyarınca riskli yapı tespiti için çoğunluk aranmaz; maliklerden herhangi biri veya kanuni temsilcisi ARAAD elektronik sistemi üzerinden tek başına başvurabilir.', 'yon-m7'],
+    [5, 'Kat irtifakı veya kat mülkiyeti bulunmayan arsa paylı bir parselde, fiilen mevcut yapı bir arsa payı sahibine aittir. Tespiti kural olarak kim yaptırır?', ['Yapının sahibi olan arsa payı sahibi', 'Komşu parselin en yüksek paya sahip maliki', 'Tespit tarihinde yapıda oturan kiracı', 'Arsadaki en yüksek paya sahip malik'], 0, '6306 Uygulama Yönetmeliği m.7/2-a uyarınca arsa paylı tapularda arsa üzerinde fiilen bulunan yapının riskli yapı tespiti, yapının sahibi olan arsa payı sahibince yaptırılır.', 'yon-m7'],
+    [5, 'Hangi yapı, belirtilen durumu nedeniyle riskli yapı tespitine konu edilmez?', ['Yapı kullanma izni bulunmayan ve işyeri olarak kullanılan yapı', 'Kat mülkiyeti kurulmuş ve konut olarak kullanılan yapı', 'İnşaatı süren ve içinde ikamet edilmeyen yapı', 'Ruhsatı bulunmayan ve konut olarak kullanılan yapı'], 2, 'Yönetmelik m.7/1 uyarınca inşaat halinde olup ikamet edilmeyen yapılar ile metrukluk veya başka bir sebeple statik bütünlüğü bozulmuş yapılar riskli yapı tespitine konu edilmez.', 'yon-m7'],
+    [5, 'Riskli yapı tespit raporunda yer alması zorunlu adres bilgisi hangisidir?', ['Mahalle muhtarının işyeri adresi ve sicil numarası', 'Yüklenicinin işyeri adresi ve vergi numarası', 'Yapı malikinin ikamet adresi ve telefon numarası', 'Ulusal Adres Veri Tabanındaki yapı adresi ve bina kodu'], 3, 'ARAAD sistemi üzerinden düzenlenen riskli yapı tespit raporlarında Ulusal Adres Veri Tabanındaki (UAVT) açık yapı adresi ve UAVT bina kodunun yer alması zorunludur.', 'yon-m7'],
+    [5, 'Yetkili birim, sunulan riskli yapı tespit raporunda teknik eksiklik bulursa kural olarak ne yapar?', ['Raporu mevcut hâliyle tapu müdürlüğüne kesinleşmiş tespit olarak gönderir.', 'Raporu düzeltilmek üzere düzenleyen kurum veya kuruluşa iade eder.', 'Eksiklikleri maliklerin oyuyla gidermek için toplantı yapar.', 'Raporu doğrudan satış komisyonunun teknik onayına sunar.'], 1, 'Yönetmelik m.7/4 uyarınca Müdürlük/İdare incelemesinde raporda eksiklik veya hata tespit edilirse rapor gerekli düzeltmeler yapılmak üzere raporu düzenleyen lisanslı kuruluşa iade edilir.', 'yon-m7'],
+    [5, 'Eksiksiz raporda riskli bulunan yapı, tapu kütüğünde belirtilmek üzere en geç kaç iş günü içinde ilgili tapu müdürlüğüne bildirilir?', ['6 iş günü', '15 iş günü', '10 iş günü', '30 iş günü'], 2, 'Yönetmelik m.7/4 uyarınca inceleme sonucunda eksiksiz olduğu anlaşılan riskli yapı raporları en geç 10 iş günü içinde ilgili tapu müdürlüğüne bildirilir.', 'yon-m7'],
+    [5, 'Yapıya asılan riskli yapı tespit bildiriminin tutanağı için hangi ek kullanılır?', ['Ek-7/A', 'Ek-6', 'Ek-8', 'Ek-12'], 1, 'Yönetmelik m.7/4 uyarınca riskli yapı tespitinin yapıya asılması ve muhtarlıkta 15 gün ilan edilmesinde Ek-6 tutanağı kullanılır.', 'ek:Ek-6'],
+    [5, 'Riskli yapı tespiti muhtarlıkta ilan edildiğinde, tespit ayni ve şahsi hak sahiplerine hangi gün tebliğ edilmiş sayılır?', ['Tutanağın düzenlendiği gün', 'İlanın bitimini izleyen beşinci gün', 'İlanın ilk günü', 'İlanın son günü'], 3, 'Yönetmelik m.7/4 uyarınca riskli yapı tespit işlemi, muhtarlıkta yapılan 15 günlük ilanın SON GÜNÜ tüm ayni ve şahsi hak sahiplerine tebliğ edilmiş sayılır.', 'yon-m7'],
+    [5, 'Yapı maliki, muhtarlık ilanının son gününden itibaren riskli yapı tespitine kaç gün içinde itiraz edebilir?', ['30 gün', '15 gün', '7 gün', '60 gün'], 1, 'Yönetmelik m.7/5 uyarınca yapı malikleri veya kanuni temsilcileri, muhtarlık ilanının son gününden (tebliğ tarihinden) itibaren 15 gün içinde itiraz edebilir.', 'yon-m7'],
+    [5, 'Usulüne uygun yapılan riskli yapı tespiti itirazının teknik incelemesini hangi birim yapar?', ['Yetkilendirilmiş teknik heyet', 'Kat malikleri kurulu', 'Bedel Tespiti Komisyonu', 'Tapu müdürlüğü'], 0, 'Yönetmelik m.9 ve m.10 uyarınca süresinde yapılan itirazlar 7 üyeli (4 üniversite + 3 Bakanlık üyesi) yetkilendirilmiş Teknik Heyet tarafından incelenir.', 'yon-m9-10'],
+    [5, 'Riskli yapı tespitine süresinde itiraz edilmezse veya itiraz reddedilirse tespit hangi aşamaya geçer?', ['Taşınmazın ihale değeri kesinleşir.', 'Yeni bina için kat mülkiyeti kurulmuş sayılır.', 'Kesinleşir.', 'Yapı otomatik olarak güçlendirme ruhsatı alır.'], 2, 'Yönetmelik m.8/1 uyarınca 15 günlük sürede itiraz edilmezse veya yapılan itiraz Teknik Heyetçe reddedilirse riskli yapı tespiti idari bakımdan kesinleşir.', 'yon-m8'],
+    [5, 'Kesinleşen bir riskli yapının tahliye ve yıkım tebligatı için hangi tutanak kullanılır?', ['Ek-13', 'Ek-9', 'Ek-7/A', 'Ek-7/B'], 2, 'Yönetmelik m.8/2 uyarınca kesinleşen riskli yapılarda tahliye ve yıktırma bildirimi için Ek-7/A tutanağı kullanılır.', 'ek:Ek-7/A'],
+    [5, 'İdarenin riskli yapının tahliye edilmesi ve yıktırılması için maliklere vereceği süre en çok kaç gündür?', ['120 gün', '90 gün', '60 gün', '45 gün'], 1, 'Yönetmelik m.8/3-a uyarınca riskli yapıların tahliyesi ve yıktırılması için maliklere tek seferde 90 günden fazla olmamak üzere (en çok 90 gün) süre verilir.', 'yon-m8'],
+    [5, 'Yıkım ruhsatı başvurusunda, yapının tahliyesi ile elektrik, su ve doğal gaz hizmetlerinin kapatıldığını hangi kayıt gösterebilir?', ['İmar durum belgesi ile yüklenicinin iş programı', 'Riskli yapı tespit raporu ile ilk malik toplantısının karar tutanağı', 'İlgili kurum belgeleri veya idarenin fiilî durumu belirleyen tutanağı', 'Güncel tapu kaydı ile satın alma ve trampa tutanağı'], 2, 'Yönetmelik m.8/3-b uyarınca yıkım ruhsatı (6 iş gününde), ilgili kurumların abonelik kapatma belgelerine veya idarenin tahliye/kapatmayı tespit eden tutanağına istinaden düzenlenir.', 'yon-m8'],
+    [5, 'Malikler yıkım yerine güçlendirme istiyorsa, yıkım için verilen süre içinde hangi işlemler yapılmalıdır?', ['Zemin etüdü, kira sözleşmesi, yapı kayıt belgesi ve geçici kabul', 'Teknik yapılabilirlik tespiti, usulüne uygun karar, güçlendirme projesi ve ruhsat', 'Teknik yapılabilirlik tespiti, yeni daire dağılımı, değerleme raporu ve tevhit', 'Maliyet teklifi, kira yardımı başvurusu, toplantı çağrısı ve satış ilanı'], 1, 'Yönetmelik m.8/7 uyarınca verilen yıkım süresi (max 90 gün) içinde güçlendirmenin teknik olarak mümkün olduğunun tespiti, KMK m.19/2 (4/5) kararı, güçlendirme projesi ve ruhsatı alınmalıdır.', 'yon-m8'],
+    [5, 'Riskli yapı yıkıldıktan ve riskli yapı şerhi terkin edildikten sonra tapunun beyanlar hanesine hangi bilgi işlenir?', ['Taşınmazın 6306 sayılı Kanun kapsamında olduğu', 'Arsa paylarının ihale bedeli üzerinden güncellendiği', 'Taşınmazın başvuru aranmadan riskli alan ilan edildiği', 'Yeni bina için yapı kullanma izni verildiği'], 0, 'Yönetmelik m.8/9 (04.02.2026 değişikliği) uyarınca yıkım sonrası riskli yapı şerhi terkin edilir ve beyanlar hanesine taşınmazın "6306 sayılı Kanun kapsamında olduğuna dair belirtme" işlenir.', 'yon-m8'],
+    [5, 'Yönetmelik m. 16’ya göre riskli alan dışındaki riskli yapısını anlaşma ile tahliye eden maliklere yapılabilecek aylık kira yardımının süresi kaç aydır?', ['48 ay', '24 ay', '12 ay', '18 ay'], 3, 'Yönetmelik m.16/1 uyarınca kira yardımı süresi riskli alan dışındaki riskli yapılarda 18 ay; riskli ve rezerv yapı alanlarında ise 48 aya kadardır.', 'yon-m16'],
+    [5, 'Yönetmeliğe göre aynı kişi Dönüşüm Projeleri Özel Hesabından kira yardımı ve faiz desteği talep ettiğinde bu iki destek nasıl uygulanır?', ['İki destek aynı başvuruda birlikte verilir.', 'Kira yardımı yalnızca faiz desteği sona erdikten sonra verilir.', 'Faiz desteği yalnızca kira yardımı başladıktan sonra verilir.', 'Kişi bu iki destekten yalnızca birinden yararlanabilir.'], 3, 'Yönetmelik m.16/7 uyarınca kira yardımı ile faiz desteği seçimliktir; aynı kişiye hem kira yardımı hem de kredi faiz desteği birlikte yapılamaz.', 'yon-m16'],
+    [6, 'Tek riskli yapının bulunduğu parselde uygulama kararı için %50 pay kabul oyu vermiştir. Salt çoğunluk bakımından sonuç nedir?', ['Eşik sağlanmıştır, çünkü payların tam yarısı yeterlidir.', 'Eşik, toplantıda kabul eden kişi sayısına bağlı olarak sağlanmış sayılır.', 'Eşik sağlanmamıştır, çünkü toplam payın yarısı aşılmamıştır.', 'Eşik, toplantıya katılanların payı %75’i aşıyorsa sağlanmış sayılır.'], 2, 'Salt çoğunluk toplam arsa payının yarısından fazlasıdır (>%50). Tam %50,00 pay yarısını aşmadığı için salt çoğunluk sağlanmamış olur.', 'yon-m15-1-2'],
+    [6, 'Bir parseldeki üç yapının tamamı riskli tespit edilmiştir. Dönüşüm kararında hangi paylar esas alınır?', ['Yalnız fiilen yapıda oturan maliklerin hisseleri', 'Yalnız en büyük yapının paydaşlarının hisseleri', 'Parseldeki bütün paydaşların hisseleri', 'Yalnızca tespit başvurusunu yapan maliklerin hisseleri'], 2, 'Yönetmelik m.15/6 uyarınca parseldeki tüm yapılar riskli tespit edilmişse yapının paydaşı olup olmadıkları gözetilmeksizin parseldeki bütün paydaşların hisseleri esas alınır.', 'yon-m15-6-7'],
+    [6, 'Bir parseldeki yapılardan yalnız ikisi riskli tespit edilmiştir. Bu iki yapıya ilişkin uygulama kararında kimlerin hisseleri esas alınır?', ['Riskli tespit edilen yapıların paydaşlarının', 'Parsel çevresindeki bitişik taşınmaz maliklerinin', 'Yalnız riskli tespit edilmemiş yapının paydaşlarının', 'Yalnız tespit talebini yapan ilk malikin'], 0, 'Yönetmelik m.15/7-b uyarınca parselde yalnız bazı yapılar riskli ise uygulamalara sadece riskli olarak tespit edilen yapıların paydaşlarının salt çoğunluğu ile karar verilir.', 'yon-m15-6-7'],
+    [6, 'Bir parselde yalnızca A yapısı riskli tespit edilmiştir. Riskli yapı belirtmesi tapuya nasıl işlenir?', ['Parseldeki bütün yapılar tek yapı kabul edilerek', 'Yol cephesine en yakın yapının adresi yazılarak', 'Yalnız başvuran malikin posta adresi belirtilerek', 'A yapısının açık adresi belirtilerek'], 3, 'Yönetmelik m.15/7-a uyarınca çok yapılı parselde yalnız bazı yapılar riskliyse tapu kütüğüne sadece riskli tespit edilen A yapısının açık adresi belirtilerek şerh işlenir.', 'yon-m15-6-7'],
+    [6, 'Tümü riskli üç yapıyı içeren parselde dört paydaşın hisseleri %35, %25, %20 ve %20’dir. İlk iki paydaşın kabulü toplam payın yüzde kaçını temsil eder?', ['%60', '%65', '%55', '%50'], 0, 'İlk iki paydaşın toplam hissesi: %35 + %25 = %60 olup %50 salt çoğunluk eşiğini aşmaktadır.', 'yon-m15-6-7'],
+    [6, 'Örnek Apartmanı toplantısında toplam payın %70’i temsil edilmiş, %60’ı kabul ve %10’u ret oyu vermiştir. Toplantıya katılmayan pay ne kadardır?', ['%20', '%30', '%10', '%40'], 1, 'Toplam parsel payı %100 olduğundan toplantıda temsil edilmeyen (katılmayan) pay oranı: %100 − %70 = %30’dur.', 'r01-rapor-hesap'],
+    [6, 'Riskli yapı tespiti kesinleşmiş ve bina henüz yıkılmamıştır. Yeni uygulama kararına ilişkin toplantı çağrısı nasıl başlatılabilir?', ['Maliklerden biri bütün malikleri toplantıya çağırabilir.', 'İlk hisse satışı yapıldıktan sonra satış komisyonu toplantıyı başlatabilir.', 'Yıkımdan sonra ve ancak bütün maliklerin ortak başvurusuyla çağrı yapılabilir.', 'Yeni yapı ruhsatı verildikten sonra yüklenici toplantıyı başlatabilir.'], 0, 'Yönetmelik m.15/2 uyarınca riskli yapının yıktırılmış olması şartı aranmaksızın maliklerden birinin istemi ile bütün malikler toplantıya çağrılabilir.', 'yon-m15-1-2'],
+    [6, 'Riskli yapının yerine yapılacak uygulama için toplantının yerini, tarihini ve saatini bildiren form hangisidir?', ['Ek-13 Yeniden Satış Bildirim Formu', 'Ek-6 Riskli Yapı Tebligatı Tutanağı', 'Ek-12 Toplantı Bildirim Formu', 'Ek-8 Salt Çoğunlukla Alınan Kararın Bildirim Formu'], 2, 'Yönetmelik m.15/2 uyarınca toplantı yeri, tarihi ve saatinin tüm paydaşlara bildirilmesinde Ek-12 Toplantı Bildirim Formu kullanılır.', 'ek:Ek-12'],
+    [6, 'Ek-12 formu muhtarlıkta ilan edilerek çağrı yapıldığında ilan ne kadar sürer?', ['30 gün', '15 gün', '7 gün', '10 gün'], 1, 'Yönetmelik m.15/2 uyarınca Ek-12 toplantı çağrı formu muhtarlıkta veya yıkılmamış bina kapısında 15 gün süre ile ilan edilir.', 'ek:Ek-12'],
+    [6, 'Toplantı çağrısında Ek-12 ile birlikte maliklere hangi belge tebliğ edilir?', ['ARAAD’dan alınan Toplantı Bilgilendirme Notu', 'Kat mülkiyeti tescil bildirimi', 'İlk satışa ilişkin artırma tutanağı', 'Komisyonun tespit ettiği rayiç değer cetveli'], 0, '06.02.2026 KDB uygulama esasları uyarınca Ek-12 çağrı formuyla birlikte ARAAD sisteminden indirilen 19 paragraflık resmi Toplantı Bilgilendirme Notu da ilan/tebliğ edilir.', 'ek:Ek-12-Bilgi-Notu'],
+    [6, 'Yüklenen Ek-12 Tutanak örneğinde muhtarlığa ilan için teslimi kimler imzalar?', ['Toplantı başkanı ve denetleme kurulu üyesi', 'Yüklenici ve yapı denetim yetkilisi', 'Satış komisyonu başkanı ve tapu memuru', 'Muhtar ve bildirimi yapan kişi'], 3, 'Resmi Ek-12 Tutanak formunun muhtarlığa getirildiği gün teslim tutanağı "Muhtar" ve "Bildirimi yapan kişi" tarafından birlikte imzalanır.', 'ek:Ek-12-Tutanak'],
+    [6, 'İmzalı toplantı karar tutanağında çoğunluğu denetlemeyi hangi kayıt mümkün kılar?', ['Yalnızca katılan maliklerin adlarının alfabetik sıraya dizilmesi', 'Bağımsız bölüm sayısının oda tiplerine göre gruplandırılması', 'Temsil edilen, kabul eden ve ret oyu veren payların gösterilmesi', 'Katılımcıların geliş sırasının ve toplantı süresinin kaydedilmesi'], 2, 'Hazırun ve karar tutanağında toplam 100/100 pay üzerinden temsil edilen, kabul oyu veren ve ret oyu veren arsa payı oranlarının açıkça yazılması salt çoğunluk denetimini sağlar.', 'r01-rapor-hesap'],
+    [6, 'Riskli yapı parselinde karara katılmayan maliklere muhtarlık ilanı yoluyla karar ve teklif bildirimi yapılacaksa hangi form kullanılır?', ['Ek-6', 'Ek-10', 'Ek-9', 'Ek-8'], 3, 'Yönetmelik m.15/2 uyarınca parsel bazındaki riskli yapılarda karara katılmayanlara karar ve anlaşma teklifi bildirimi Ek-8 formuyla yapılır.', 'ek:Ek-8'],
+    [6, 'Riskli alan veya rezerv yapı alanında karara katılmayanlara muhtarlık ilanı yoluyla salt çoğunluk kararını bildiren form hangisidir?', ['Ek-7/B', 'Ek-11', 'Ek-10', 'Ek-8'], 2, 'Yönetmelik m.15/2 uyarınca riskli alanlar ve rezerv yapı alanlarında alınan kararın ve teklifin katılmayanlara bildiriminde Ek-10 formu kullanılır (riskli yapılarda Ek-8).', 'ek:Ek-10'],
+    [6, 'Karar ve teklif, tapuya bildirilen elektronik tebligat adresine ulaştığında Yönetmelik m. 15/2’ye göre ne zaman bildirilmiş sayılır?', ['Ulaşma tarihini izleyen beşinci günün sonunda', 'Ulaşma tarihini izleyen on beşinci günün sonunda', 'Adres sahibinin e-postayı ilk okuduğu gün', 'Mesajın gönderildiği günün başında'], 0, '7201 sayılı Tebligat Kanunu ve 6306 Yön. m.15/2 uyarınca elektronik tebligat (UETS), muhatabın elektronik adresine ulaştığı tarihi izleyen 5. günün sonunda yapılmış sayılır.', 'yon-m15-1-2'],
+    [6, 'Karara katılmayan malik için teklifin kabulü amacıyla bildirimin yapıldığı veya yapılmış sayıldığı tarihten itibaren tanınan süre kaç gündür?', ['15 gün', '30 gün', '5 gün', '10 gün'], 0, 'Yönetmelik m.15/2 uyarınca bildirimin yapıldığı/sayıldığı tarihten itibaren karara katılmayan maliklere teklifi inceleyip kabul etmeleri için 15 gün süre verilir.', 'yon-m15-1-2'],
+    [6, 'Tevhidi imar bakımından mümkün iki parseldeki bütün yapılar riskli tespit edilmiştir. Tevhit için ilk parselde %65, ikinci parselde %45 pay kabul oyu vermiştir. Karar koşulu bakımından sonuç nedir?', ['İki parselde kabul veren toplam kişi sayısı bilinmeden pay koşulu değerlendirilemez.', 'İlk parseldeki çoğunluk her iki parsel için yeterlidir.', 'İki kabul oranının ortalaması %50’yi geçtiği için koşul sağlanmıştır.', 'İkinci parselde salt çoğunluk sağlanmamıştır.'], 3, 'Yönetmelik m.15/8 uyarınca iki riskli parselin tevhidinde her parselde AYRI AYRI >%50 salt çoğunluk şarttır; 2. parsel %45’te kaldığı için koşul sağlanmamıştır (ortalama alınamaz).', 'yon-m15-8'],
+    [6, 'Tevhit tamamlandığında yeni uygulamaya ilişkin salt çoğunluk hangi hisseler üzerinden hesaplanır?', ['Yalnız tevhit başvurusunu imzalayanların önceki hisseleri', 'Eski parsellerin her birindeki eski hisseler', 'En büyük eski parselin hisseleri', 'Tevhit sonucu oluşan parseldeki hisseler'], 3, 'Yönetmelik m.15/8 son cümlesi uyarınca tevhitten sonra yapılacak uygulamaya, tevhit ile oluşan yeni parselde sahip oldukları hisseleri oranında paydaşların salt çoğunluğu (>%50) ile karar verilir.', 'yon-m15-8'],
+    [6, 'Bazı yapıları riskli olan parselde kısmi dönüşüm için, riskli yapı maliklerinin talep ve muvafakatiyle yeniden yapım ruhsatı düzenlenirken hangi koşul aranır?', ['Riskli yapı maliklerine aynı brüt alanın mutlaka verilmesi', 'Parseldeki risksiz yapıların önceden satışa çıkarılması', 'Diğer maliklerin haklarının olumsuz etkilenmemesi', 'Riskli yapıların aynı kat adediyle yeniden yapılması'], 2, 'Yönetmelik m.15/7-c uyarınca kısmi dönüşümde parseldeki diğer (risksiz yapı) maliklerinin imar ve mülkiyet haklarının menfi (olumsuz) etkilenmemesi şarttır.', 'yon-m15-6-7'],
+    [6, '“Parsel Malik İsimleri” krokisinde bir adın yapı yanında yazılı olması, karar hesabı için hangi belgeyle kontrol edilmelidir?', ['Güncel tapu kaydı ve hisse bilgisi', 'İmar planı lejantı ve pafta ölçeği', 'Zemin etüt raporu ve karot tutanağı', 'Yapı cephesi ve mimari kat planı'], 0, 'Saha krokisindeki isimler yalnız fiilî kullanımı gösterebilir; 6306 oylama hesabı mutlaka güncel tapu kaydı ve tapudaki matematiksel hisse/arsa payı oranıyla kontrol edilmelidir.', 'yon-m15-6-7'],
+    [7, 'Riskli yapı parselinde ilk hisse satışının yeri ve zamanının bildiriminde hangi form kullanılır?', ['Ek-13', 'Ek-11', 'Ek-9', 'Ek-8'], 2, 'Yönetmelik m.15/A-4 uyarınca riskli yapılarda anlaşan paydaşlara yapılacak ilk açık artırma satışının yeri ve zamanı Ek-9 tutanağı ile bildirilir.', 'ek:Ek-9'],
+    [7, 'İlk satışta anlaşan paydaşlara satılamayan hisselerin yeniden satış duyurusunda hangi form kullanılır?', ['Ek-10', 'Ek-13', 'Ek-9', 'Ek-12'], 1, 'Yönetmelik m.15/A-12 (04.02.2026) uyarınca ilk satışta paydaşlara satılamayan hisselerin 3. şahıslara da açık yeniden satış ilanı Ek-13 formuyla yapılır.', 'ek:Ek-13'],
+    [7, 'İlk açık artırmada pey sürme hakkı kimlere aittir?', ['Toplantıya katılan bütün maliklere', 'Yazılı başvuru yapan bütün üçüncü kişilere', 'Salt çoğunlukla anlaşan paydaşlara', 'Yapıda ikamet eden kiracılara'], 2, 'Yönetmelik m.15/A uyarınca ilk satışa (Ek-9) yalnızca salt çoğunlukla anlaşma sağlayan diğer paydaşlar katılıp pey sürebilir (3. kişiler ancak ilk satışta alınmazsa 2. satışa katılabilir).', 'yon-m15-3-4-a'],
+    [7, 'Yönetmelik m. 15/A’ya göre satış başvurusunda sunulacak değerleme belgesi hangi nitelikteki kuruluştan alınır?', ['Binanın zorunlu deprem sigortasını düzenleyen kuruluştan', 'Riskli yapı tespiti için lisanslandırılmış teknik kuruluştan', 'Yapı denetimi için yetkilendirilmiş yapı denetim kuruluşundan', 'SPK tarafından yetkilendirilmiş gayrimenkul değerleme kuruluşundan'], 3, 'Yönetmelik m.12 ve m.15/A-1 uyarınca pay satışı başvurusunda sunulacak değerleme raporu Sermaye Piyasası Kurulu (SPK) lisanslı gayrimenkul değerleme kuruluşundan alınır.', 'yon-m12'],
+    [7, 'Açık artırmada satışa esas rayiç değeri kim belirler?', ['Yapının riskini inceleyen teknik heyet', 'Değerleme belgesini de dikkate alan Bedel Tespiti Komisyonu', 'İlk teklifi sunan yüklenici', 'Salt çoğunluk kararını imzalayan maliklerin temsilcisi'], 1, 'Yönetmelik m.15/A-3 uyarınca satışa çıkarılacak payın asgari rayiç değeri, SPK değerleme raporunu da dikkate alarak İdare bünyesindeki Bedel Tespiti Komisyonu tarafından belirlenir.', 'yon-m15-3-4-a'],
+    [7, 'Satışa esas rayiç değer 600.000 TL, bildirilen teklifler 585.000 TL, 610.000 TL ve 635.000 TL’dir. Rayiç sınırı ve en yüksek teklif kuralına göre hangi bedel esas alınır?', ['635.000 TL', '610.000 TL', '600.000 TL', '585.000 TL'], 0, 'Açık artırmada satış, belirlenen rayiç değerden (600.000 TL) az olmamak üzere en yüksek geçerli teklifi veren katılımcıya (635.000 TL) yapılır.', 'yon-m15-3-4-a'],
+    [7, 'Yeniden satışa katılma şartlarını sağlayan üçüncü kişi, rayiç değeri 800.000 TL olan pay için yüzde 10 oranında kaç TL nakit teminat verir?', ['160.000 TL', '80.000 TL', '40.000 TL', '120.000 TL'], 1, 'Yönetmelik m.15/A-12 ve Ek-13 uyarınca 3. şahısların yatıracağı %10 nakit teminat: 800.000 TL × %10 = 80.000 TL olur.', 'ek:Ek-13'],
+    [7, 'Yönetmelik m. 15/A kapsamında satılan arsa payı üzerinde ipotek varsa, satış sonrasında ipotek hakkı hangi değer üzerinde devam eder?', ['Parselde satışa çıkmayan bütün paylar üzerinde', 'Alıcının önceden sahip olduğu diğer paylar üzerinde', 'Yüklenicinin verdiği inşaat teminatı üzerinde', 'Satış bedeli üzerinde'], 3, 'Yönetmelik m.15/A-5 uyarınca satışı yapılan pay üzerindeki ipotek, ihtiyati haciz ve haciz gibi haklar satış sonrasında satış bedeli üzerinde devam eder; tapu kaydındaki şerhler terkin edilir.', 'yon-m15-3-4-a'],
+    [7, 'Yönetmelik m. 15/A’ya göre satışta en yüksek geçerli teklifi veren katılımcıya satış bedelini vadeli hesaba yatırması için kaç gün verilir?', ['10 gün', '15 gün', '5 gün', '7 gün'], 3, 'Yönetmelik m.15/A uyarınca ihale alıcısına satış bedelini hissesi satılan malik adına açılacak vadeli banka hesabına yatırması için 7 gün süre verilir.', 'yon-m15-3-4-a'],
+    [7, 'Satış bedeli yatırıldıktan sonra payın yeni malik adına tescili için satış işlemi hangi birime bildirilir?', ['İlgili muhtarlığa', 'İlgili tapu müdürlüğüne', 'Yapı denetim kuruluşuna', 'Riskli yapı tespitini yapan kuruluşa'], 1, 'Satış bedeli bankaya yatırılıp anlaşma belgeleri imzalandıktan sonra Müdürlük/İdare, payın alıcı adına resen tescili için işlemi ilgili Tapu Müdürlüğüne bildirir.', 'yon-m15-3-4-a']
+  ];
+
+  // TABLET 3: 100 SORULUK ETKİLEŞİMLİ SUNUM — BÖLÜM B (Soru 51–100)
+  const BANK_T3_50 = [
+    [7, 'Ek-13’teki yeniden satış ilanı, idarenin yayın araçları ve ilan panosu dışında bütün maliklere hangi kanaldan bildirilir?', ['e-Devlet Kapısı', 'Belediye e-İmar sistemi', 'Ulusal Adres Veri Tabanı', 'Tapu ve Kadastro Parsel Sorgu'], 0, 'Yönetmelik m.15/A-12 ve Ek-13 uyarınca yeniden satış ilanı 15 gün süreyle ilan edilir ve ayrıca bütün maliklere e-Devlet Kapısı üzerinden bildirilir.', 'ek:Ek-13'],
+    [7, 'Yüklenen düzenleme şeklinde vekâletname örneklerinde hangi işlem için yetki ifadesi yer alır?', ['Tapu sicilinde memur olarak resen tescil yapmak', 'Hisse satışında komisyon adına rayiç bedeli karara bağlamak', 'Riskli yapı tespitine ilişkin teknik heyet kararını vermek', 'Malik adına 6306 kapsamında kira yardımı işlemlerini yürütmek'], 3, 'Noter düzenleme şeklinde vekâletname örneklerinde vekilin malik adına 6306 kapsamındaki başvuru ve kira yardımı işlemlerini yürütme yetkisi yer alabilir (idari/resmi makam yetkileri vekâletle devredilemez).', 'vekalet-tbk504'],
+    [7, 'Örnek dosyadaki sınırlı irtibat yazısında hangi iş yetki kapsamındadır?', ['Malik adına yükleniciyi seçmek ve kat karşılığı sözleşme yapmak', 'Malik adına teknik itirazdan vazgeçmek ve feragat belgesi imzalamak', 'Malik adına arsa payını devretmek ve tapu sözleşmesini imzalamak', 'Başvuru evrakının durumunu sormak ve teslim edilen belgeleri birime sunmak'], 3, 'Sınırlı irtibat/takip yetki yazısı (Örnek 03) tasarruf veya feragat yetkisi vermez; yalnızca evrak sunma ve başvuru durumunu ilgili birimden takip etme yetkisi verir.', 'ek:Ek-Uzman-1'],
+    [7, 'Örnek dosyadaki paylaşım cetvelinde bağımsız bölümlerin açık biçimde tanımlanması için hangi bilgiler birlikte yer almalıdır?', ['Yalnız malik adı, iletişim adresi ve imza tarihi', 'Yapı kimlik numarası, karot kodu ve deney sonucu', 'Bölüm numarası, kat, cephe, net ve brüt alan', 'Yalnız yüklenici unvanı, vergi numarası ve teklif tarihi'], 2, 'Bağımsız bölüm paylaşım cetvelinde ileride uyuşmazlık doğmaması için her dairenin bağımsız bölüm numarası, katı, cephesi/yönü, net alanı ve brüt alanı birlikte gösterilmelidir.', 'urbannest-hesaplar'],
+    [7, 'Kat karşılığı sözleşmeye eklenen teknik şartnamenin işlevi nedir?', ['Arsa paylarının açık artırmada hangi rayiç bedelle satılacağını belirlemek', 'İmalatın niteliğini, malzeme özelliklerini ve uygulama standartlarını tarif etmek', 'Yapının deprem etkisi altında riskli olup olmadığına karar vermek', 'Toplantının hangi gün ve saatte yapılacağını bütün maliklere bildirmek'], 1, 'Teknik şartname (mahal listesi); inşaatta kullanılacak beton, demir, cephe, yalıtım, asansör ve iç mekân malzemelerinin marka, sınıf ve uygulama standartlarını bağlayıcı biçimde tarif eder.', 'urbannest-hesaplar'],
+    [7, 'Örnek yüklenici teklifinde tapu devirleri hangi ölçütlere bağlanmıştır?', ['Yalnız ilk toplantının tarihi', 'İlk toplantı çağrısının ilan süresi', 'Karot numunelerinin ortalama dayanımı', 'İnşaat ilerlemesi ve teminat'], 3, 'Yüklenici teklif ve sözleşme kurgusunda tapu devirleri; %6 teminatın sunulması ve fiziki inşaat ilerleme seviyelerinin (Yön. m.13/9–10) gerçekleşmesi ölçütlerine bağlanır.', 'yon-m13'],
+    [7, 'Örnek yüklenici teklifinde teslim için verilen 18 aylık sürenin başlangıcı hangi tarihtir?', ['Riskli yapı tespit başvurusunun tarihi', 'Yapı ruhsatının tarihi', 'Toplantı çağrısının ilan edildiği tarih', 'Rayiç değer raporunun hazırlandığı tarih'], 1, 'Kat karşılığı inşaat sözleşmelerinde ve örnek yüklenici teklifinde (Örnek 10 / Ek-Uzman-3) inşaat tamamlama ve teslim süresi (örn. 18 ay) Yapı Ruhsatı tarihinden itibaren başlar.', 'ek:Ek-Uzman-3'],
+    [7, 'Örnek dosyadaki pay satışı başvurusunda karar ve belirli teklif eklerine ek olarak hangi kayıt aranır?', ['Yeni kat mülkiyetinin kurulduğuna ve bağımsız bölümlerin tesciline ilişkin kayıt', 'Yapı kullanma izninin verildiğine ve yeni dairelerin teslimine ilişkin kayıt', 'Yüklenicinin bütün bağımsız bölümleri üçüncü kişilere sattığına ilişkin kayıt', 'Karara katılmayanlara usulüne uygun bildirim yapıldığına ve kabul süresinin dolduğuna ilişkin kayıt'], 3, 'Yönetmelik m.15/A-1 ve Örnek 12 uyarınca pay satışı başvurusunda; katılmayan maliklere Ek-8/noter/UETS ile usulüne uygun bildirim yapıldığına ve 15 günlük kabul süresinin dolduğuna dair kanıt aranır.', 'yon-m15-3-4-a'],
+    [7, 'Kentsel dönüşüm uygulama akışında “iskân” hangi belgeye karşılık gelir?', ['Yapı kullanma izin belgesi', 'Yapı ruhsatı', 'Yıkım ruhsatı', 'İmar durum belgesi'], 0, 'Uygulamada "iskân" olarak adlandırılan belge, inşaatın ruhsat ve eklerine uygun tamamlandığını belgeleyen Yapı Kullanma İzin Belgesidir.', 'imark-m28'],
+    [7, 'Aşağıdaki sıralamalardan hangisi yeni binanın normal yapım sürecini gösterir?', ['İnşaat → yapı kullanma izni → projelerin hazırlanması → yapı ruhsatı', 'Yapı kullanma izni → yapı ruhsatı → projelerin hazırlanması → inşaat', 'Projelerin hazırlanması → yapı ruhsatı → inşaat → yapı kullanma izni', 'Yapı ruhsatı → yapı kullanma izni → projelerin hazırlanması → inşaat'], 2, 'Yeni yapım sürecinin doğru yasal sırası: Uygulama projelerinin hazırlanması ➔ Yapı ruhsatı alınması ➔ İnşaatın yapımı ➔ Yapı kullanma izni (iskân) alınmasıdır.', 'imark-m28'],
+    [8, 'Beton dayanımının gösteriminde kullanılan 1 MPa hangi birime eşittir?', ['1 N/mm²', '1 N/cm²', '100 N/mm²', '10 N/mm²'], 0, '1 MegaPascal (MPa) = 1.000.000 N/m² = 1 N/mm² basınç gerilmesine eşittir (yaklaşık 10,20 kgf/cm²).', 'beton-mpa-18'],
+    [8, 'Karot dayanımının düzeltilmesinde numuneye ait hangi etkenler dikkate alınır?', ['Beton rengi, cephe boyası, çatı türü ve bina yönü', 'Boy, çap, nem ve karot alma sırasındaki örselenme', 'Tapu alanı, cephe uzunluğu, oturum ve arsa payı', 'Bina yaşı, oda sayısı, kat adedi ve kat yüksekliği'], 1, 'Ham karot dayanımından düzeltilmiş karot dayanımına geçilirken numunenin boy/çap oranı, çapı, deney anındaki nem durumu ve karot alma örselenmesi katsayıları dikkate alınır.', 'beton-mpa-18'],
+    [8, 'RYTEİE m. 4.1.11’e göre düzeltilmiş karot dayanımlarının ortalaması 18 MPa ise mevcut beton dayanımı kaç MPa’dır?', ['16,20 MPa', '21,18 MPa', '13,01 MPa', '15,30 MPa'], 3, 'RYTEİE 2019 md. 4.1.11 uyarınca düzeltilmiş karot ortalamasının %85’i mevcut beton dayanımı olarak alınır: 18 × 0,85 = 15,30 MPa.', 'beton-mpa-18'],
+    [8, 'Raporda 18 MPa değeri zaten “mevcut beton dayanımı” satırında verilmişse bu değere yüzde 85 işlemi nasıl uygulanır?', ['Yüzde 85 bir kez daha uygulanır ve 15,30 MPa olarak okunur.', 'Değer yüzde 85’e bölünerek 21,18 MPa olarak okunur.', 'Aynı işlem tekrarlanmaz ve rapor değeri 18 MPa olarak okunur.', 'Yüzde 90 uygulanır ve 16,20 MPa olarak okunur.'], 2, 'Rapordaki 18 MPa değeri zaten "mevcut beton dayanımı" olarak hesaplanıp yazılmışsa %85 indirgeme işlemi ikinci kez tekrarlanmaz; değer 18 MPa olarak okunur.', 'beton-mpa-18'],
+    [8, 'Örnek Apartmanı’nda düzeltilmiş altı karot değeri 9,2, 10,5, 11,1, 9,8, 10,3 ve 9,1 MPa’dır. Aritmetik ortalama kaç MPa’dır?', ['10,0 MPa', '10,3 MPa', '10,5 MPa', '9,8 MPa'], 0, 'Altı karotun toplamı: 9,2 + 10,5 + 11,1 + 9,8 + 10,3 + 9,1 = 60,0 MPa. Aritmetik ortalama = 60,0 ÷ 6 = 10,0 MPa (mevcut dayanım ise 10,0 × 0,85 = 8,50 MPa).', 'r01-rapor-hesap'],
+    [8, 'Bir yapının beton dayanımı düşük bulunmuştur. Risk kararına ulaşmak için hangi yaklaşım gerekir?', ['Malzeme verilerini, taşıyıcı sistem kapasitesini ve deprem talebini birlikte değerlendirmek', 'En düşük karot değerini tek başına binanın risk sonucu olarak almak', 'Yapım yılını esas alarak tek bir yaş sınırı uygulamak', 'Binanın kat sayısını emsal oranıyla karşılaştırıp sonuç vermek'], 0, 'Tek başına MPa değeri risk kararı vermez; beton ve donatı verileri, taşıyıcı sistem rölövesi/kapasitesi ve zemin-deprem talebi 3 boyutlu analizle birlikte değerlendirilir.', 'beton-mpa-18'],
+    [8, 'Betonarme yapıda donatı araştırmasına ait bilgi hangisidir?', ['Beton numunesinin çapı ile deney anındaki nemi', 'Zemin sınıfı ile spektral ivme değerleri', 'Yapı cephesinin yönü ile komşu parsele uzaklığı', 'Boyuna donatı türü ile etriye aralığı ve kanca düzeni'], 3, 'Röntgen ve sıyırma ile yapılan donatı tespitinde; boyuna çelik türü/çapı, etriye aralığı, kanca düzeni ve korozyon durumu belirlenir.', 'beton-mpa-18'],
+    [8, '1980 yapımı ve beş katlı olduğu bildirilen örnek binada, bildirilen kat sayısının kapsamını doğrulamak için hangi bilgi kontrol edilmelidir?', ['Normal katların birbirleriyle aynı yüksekliğe sahip olup olmadığı', 'Bodrum ve zemin katın bildirilen sayıya dahil edilip edilmediği', 'Katlardaki bağımsız bölüm sayılarının eşit olup olmadığı', 'Normal katların birbirleriyle aynı brüt alana sahip olup olmadığı'], 1, 'Uygulamada "5 katlı" ifadesinin bodrum + zemin + normal katlardan hangilerini kapsadığı (ör. Z+4 mü yoksa 1B+Z+3 mü olduğu) proje ve yerinde incelemeyle doğrulanmalıdır.', 'beton-mpa-18'],
+    [8, 'Mevcut binanın deprem performansı ve güçlendirme değerlendirmesi için sunum hangi teknik dayanağa işaret eder?', ['6306 Uygulama Yönetmeliği Ek-13', '6306 Uygulama Yönetmeliği Ek-8', 'Türkiye Bina Deprem Yönetmeliği 2018 Bölüm 15', 'Planlı Alanlar İmar Yönetmeliği’nin yol genişliği hükümleri'], 2, '6306 Ek-2 yalnız riskli yapı tespiti içindir; mevcut binaların kapsamlı deprem performansı ve güçlendirme hesabı TBDY-2018 Bölüm 15 hükümlerine göre yapılır.', 'beton-mpa-18'],
+    [8, 'Örnek riskli yapı dosyasındaki boş yapısal analiz ve risk değerlendirme cetvelleri gerçek bir raporda neye dayanarak doldurulmalıdır?', ['Maliklerin çoğunluk kararına ve yüklenicinin teklif bedeline', 'Örnek daire dağılım cetveli ve inşaat alanı hesabına', 'Tapu parsel numarası ve binanın sigorta bedeline', 'Saha verilerine dayalı taşıyıcı sistem modeli ve yapıya özgü analiz sonuçlarına'], 3, 'Gerçek bir riskli yapı tespit raporunda analiz tabloları şablon verilerle değil, binadan alınan gerçek rölöve/malzeme verilerine dayalı ARAAD taşıyıcı sistem analiz sonuçlarıyla doldurulur.', 'r01-rapor-hesap'],
+    [9, 'İmar planı eğitimindeki A-4 gösterimi nasıl okunur?', ['Ayrık nizam ve dört kat', 'Blok nizam ve dört metre ön bahçe', 'Bitişik nizam ve dört kat', 'Ayrık nizam ve dört metre azami yükseklik'], 0, 'İmar planı sembollerinde "A" Ayrık nizamı, yanındaki "4" ise izin verilen azami kat adedini (4 kat) gösterir.', 'ant-m9'],
+    [9, 'Örnek imar paftasındaki “Yençok 15,50 m” neyi gösterir?', ['Komşu parselin cephe uzunluğunu', 'Ön bahçe çekme mesafesini', 'Azami yapı yüksekliğini', 'Asgari yol genişliğini'], 2, 'Yençok = 15,50 m ifadesi binanın kot aldığı noktadan itibaren aşamayacağı azami yapı yüksekliğini gösterir.', 'ant-m9'],
+    [9, '27594 ada 1 parsel paftasında daire içindeki 22.00 ve 12.00 değerleri hangi bilgiyi verir?', ['Yoldan çekme mesafelerini', 'Bina yüksekliği ve subasman kotunu', 'Parselin uzun ve kısa kenarını', 'Planlanan imar yolu genişliklerini'], 3, 'İmar yolu ekseni üzerindeki daire içinde yazan 22.00 ve 12.00 rakamları, o imar yollarının planlanan genişliklerini (22 m ve 12 m) gösterir.', 'kepez-27594'],
+    [9, '27594 ada 1 parselin eğitim paftasında “İBT” hangi plan işlevini ifade eder?', ['İsteğe Bağlı Tevhit', 'İdari Birim Tesisi', 'İmar Bölgesi Tesisi', 'İsteğe Bağlı Ticaret'], 3, 'Antalya Kepez uygulama imar planı notlarında İBT kısaltması "İsteğe Bağlı Ticaret" kullanım kararını ifade eder.', 'kepez-27594'],
+    [9, '27594 ada 1 parsel planında gösterilen 16.250,65 m² için “Tapu alanı değildir” uyarısı yer alır. Kesin alan hesabından önce hangi kontrol gerekir?', ['Güncel tapu yüzölçümünü ve hesaba esas net imar parseli alanını doğrulamak', 'Pafta ölçeğini yüzde 30 artırarak tapu alanını elde etmek', 'Gösterilen alanı bağımsız bölüm sayısına bölerek tapu alanını bulmak', 'Parselin haritadaki dolgu rengini emsal katsayısı olarak almak'], 0, 'Coğrafi bilgi sistemi (CBS) ekran alanı yuvarlama veya terk farkı içerebileceğinden kesin hesap öncesinde güncel tapu yüzölçümü ve terk sonrası net imar parseli alanı doğrulanır.', 'kepez-27594'],
+    [9, '27594 ada 1 parselin eğitim örneğinde “MAX = 7 kat” ifadesi genel kat okumasında hangi dağılıma karşılık gelir?', ['Zemin ve 8 normal kat', 'Zemin ve 6 normal kat', 'Zemin ve 7 normal kat', 'Zemin ve 5 normal kat'], 1, 'Yol üstü toplam 7 kat (MAX = 7 kat) genel mimari okumada 1 Zemin Kat + 6 Normal Kat (toplam 7 kat) dağılımına karşılık gelir.', 'kepez-27594'],
+    [9, 'Birden fazla blok içeren projede TAKS sınırını kontrol etmek için hangi değer esas alınır?', ['En büyük bloğun yalnız son kat alanı', 'Blokların hesaba dahil taban alanları toplamı', 'Kat adedi en fazla olan bloğun toplam brüt alanı', 'Her bloğun daire net alanları toplamı'], 1, 'Çok bloklu bir parselde TAKS üst sınırı, parsel içerisindeki tüm blokların TAKS hesabına dahil taban oturum alanları toplamı alınarak kontrol edilir.', 'paiy-m4'],
+    [9, '27594 ada 1 parselde hesaba esas alan 16.250,65 m², emsal 0,60 varsayılırsa emsale dahil toplam alan kaç m² olur?', ['9.750,39 m²', '16.250,65 m²', '9.749,40 m²', '4.875,20 m²'], 0, 'Emsale Dahil Toplam Alan = 16.250,65 m² × 0,60 = 9.750,39 m² olur.', 'kepez-27594'],
+    [9, '27594 ada 1 parselde hesaba esas alan 16.250,65 m², TAKS 0,30 kabul edildiğinde azami taban alanı iki ondalık haneye yuvarlanınca kaç m² olur?', ['4.875,19 m²', '4.875,20 m²', '4.875,65 m²', '5.416,88 m²'], 1, '16.250,65 × 0,30 = 4.875,195 m² olup iki ondalık haneye yuvarlandığında 4.875,20 m² olur.', 'kepez-27594'],
+    [9, 'Bir plan çıktısında yan ve arka bahçe mesafeleri boş bırakılmış, belgede ilgili tabloya bakılması istenmiştir. Sonraki adım hangisidir?', ['Taban oturumunu parselin tamamı kabul edip çekmeleri sonra belirlemek', 'Yürürlükteki ilgili bahçe mesafesi tablosunu ve parsel koşullarını kontrol etmek', 'Parselin ön bahçe mesafesini her sınıra aynen uygulamak', 'Yan ve arka mesafeyi otomatik olarak sıfır metre kabul etmek'], 1, 'E-imar çıktısında boş bırakılan yan/arka bahçe satırları için uygulama imar planı notlarındaki ve yürürlükteki İmar Yönetmeliğindeki (m.23) kat adedine bağlı bahçe mesafesi tablosuna bakılır.', 'ant-m23'],
+    [9, '1.000 m² parselde KAKS 1,20 ise emsale dahil toplam katlar alanı kaç m²’dir?', ['1.200 m²', '900 m²', '1.500 m²', '300 m²'], 0, 'Emsale Dahil Toplam Alan = 1.000 m² × 1,20 = 1.200 m² olur.', 'paiy-m4'],
+    [9, '1.700 m² parselde TAKS 0,30 ve KAKS 0,80’dir. Zeminde azami TAKS alanı kullanılırsa üst katlara kalan emsal alanı kaç m² olur?', ['510 m²', '850 m²', '1.445 m²', '1.360 m²'], 1, 'Toplam emsal = 1.700 × 0,80 = 1.360 m². Zemin TAKS = 1.700 × 0,30 = 510 m². Üst katlara kalan emsal = 1.360 − 510 = 850 m² olur.', 'ant-m41'],
+    [9, '1.700 m² parsel örneğinde üst katların 850 m² emsal alanına 1,70 çarpanı uygulanmış, zemin 510 m² sabit tutulmuştur. Üst katların modeldeki alanı kaç m² olur?', ['1.360 m²', '1.445 m²', '867 m²', '1.955 m²'], 1, 'Yalnız üst katların çıkmalı alanı sorulduğundan: 850 m² × 1,70 = 1.445 m² olur (Zemin 510 m² eklendiğinde toplam 1.955 m² eder).', 'ant-m41'],
+    [9, 'Aynı ön fizibilite örneğinde zemin 510 m², çarpanla hesaplanan üst katlar 1.445 m²’dir. Tam oturumlu 510 m² bodrum da fiziksel toplama eklenirse kaç m² elde edilir?', ['1.955 m²', '2.975 m²', '2.465 m²', '2.295 m²'], 2, 'Fiziksel Toplam = 510 m² (zemin) + 1.445 m² (üst katlar) + 510 m² (bodrum) = 2.465 m² olur.', 'ant-m41'],
+    [9, '2,50 m subasman kotu ve bir bodrum planlanan örnekte, KAKS ile fiziksel toplam inşaat alanı arasındaki ilişki nasıl açıklanır?', ['Kot KAKS değerine doğrudan 2,50 ekler ve bodrum alanını sabitler.', 'Kot hem KAKS’ı hem fiziksel toplamı 1,70 ile çarpar.', 'Tam oturumlu bodrum yapıldığında KAKS otomatik olarak TAKS’a eşit olur.', 'Kot KAKS değerini değiştirmez, bodrum fiziksel toplam inşaat alanını artırabilir.'], 3, '+2,50 m subasman kotu KAKS (emsal) katsayısını değiştirmez; ancak projeye emsal harici bodrum kat (otopark/sığınak) eklendiğinde binanın fiziksel toplam inşaat alanı artar.', 'ant-m41'],
+    [9, 'Bir imar belgesindeki 1,70 çıkma katsayısının hangi alana ve nasıl uygulanacağını belirlemek için hangi kaynak kontrol edilmelidir?', ['Kat maliklerinin çoğunluk tutanağı ve paylaşım cetveli', 'Parsele uygulanabilir onaylı plan notu ve ilgili imar hükümleri', 'Yüklenicinin metrekare satış listesi ve iş programı', 'Zemin etüdünün sondaj yerleri ve karot tablosu'], 1, '1,70 çıkma katsayısının zemin kata uygulanıp uygulanmayacağı ve hesabı, parsele ait onaylı uygulama imar planı notları ve Büyükşehir/Planlı Alanlar İmar Yönetmeliği hükümlerinden kontrol edilir.', 'ant-m41'],
+    [9, '1272 ada 26 parsel ön incelemesinde, 1,70 çarpanının kullanımı hangi kabule dayanır?', ['Belgedeki iki açıklama çeliştiği için kullanıcı kabulüne', 'Tapu yüzölçümünde fazladan 1,70 m² görüldüğü için alan düzeltmesine', 'Emsal satırında 1,70 yazdığı için kesin imar hakkına', 'Lejantta 1,70 m ön bahçe yazdığı için çekme mesafesine'], 0, '1272 ada 26 parsel ön inceleme çalışmasında belgedeki iki açıklama birbiriyle çeliştiği için 1,70 çarpanı senaryo/kullanıcı kabulüyle iki ayrı model olarak test edilmiştir.', 'vaka-1272-9943'],
+    [9, '1272 ada 26 parsel senaryosunda 482 m² arsa ve varsayımsal TAKS 0,40 ile zemin oturumu kaç m²’dir?', ['327,76 m²', '120,50 m²', '192,80 m²', '168,70 m²'], 2, 'Zemin Kat Taban Oturumu = 482 m² × 0,40 = 192,80 m² olur.', 'vaka-1272-9943'],
+    [9, '1272 ada 26 parselin zemin sabit modelinde zemin 192,80 m², üç normal katın her biri 327,76 m²’dir. Bodrum hariç üst yapı toplamı nedir?', ['1.040,08 m²', '983,28 m²', '1.176,08 m²', '1.311,04 m²'], 2, 'Üst Yapı Toplamı = 192,80 + (3 × 327,76) = 192,80 + 983,28 = 1.176,08 m² olur.', 'vaka-1272-9943'],
+    [9, '1272 ada 26 parselde normal kat brütü 327,76 m² ve ortak alan 34,00 m²’dir. Kalan alan iki eşit daireye ayrılırsa daire başına hedef brüt alan kaç m²’dir?', ['146,88 m²', '79,40 m²', '293,76 m²', '163,88 m²'], 0, 'Kalan Daire Alanı = 327,76 − 34,00 = 293,76 m². İki eşit daireye bölündüğünde: 293,76 ÷ 2 = 146,88 m²/daire olur.', 'vaka-1272-9943'],
+    [9, '1272 ada 26 parseldeki dört katlı konut konseptinde her katta iki daire öngörülmüştür. Konsept toplam kaç konut içerir?', ['10 konut', '6 konut', '8 konut', '4 konut'], 2, '4 kat × her katta 2 daire = toplam 8 konut (bağımsız bölüm) içerir.', 'vaka-1272-9943'],
+    [9, '1272 ada 26 parselde tercih edilen ilk konsept dört katı nasıl dağıtır?', ['Zemin ve dört normal kat', 'Zemin ve üç normal kat', 'İki bodrum, zemin ve iki normal kat', 'Zemin, asma kat ve üç normal kat'], 1, 'Dört katlı ilk konsept, yol üstü 4 katı "Zemin Kat + 3 Normal Kat" olarak dağıtır.', 'vaka-1272-9943'],
+    [9, '1272 ada 26 parselde 1,70 çarpanı zemin dahil dört katın her birindeki 192,80 m² taban değerine uygulanırsa alternatif toplam kaç m² olur?', ['1.311,04 m²', '1.176,08 m²', '1.503,84 m²', '1.040,08 m²'], 0, 'Her kat 192,80 × 1,70 = 327,76 m² alındığında 4 katın alternatif toplamı: 4 × 327,76 = 1.311,04 m² olur.', 'vaka-1272-9943'],
+    [9, '1.700 m² örneğinde azami taban 510 m² hesaplanmıştır. Çekme mesafelerinin içinde kalan yapılabilir zarf bu alandan küçükse ön yerleşimde hangi alan dikkate alınır?', ['KAKS’la bulunan 1.360 m²’nin tamamı', 'TAKS’la bulunan 510 m²’nin tamamı', 'Üst kat hesabındaki 1.445 m²’nin tamamı', 'Çekme mesafelerinin izin verdiği daha küçük oturum'], 3, 'PAİY m.20/3 gereği çekme mesafelerinin oluşturduğu yapı zarfı TAKS alanından (510 m²) küçükse, bina çekme sınırlarını aşamayacağından daha küçük olan yapı zarfı dikkate alınır.', 'paiy-m4'],
+    [9, '27594 ada 1 parsel belgesinde minimum ifraz alanı 1.200 m²’dir. Bölünme sonucu oluşacak parseller açısından bu bilgi nasıl yorumlanır?', ['Yeni binanın her bir katı için asgari brüt alanı belirler.', 'Bölünme sonrasında oluşan tüm parsellerin alanları toplamını sınırlar.', 'Parselde bırakılacak açık otoparkın asgari alanını belirler.', 'Her yeni parsel için asgari alan koşuludur ve diğer ifraz koşulları da kontrol edilir.'], 3, 'Minimum ifraz şartı (1.200 m²), parsel bölündüğünde oluşacak yeni parsellerden her birinin en az 1.200 m² olması gerektiğini ve cephe/derinlik gibi diğer ifraz şartlarının da kontrol edileceğini ifade eder.', 'kepez-27594'],
+    [10, '9943 ada 05 parsel kesitinin altındaki özet toplam kaç daire gösterir?', ['88 daire', '122 daire', '110 daire', '100 daire'], 2, 'Kesitin altındaki özet kutusunda "TOPLAM 110 ADET DAİRE" (44 adet 2+1 + 66 adet 1+1) yazmaktadır.', 'vaka-1272-9943', 'kesit_9943_05'],
+    [10, 'Kesit özetine göre 1+1 daire sayısı, 2+1 daire sayısından kaç fazladır?', ['44 daire', '22 daire', '11 daire', '33 daire'], 1, 'Kesit özetinde 1+1 daire sayısı 66, 2+1 daire sayısı 44’tür. Aradaki fark: 66 − 44 = 22 dairedir.', 'vaka-1272-9943', 'kesit_9943_05'],
+    [10, 'Kesitte 2. bodrum kat için hangi kullanım grubu ve alan gösterilmiştir?', ['1+1 daireler için 1.145 m²', '2+1 dubleks daireler için 950 m²', 'Sığınak, hidrofor ve kapalı otopark için 2.100 m²', 'Sığınak, hidrofor ve kapalı otopark için 1.145 m²'], 2, 'Kesitin en alt katı olan 2. Bodrum Katta "SIGINAK+HIDR.+KAPALI OTOPARK... 2100 m2" bilgisi yer almaktadır.', 'vaka-1272-9943', 'kesit_9943_05'],
+    [10, 'Kesitte 1. ve 2. kat satırlarının her birinde hangi daire bilgisi verilmiştir?', ['22 adet 1+1, her biri 55 m²', '22 adet 2+1 dubleks, her biri 90 m²', '22 adet 1+1, her biri 49 m²', '22 adet 2+1 dubleks, her biri 95 m²'], 0, 'Kesitte hem 1. Kat hem de 2. Kat satırında "22 ADET 1+1 DAİRE.. 55 m2" bilgisi verilmiştir (49 m² olanlar 1. bodrum kattadır).', 'vaka-1272-9943', 'kesit_9943_05'],
+    [10, 'Kesitin altında yazan toplam inşaat alanı kaç m²’dir?', ['7.600 m²', '8.750 m²', '9.700 m²', '10.850 m²'], 2, '9943 ada 05 parsel kesitinin sol alt özetinde "TOPLAM İNŞAAT ALANI. 9700 M2" olarak belirtilmiştir.', 'vaka-1272-9943', 'kesit_9943_05']
+  ];
+
+  // TABLET 4: 20 SORULUK SERTİFİKA DENEME SINAVI (SINAV SORULARI.docx — Her doğru 5 puan = 100 Puan)
+  const BANK_T4_20 = [
+    [11, 'Bir apartman maliki, binasının 6306 kapsamında riskli yapı olup olmadığını teknik olarak tespit ettirmek istiyor. Malik başvurusunda hangi kuruluş bu incelemeyi yapabilir?', ['Belediyenin emlak vergisi birimi', 'Başkanlıkça lisanslandırılmış bir kuruluş', 'Tapu müdürlüğünün tescil birimi', 'Yapımı üstlenmek isteyen müteahhit'], 1, 'Malik başvurusunda tespiti Başkanlıkça lisanslandırılmış kuruluş yapabilir (6306 Uygulama Yönetmeliği m. 6 ve 7).', 'yon-m6'],
+    [11, 'Riskli yapı tespit raporunun teknik eklerinde, rapordaki taşıyıcı sistem hesabının dayanağını gösteren belge grubu hangisidir?', ['Tapu kaydı, takyidat belgesi ve malik listesi', 'Toplantı çağrısı, karar tutanağı ve vekâletname', 'İmar durumu, paylaşım cetveli ve iş programı', 'Taşıyıcı sistem rölövesi, karot deneyleri ve donatı tespiti'], 3, 'Rölöve, karot ve donatı verileri taşıyıcı sistem hesabına doğrudan teknik girdi sağlar (Riskli Yapı Kentsel Dönüşüm Örnek Dosyası - R01).', 'r01-rapor-hesap'],
+    [11, 'Riskli yapı tespitine karşı süresinde yapılan itirazın teknik yönden değerlendirilmesi kimin görevidir?', ['Yetkili teknik heyet', 'İlgili tapu müdürlüğü', 'Malikler toplantısı', 'İlgili noterlik'], 0, 'Riskli yapı tespitine ilişkin itirazı 7 üyeli yetkili teknik heyet değerlendirir (Uygulama Yönetmeliği m. 7, 9 ve 10).', 'yon-m9-10'],
+    [11, 'Bir parselde uygulama kararına katılan dört malik toplam 52/100 arsa payına, karşı çıkan altı malik toplam 48/100 arsa payına sahiptir. Arsa payına göre salt çoğunluk hesabının sonucu nedir?', ['Dört malik, 10 kişinin yarısına ulaşmadığı için eşik sağlanmaz.', 'En az 2/3 arsa payı gerektiği için eşik sağlanmaz.', 'Katılanlar toplam arsa payının yarısını geçtiği için eşik sağlanır.', 'Katılanların payı tam %50 olduğu için eşik sağlanır.'], 2, '52/100 = %52 olup %50’yi aşar; hesap malik (kişi) sayısı üzerinden değil arsa payı üzerinden yapılır (Uygulama Yönetmeliği m. 15/2).', 'yon-m15-1-2'],
+    [11, 'Aynı parselde birbirinden ayrı A, B ve C binaları var. Yalnız A binası riskli olarak tespit edilmişse, A’ya ilişkin uygulama kararının salt çoğunluk hesabına kimler dahil edilir?', ['Parseldeki bütün kiracılar', 'Riskli olarak tespit edilen A binasının paydaşları', 'A ve B binalarının paydaşları', 'Parseldeki üç binanın bütün paydaşları'], 1, 'Bazı yapıların riskli tespit edildiği parselde ilgili karar grubu yalnız riskli yapıların (A binasının) paydaşlarıdır (Uygulama Yönetmeliği m. 15/7-b).', 'yon-m15-6-7'],
+    [11, 'Ruhsatsız ancak kullanımda olan ve statik bütünlüğü bozulmamış bir bina için 6306 kapsamında hangi değerlendirme yapılır?', ['Yapı, diğer tespit koşulları sağlanıyorsa teknik incelemeye konu olabilir.', 'Teknik inceleme ancak yeni yapı ruhsatı alındıktan sonra yapılabilir.', 'Yapıya teknik inceleme yapılmadan ruhsatsızlık nedeniyle risk kararı verilir.', 'Teknik inceleme ancak parsel riskli alan ilan edilirse yapılabilir.'], 0, 'Ruhsatsızlık tek başına riskli yapı tespitine engel oluşturmaz; ikamet edilen ve statik bütünlüğü bozulmamış yapı teknik incelemeye konu olabilir (Yönetmelik m. 7).', 'yon-m7'],
+    [11, 'Bir malik, temsilcisine toplantıya katılma ve oy kullanma yetkisi vermiştir. Temsilci malikin adına arsa payı devrine de imza atmak isterse önce ne kontrol edilmelidir?', ['Toplantıya katılan maliklerin sayısı', 'Müteahhidin daha önce tamamladığı proje sayısı', 'Yeni binanın kat ve bağımsız bölüm sayısı', 'Vekâletnamede arsa payı devri için verilen yetkinin kapsamı'], 3, 'TBK m.504 özel yetki kuralı uyarınca temsilcinin arsa payı devri (ferağ) yapabilmesi, düzenleme şeklinde vekâletnamede bu yetkinin açıkça tanımlanmış olmasına bağlıdır.', 'vekalet-tbk504'],
+    [11, 'Ekli yönetmelik ve formlara göre, riskli yapının bulunduğu parselde yeni uygulama kararının görüşüleceği toplantının yer ve zamanını bildirmek için hangi form kullanılır?', ['Ek-6 Riskli Yapı Tebligatı Tutanağı', 'Ek-7/A Riskli Yapılar Tahliye ve Yıkım Tebligatı Tutanağı', 'Ek-12 Toplantı Bildirim Formu', 'Ek-13 Yeniden Satış Bildirim Formu'], 2, 'Ek-12, toplantının yer, tarih ve saatinin maliklere bildirilmesi için kullanılır (Uygulama Yönetmeliği m. 15/2 ve Ek-12).', 'ek:Ek-12'],
+    [11, 'Beton basınç dayanımı raporunda kullanılan 1 MPa hangi değere eşittir?', ['0,1 N/mm²', '1 N/mm²', '10 N/mm²', '100 N/mm²'], 1, '1 MPa = 1.000.000 N/m² = 1 N/mm² (Beton Dayanımı ve Riskli Yapı Tespiti).', 'beton-mpa-18'],
+    [11, 'Eğitim örneğinde düzeltilmiş karot dayanımlarının ortalaması 18 MPa’dır. Kullanılan değerlendirme yöntemine göre bu ortalamanın %85’i mevcut beton dayanımı olarak alınıyorsa sonuç kaç MPa’dır?', ['12,60 MPa', '16,20 MPa', '18,00 MPa', '15,30 MPa'], 3, 'RYTEİE md. 4.1.11 uyarınca: 18 × 0,85 = 15,30 MPa olur.', 'beton-mpa-18'],
+    [11, 'Bir raporda yalnızca 18 MPa beton dayanımı bilgisi verilmiştir. Yapıya özgü risk sonucuna ulaşmak için hangi yaklaşım uygundur?', ['Beton ve donatı verilerini, taşıyıcı sistem ve deprem etkisiyle birlikte değerlendirmek', 'Dayanım değerini tek bir MPa eşiğiyle karşılaştırıp bina riskini belirlemek', 'Karot değerini doğrudan proje beton sınıfına eşitleyip karar vermek', 'Yapım yılı ile kat sayısından hareketle taşıyıcı sistem hesabını tamamlanmış saymak'], 0, 'Risk sonucu, malzeme verileriyle birlikte taşıyıcı sistem kapasitesi ve deprem etkisinin bütünlüklü değerlendirilmesine dayanır.', 'beton-mpa-18'],
+    [11, 'Örnek uygulama imar planı lejantında “A-4” gösterimi nasıl okunur?', ['Ayrık nizam, dört metre ön bahçe', 'Ayrık nizam, 4,00 emsal', 'Ayrık nizam, dört kat', 'Ayrık nizam, dört bağımsız bölüm'], 2, 'İmar lejantında "A" ayrık nizamı, "4" ise kat adedini (dört kat) gösterir.', 'ant-m9'],
+    [11, 'Kepez 27594 ada 1 parsel örneğinde, imar yolu üzerinde daire içinde yazan “12.00” hangi bilgiyi gösterir?', ['Planlanan imar yolu genişliğinin 12 m olduğunu', 'Yol cephesindeki yapı çekme mesafesinin 12 m olduğunu', 'İzin verilen azami bina yüksekliğinin 12 m olduğunu', 'Parselin asgari cephe uzunluğunun 12 m olduğunu'], 0, 'İmar yolu üzerindeki daire içinde yazan 12.00, o yolun planlanan genişliğinin 12,00 metre olduğunu gösterir.', 'kepez-27594'],
+    [11, '1.200 m² net imar parselinde TAKS 0,25 ve KAKS 0,75’tir. Yalnız katsayılar üzerinden hesaplandığında taban alanı üst sınırı ve emsale dahil toplam kat alanı sırasıyla kaç m²’dir?', ['300 m² ve 1.200 m²', '900 m² ve 300 m²', '600 m² ve 900 m²', '300 m² ve 900 m²'], 3, 'Taban Alanı = 1.200 × 0,25 = 300 m²; Emsale Dahil Toplam Alan = 1.200 × 0,75 = 900 m² olur.', 'paiy-m4'],
+    [11, '1.700 m² arsada TAKS 0,30 ve KAKS 0,80’dir. Ön fizibilitede zemin alanı sabit tutuluyor, zeminin dışında kalan emsal alanına 1,70 katsayısı uygulanıyor. Bodrum hariç toplam kaç m² olur?', ['1.445 m²', '1.955 m²', '2.312 m²', '2.465 m²'], 1, 'Zemin = 510 m², kalan emsal = 1.360 − 510 = 850 m² ve çıkmalı üst alan = 850 × 1,70 = 1.445 m²’dir. Toplam = 510 + 1.445 = 1.955 m² olur.', 'ant-m41'],
+    [11, 'Bir ön fizibilitede subasman kotu +2,50 m olarak verilmiştir. Bu kot ve bodrum alanı arasındaki ilişkiyi hangi ifade doğru açıklar?', ['Subasman kotu, KAKS değerine 2,50 ekler.', 'Subasman kotu, tam oturumlu bodrum hakkını kendiliğinden oluşturur.', 'Subasman kotu döşeme seviyesini ilgilendirir. Projeye bodrum eklenirse fiziksel toplam alan değişebilir.', 'Subasman kotu, taban oturumu sınırını her durumda kaldırır.'], 2, 'Subasman kotu bir döşeme seviye bilgisidir (KAKS\'ı artırmaz); projeye bodrum kat eklenirse binanın fiziksel toplam alanı değişebilir.', 'ant-m41'],
+    [11, '1272 ada 26 parselin 482 m²’lik konsept senaryosunda TAKS 0,40 kabul ediliyor. Zemin oturumu sabit ve üç normal katın her biri zemin alanının 1,70 katıysa, bodrum hariç üst yapı toplamı kaç m²’dir?', ['1.176,08 m²', '1.311,04 m²', '983,28 m²', '771,20 m²'], 0, 'Zemin = 482 × 0,40 = 192,80 m². Her normal kat = 192,80 × 1,70 = 327,76 m². Toplam = 192,80 + (3 × 327,76) = 1.176,08 m².', 'vaka-1272-9943'],
+    [11, 'Yeni projede brüt alanları aynı olan iki dairenin katı, cephesi ve manzarası farklıdır. Bu değer farkı paylaşım hesabına hangi yöntemle yansıtılır?', ['Arsa terk hesabıyla', 'Yapı yaklaşma sınırı hesabıyla', 'Zemin etüdüyle', 'Şerefiye hesabıyla'], 3, 'Şerefiye, bağımsız bölümlerin kat, cephe ve manzara gibi özelliklerinden kaynaklanan değer farklarını paylaşım hesabına yansıtır.', 'urbannest-hesaplar'],
+    [11, 'Yeni bina tamamlandıktan sonra yapının kullanımına izin verildiğini gösteren belge hangisidir?', ['Yapı ruhsatı', 'Yıkım ruhsatı', 'Yapı kullanma izin belgesi', 'Aplikasyon krokisi'], 2, 'Yapı kullanma izin belgesi (iskân), tamamlanan yapının kullanımına izin verildiğini gösterir.', 'imark-m28'],
+    [11, '9943 ada 5 parsel kesitinin özetinde 110 dairenin 66’sı 1+1 olarak gösterilmiştir. 1+1 daireler toplam daire sayısının yüzde kaçıdır?', ['%40', '%60', '%66', '%75'], 1, '66 ÷ 110 × 100 = %60 olur.', 'vaka-1272-9943', 'kesit_9943_05']
+  ];
+
+  function mapRawBank(arr, prefix) {
+    return arr.map((row, idx) => ({
+      uid: `${prefix}_${idx + 1}`,
+      topic: TOPICS[row[0]] || 'Genel Mevzuat',
+      q: row[1],
+      opts: row[2],
+      ans: row[3],
+      exp: row[4],
+      refKey: row[5] || 'yon-m15-1-2',
+      visualKey: row[6] || null
+    }));
+  }
+
+  const TABLET_DEFS = {
+    t1: {
+      id: 't1',
+      badge: '📱 TABLET 1 • 50 SORU',
+      shortTitle: 'Tablet 1: Karma Uzmanlık (50)',
+      fullTitle: '1. Sınav Tableti: Kentsel Dönüşüm ve İmar Bilgisi Karma Uzmanlık Sınavı (50 Soru • 100 Puan)',
+      desc: '6306 çok yapılı parseller (1–12), Resmi Ek formlar (13–25), E-imar & EK-1d (26–38), 1.700 m² alan hesabı (39–44) ve 1291/8 krokisi ile 9943/05 bina kesiti (45–50).',
+      questions: mapRawBank(BANK_T1_50, 't1')
+    },
+    t2: {
+      id: 't2',
+      badge: '📱 TABLET 2 • 50 SORU',
+      shortTitle: 'Tablet 2: Mevzuat & Satış (50)',
+      fullTitle: '2. Sınav Tableti: Kapsamlı 6306 Mevzuatı, Toplantı, Tevhit ve Pay Satışı Sınavı — Bölüm A (50 Soru • 100 Puan)',
+      desc: '100 Soruluk Etkileşimli Setin 1–50. soruları: Riskli yapı tespiti, Ek-6/Ek-7/A, tahliye/yıkım, Ek-12 toplantı çağrısı, arsa payı tevhidi (m.15/8) ve m.15/A açık artırma satışı.',
+      questions: mapRawBank(BANK_T2_50, 't2')
+    },
+    t3: {
+      id: 't3',
+      badge: '📱 TABLET 3 • 50 SORU',
+      shortTitle: 'Tablet 3: MPa & İmar Hesap (50)',
+      fullTitle: '3. Sınav Tableti: Vekâlet, Beton Dayanımı (MPa), İmar Planı ve Kesit Okuma Sınavı — Bölüm B (50 Soru • 100 Puan)',
+      desc: '100 Soruluk Etkileşimli Setin 51–100. soruları: Vekâlet & teknik şartname, 18 MPa / 15,30 MPa karot analizi, Kepez 27594/1, Muratpaşa 1272/26 ve 9943/05 kesit hesapları.',
+      questions: mapRawBank(BANK_T3_50, 't3')
+    },
+    t4: {
+      id: 't4',
+      badge: '📄 TABLET 4 • 20 SORU',
+      shortTitle: 'Tablet 4: Sertifika Deneme (20)',
+      fullTitle: '4. Sınav Tableti: Kentsel Dönüşüm ve İmar Bilgisi Klasik Sertifika Sınavı (20 Soru × 5 Puan = 100 Puan)',
+      desc: 'Klasik sınav belgesindeki 20 seçme soru; her doğru yanıt 5 puan değerindedir.',
+      questions: mapRawBank(BANK_T4_20, 't4')
+    },
+    t5: {
+      id: 't5',
+      badge: '🎲 TABLET 5 • RASTGELE 50',
+      shortTitle: '🎲 Karma Genel Sınav (50)',
+      fullTitle: '5. Sınav Tableti: 170 Soruluk Tüm Havuzdan Rastgele Seçilen & Şıkları Karıştırılmış Genel Sınav (50 Soru • 100 Puan)',
+      desc: 'Her "Sınavı Tekrar Başlat" dediğinizde 170 soruluk havuzdan yeni 50 soru çeker ve şıkların yerini karıştırarak gerçek sınav provası yaptırır.',
+      questions: []
+    }
+  };
+
+  function generateRandom50Questions() {
+    const allPool = [
+      ...TABLET_DEFS.t1.questions,
+      ...TABLET_DEFS.t2.questions,
+      ...TABLET_DEFS.t3.questions,
+      ...TABLET_DEFS.t4.questions
+    ];
+    const shuffled = [...allPool];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled.slice(0, 50).map((item, idx) => {
+      const taggedOpts = item.opts.map((txt, oIdx) => ({ txt, isCorrect: oIdx === item.ans }));
+      for (let i = taggedOpts.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [taggedOpts[i], taggedOpts[j]] = [taggedOpts[j], taggedOpts[i]];
+      }
+      return {
+        ...item,
+        uid: `t5_${idx + 1}`,
+        opts: taggedOpts.map(x => x.txt),
+        ans: taggedOpts.findIndex(x => x.isCorrect)
+      };
+    });
+  }
+
+  // 4. DURUM (STATE) VE LOCALSTORAGE HAFIZA YÖNETİMİ
+  let examState = {
+    activeTab: 't1',
+    paletteOpen: true,
+    reportOpen: false,
+    retryWrongQuestions: null, // Sadece yanlışları tekrar çözme modu aktifse soru dizisi
+    sessions: {} // { t1: { started: true, currentIdx: 0, answers: { 0: 1, ... } }, ... }
+  };
+
+  function loadExamState() {
+    try {
+      const raw = localStorage.getItem(EXAM_STORAGE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed && typeof parsed === 'object') {
+          examState.activeTab = parsed.activeTab || 't1';
+          examState.sessions = parsed.sessions || {};
+        }
+      }
+    } catch (e) {}
+
+    if (examState.sessions.t5 && Array.isArray(examState.sessions.t5.customQuestions) && examState.sessions.t5.customQuestions.length > 0) {
+      TABLET_DEFS.t5.questions = examState.sessions.t5.customQuestions;
+    } else {
+      TABLET_DEFS.t5.questions = generateRandom50Questions();
+    }
+  }
+
+  function saveExamState() {
+    try {
+      if (examState.ActiveRetry) return;
+      localStorage.setItem(EXAM_STORAGE_KEY, JSON.stringify({
+        activeTab: examState.activeTab,
+        sessions: examState.sessions
+      }));
+    } catch (e) {}
+  }
+
+  function getActiveSession() {
+    if (examState.retryWrongQuestions) {
+      return examState.retrySession;
+    }
+    const tab = examState.activeTab;
+    if (!examState.sessions[tab]) {
+      examState.sessions[tab] = {
+        started: false,
+        currentIdx: 0,
+        answers: {},
+        customQuestions: tab === 't5' ? TABLET_DEFS.t5.questions : undefined
+      };
+    }
+    return examState.sessions[tab];
+  }
+
+  function getActiveQuestions() {
+    if (examState.retryWrongQuestions) return examState.retryWrongQuestions;
+    const def = TABLET_DEFS[examState.activeTab] || TABLET_DEFS.t1;
+    if (examState.activeTab === 't5' && (!def.questions || def.questions.length === 0)) {
+      def.questions = generateRandom50Questions();
+    }
+    return def.questions;
+  }
+
+  // 5. STİLLER
+  function injectExamTabletStyles() {
+    if (document.getElementById('kdExamTabletStyles')) return;
+    const st = document.createElement('style');
+    st.id = 'kdExamTabletStyles';
+    st.textContent = `
+      .kd-exam-shell {
+        background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+        border: 2.5px solid #f59e0b;
+        border-radius: 14px;
+        padding: 18px;
+        color: #f8fafc;
+        box-shadow: 0 16px 40px rgba(15, 23, 42, 0.25);
+        margin-top: 24px;
+      }
+      .kd-exam-tab-bar {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 7px;
+        margin: 14px 0;
+      }
+      @media (max-width: 980px) {
+        .kd-exam-tab-bar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      }
+      .kd-exam-tab-btn {
+        background: rgba(30, 41, 59, 0.95);
+        color: #cbd5e1;
+        border: 1.5px solid #475569;
+        border-radius: 9px;
+        padding: 9px 8px;
+        font-size: 0.76rem;
+        font-weight: 800;
+        cursor: pointer;
+        transition: all 0.16s ease;
+        text-align: center;
+      }
+      .kd-exam-tab-btn:hover {
+        border-color: #94a3b8;
+        color: #ffffff;
+        transform: translateY(-1px);
+      }
+      .kd-exam-tab-btn.active {
+        background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        color: #0f172a;
+        border-color: #fef08a;
+        box-shadow: 0 4px 14px rgba(245, 158, 11, 0.4);
+      }
+      .kd-exam-screen {
+        background: #f8fafc;
+        color: #0f172a;
+        border-radius: 12px;
+        border: 2px solid #cbd5e1;
+        padding: 18px;
+      }
+      .kd-exam-stat-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+        background: #0f172a;
+        color: #ffffff;
+        padding: 10px 14px;
+        border-radius: 10px;
+        margin-bottom: 12px;
+      }
+      .kd-stat-pill {
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-size: 0.76rem;
+        font-weight: 800;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .kd-palette-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(34px, 1fr));
+        gap: 5px;
+        background: #ffffff;
+        border: 1px solid #cbd5e1;
+        border-radius: 9px;
+        padding: 10px;
+        margin-bottom: 14px;
+      }
+      .kd-pal-num {
+        height: 30px;
+        border-radius: 6px;
+        border: 1.5px solid #cbd5e1;
+        background: #f8fafc;
+        color: #334155;
+        font-size: 0.74rem;
+        font-weight: 800;
+        cursor: pointer;
+        transition: 0.12s;
+      }
+      .kd-pal-num:hover { border-color: #2563eb; }
+      .kd-pal-num.current { outline: 2.5px solid #2563eb; border-color: #2563eb; font-weight: 900; }
+      .kd-pal-num.ok { background: #16a34a; color: #ffffff; border-color: #15803d; }
+      .kd-pal-num.err { background: #dc2626; color: #ffffff; border-color: #b91c1c; }
+
+      .kd-opt-btn {
+        width: 100%;
+        display: flex;
+        align-items: flex-start;
+        gap: 11px;
+        background: #ffffff;
+        border: 2px solid #cbd5e1;
+        border-radius: 10px;
+        padding: 12px 14px;
+        text-align: left;
+        font-size: 0.92rem;
+        font-weight: 600;
+        color: #1e293b;
+        cursor: pointer;
+        transition: all 0.14s ease;
+        margin-bottom: 9px;
+        line-height: 1.45;
+      }
+      .kd-opt-btn:hover:not(.locked) {
+        border-color: #2563eb;
+        background: #eff6ff;
+        transform: translateX(2px);
+      }
+      .kd-opt-letter {
+        width: 28px;
+        height: 28px;
+        border-radius: 7px;
+        background: #e2e8f0;
+        color: #0f172a;
+        font-weight: 900;
+        font-size: 0.84rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .kd-opt-btn.locked {
+        cursor: not-allowed;
+        opacity: 0.94;
+      }
+      .kd-opt-btn.correct-ans {
+        background: #dcfce7 !important;
+        border-color: #16a34a !important;
+        color: #14532d !important;
+        font-weight: 800 !important;
+        opacity: 1 !important;
+        box-shadow: 0 3px 10px rgba(22, 163, 74, 0.18);
+      }
+      .kd-opt-btn.correct-ans .kd-opt-letter {
+        background: #16a34a !important;
+        color: #ffffff !important;
+      }
+      .kd-opt-btn.wrong-ans {
+        background: #fee2e2 !important;
+        border-color: #dc2626 !important;
+        color: #7f1d1d !important;
+        font-weight: 800 !important;
+        opacity: 1 !important;
+      }
+      .kd-opt-btn.wrong-ans .kd-opt-letter {
+        background: #dc2626 !important;
+        color: #ffffff !important;
+      }
+    `;
+    document.head.appendChild(st);
+  }
+
+  // 6. ETKİLEŞİM FONKSİYONLARI (BAŞLAT, ŞIK İŞARETLE, KİLİTLE, TEKRAR BAŞLAT -> 1. SORU, KARNE, YANLIŞLARI ÇÖZ)
+  window.kdSwitchExamTablet = function(tabId) {
+    examState.retryWrongQuestions = null;
+    examState.reportOpen = false;
+    examState.activeTab = tabId;
+    saveExamState();
+    renderExamTabletCenter();
+  };
+
+  window.kdStartExamNow = function() {
+    const sess = getActiveSession();
+    sess.started = true;
+    sess.currentIdx = 0;
+    examState.reportOpen = false;
+    saveExamState();
+    renderExamTabletCenter();
+  };
+
+  // SINAVI TEKRAR BAŞLAT: Hangi soruda olursa olsun sıfırlar ve doğrudan 1. soruya (index 0) geçer!
+  window.kdRestartExamToQuestionOne = function(skipConfirm) {
+    if (!skipConfirm && !confirm('Sınavı baştan başlatmak istiyor musunuz?\n\nMevcut cevaplarınız sıfırlanacak ve doğrudan 1. Soruya geçilecektir.')) {
+      return;
+    }
+    if (examState.retryWrongQuestions) {
+      examState.retrySession = { started: true, currentIdx: 0, answers: {} };
+      examState.reportOpen = false;
+      renderExamTabletCenter();
+      return;
+    }
+    const tab = examState.activeTab;
+    if (tab === 't5') {
+      TABLET_DEFS.t5.questions = generateRandom50Questions();
+    }
+    examState.sessions[tab] = {
+      started: true,
+      currentIdx: 0,
+      answers: {},
+      customQuestions: tab === 't5' ? TABLET_DEFS.t5.questions : undefined
+    };
+    examState.reportOpen = false;
+    saveExamState();
+    renderExamTabletCenter();
+  };
+
+  window.kdSelectExamOption = function(optIdx) {
+    const sess = getActiveSession();
+    const questions = getActiveQuestions();
+    const qIdx = sess.currentIdx;
+    if (!questions[qIdx]) return;
+
+    // KİLİT KURALI: Daha önce cevaplanmışsa sınav bitene/yeniden başlatılana kadar değiştirilemez!
+    if (sess.answers[qIdx] !== undefined) return;
+
+    sess.answers[qIdx] = optIdx;
+    saveExamState();
+    renderExamTabletCenter();
+  };
+
+  window.kdGoToExamQuestion = function(targetIdx) {
+    const sess = getActiveSession();
+    const questions = getActiveQuestions();
+    if (targetIdx < 0 || targetIdx >= questions.length) return;
+    sess.currentIdx = targetIdx;
+    examState.reportOpen = false;
+    saveExamState();
+    renderExamTabletCenter();
+  };
+
+  window.kdJumpToFirstEmptyQuestion = function() {
+    const sess = getActiveSession();
+    const questions = getActiveQuestions();
+    const emptyIdx = questions.findIndex((_, idx) => sess.answers[idx] === undefined);
+    if (emptyIdx === -1) {
+      examState.reportOpen = true;
+      renderExamTabletCenter();
+      return;
+    }
+    kdGoToExamQuestion(emptyIdx);
+  };
+
+  window.kdToggleExamPalette = function() {
+    examState.paletteOpen = !examState.paletteOpen;
+    renderExamTabletCenter();
+  };
+
+  window.kdToggleExamReport = function(forceVal) {
+    examState.reportOpen = typeof forceVal === 'boolean' ? forceVal : !examState.reportOpen;
+    renderExamTabletCenter();
+  };
+
+  window.kdOpenQuestionRefInSplit = function(refKey, ev) {
+    if (ev && ev.stopPropagation) ev.stopPropagation();
+    if (!refKey) return;
+    if (refKey.startsWith('ek:')) {
+      const ekCode = refKey.slice(3);
+      if (typeof openYonEk === 'function') openYonEk(ekCode, ev);
+    } else if (typeof openSplitLaw === 'function') {
+      openSplitLaw(refKey);
+    }
+  };
+
+  window.kdSaveSingleExamQuestionToNotes = function(qIdx, btnEl) {
+    const questions = getActiveQuestions();
+    const item = questions[qIdx];
+    if (!item || typeof getSavedNotes !== 'function') return;
+    const letters = ['A', 'B', 'C', 'D'];
+    const def = TABLET_DEFS[examState.activeTab] || TABLET_DEFS.t1;
+    const notes = getSavedNotes();
+    notes.unshift({
+      id: Date.now(),
+      date: new Date().toLocaleString('tr-TR'),
+      cat: '🎓 Sınav / Ders',
+      src: `${def.shortTitle} • Soru ${qIdx + 1} (${item.topic})`,
+      quote: item.q,
+      text: `✅ Doğru Cevap: ${letters[item.ans]}) ${item.opts[item.ans]}\n💡 Çözüm & Dayanak: ${item.exp}`,
+      pinned: false
+    });
+    localStorage.setItem(NOTES_STORAGE_KEY, JSON.stringify(notes));
+    if (typeof renderUserNotes === 'function') renderUserNotes();
+    if (btnEl) {
+      const orig = btnEl.innerHTML;
+      btnEl.innerHTML = '✅ Notlara Kaydedildi!';
+      setTimeout(() => { btnEl.innerHTML = orig; }, 1800);
+    }
+  };
+
+  window.kdSaveAllWrongExamQuestionsToNotes = function() {
+    const sess = getActiveSession();
+    const questions = getActiveQuestions();
+    const def = TABLET_DEFS[examState.activeTab] || TABLET_DEFS.t1;
+    const letters = ['A', 'B', 'C', 'D'];
+    const notes = typeof getSavedNotes === 'function' ? getSavedNotes() : [];
+    let added = 0;
+
+    questions.forEach((item, idx) => {
+      const userAns = sess.answers[idx];
+      if (userAns !== undefined && userAns !== item.ans) {
+        notes.unshift({
+          id: Date.now() + idx,
+          date: new Date().toLocaleString('tr-TR'),
+          cat: '🎓 Sınav / Ders',
+          src: `${def.shortTitle} • Yanlış Soru ${idx + 1} (${item.topic})`,
+          quote: item.q,
+          text: `❌ İşaretlenen: ${letters[userAns]}) ${item.opts[userAns]}\n✅ Doğru Cevap: ${letters[item.ans]}) ${item.opts[item.ans]}\n💡 Çözüm: ${item.exp}`,
+          pinned: false
+        });
+        added++;
+      }
+    });
+
+    if (added === 0) {
+      alert('Bu sınavda yanlış işaretlediğiniz herhangi bir soru bulunmuyor.');
+      return;
+    }
+    localStorage.setItem(NOTES_STORAGE_KEY, JSON.stringify(notes));
+    if (typeof openSplitNotes === 'function') openSplitNotes();
+  };
+
+  window.kdStartRetryWrongOnly = function() {
+    const sess = getActiveSession();
+    const questions = getActiveQuestions();
+    const wrongs = questions.filter((item, idx) => sess.answers[idx] !== undefined && sess.answers[idx] !== item.ans);
+    if (wrongs.length === 0) {
+      alert('Tekrar çözülecek yanlış cevabınız bulunmuyor!');
+      return;
+    }
+    examState.retryWrongQuestions = wrongs;
+    examState.retrySession = { started: true, currentIdx: 0, answers: {} };
+    examState.reportOpen = false;
+    renderExamTabletCenter();
+  };
+
+  window.kdExitRetryWrongMode = function() {
+    examState.retryWrongQuestions = null;
+    examState.reportOpen = false;
+    renderExamTabletCenter();
+  };
+
+  // 7. ANA RENDER MOTORU
+  function escapeHtml(s) {
+    return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  function renderExamTabletCenter() {
+    const mount = document.getElementById('kdExamTabletMount');
+    if (!mount) return;
+
+    const def = TABLET_DEFS[examState.activeTab] || TABLET_DEFS.t1;
+    const questions = getActiveQuestions();
+    const sess = getActiveSession();
+    const total = questions.length;
+    const pointPerQ = 100 / Math.max(1, total);
+
+    let correctCount = 0;
+    let wrongCount = 0;
+    Object.keys(sess.answers).forEach(k => {
+      const idx = Number(k);
+      if (questions[idx]) {
+        if (sess.answers[idx] === questions[idx].ans) correctCount++;
+        else wrongCount++;
+      }
+    });
+    const answeredCount = correctCount + wrongCount;
+    const emptyCount = Math.max(0, total - answeredCount);
+    const totalScore = Math.round(correctCount * pointPerQ);
+
+    const tabsHtml = Object.values(TABLET_DEFS).map(t => `
+      <button type="button" class="kd-exam-tab-btn ${!examState.retryWrongQuestions && examState.activeTab === t.id ? 'active' : ''}" onclick="kdSwitchExamTablet('${t.id}')">
+        ${t.shortTitle}
+      </button>
+    `).join('');
+
+    let innerScreenHtml = '';
+
+    // DURUM A: SINAV HENÜZ BAŞLATILMADIYSA BAŞLANGIÇ EKRANI
+    if (!sess.started) {
+      innerScreenHtml = `
+        <div style="text-align:center; padding:28px 18px; background:linear-gradient(180deg,#ffffff 0%,#f1f5f9 100%); border-radius:10px;">
+          <span style="background:#fef3c7; color:#b45309; font-weight:900; font-size:0.76rem; padding:4px 12px; border-radius:99px; border:1px solid #f59e0b;">${def.badge} • HER DOĞRU ${pointPerQ} PUAN</span>
+          <h3 style="margin:12px 0 8px 0; font-size:1.2rem; color:#0f172a; justify-content:center;">${escapeHtml(def.fullTitle)}</h3>
+          <p style="max-width:680px; margin:0 auto 16px auto; font-size:0.88rem; color:#475569;">${escapeHtml(def.desc)}</p>
+          <div style="max-width:640px; margin:0 auto 20px auto; background:#eff6ff; border:1px solid #93c5fd; border-radius:9px; padding:12px 16px; text-align:left; font-size:0.81rem; color:#1e3a8a; line-height:1.55;">
+            <strong>📌 Sınav Tableti Kuralları:</strong><br>
+            • Şıkkı işaretlediğiniz anda cevabınız <strong>kilitlenir</strong> (sınav bitene kadar değiştirilemez).<br>
+            • Yanlış seçimde işaretlediğiniz şık <strong>kırmızı</strong>, doğru cevap ise aynı anda <strong>yeşil</strong> yanar ve altta <strong>Çözüm &amp; Mevzuat Dayanağı</strong> açılır.<br>
+            • <strong>"🔄 Sınavı Tekrar Başlat"</strong> butonuna bastığınızda hangi soruda olursanız olun sınav sıfırlanır ve <strong>1. Soruya</strong> döner.
+          </div>
+          <button type="button" onclick="kdStartExamNow()" style="background:linear-gradient(135deg,#059669 0%,#047857 100%); color:#ffffff; border:none; padding:12px 30px; border-radius:10px; font-size:0.98rem; font-weight:900; cursor:pointer; box-shadow:0 6px 18px rgba(5,150,105,0.35);">
+            ▶️ Sınavı Başlat (1. Sorudan Başla)
+          </button>
+        </div>
+      `;
+    }
+    // DURUM B: KONU BAZLI BAŞARI KARNESİ EKRANI
+    else if (examState.reportOpen) {
+      const topicStats = {};
+      questions.forEach((q, idx) => {
+        if (!topicStats[q.topic]) topicStats[q.topic] = { total: 0, ok: 0, err: 0, empty: 0 };
+        topicStats[q.topic].total++;
+        const ua = sess.answers[idx];
+        if (ua === undefined) topicStats[q.topic].empty++;
+        else if (ua === q.ans) topicStats[q.topic].ok++;
+        else topicStats[q.topic].err++;
+      });
+
+      const passStatus = totalScore >= 70;
+      innerScreenHtml = `
+        <div style="background:#ffffff; border:2px solid ${passStatus ? '#16a34a' : '#f59e0b'}; border-radius:10px; padding:18px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; border-bottom:2px solid #f1f5f9; padding-bottom:12px; margin-bottom:14px;">
+            <div>
+              <span style="background:${passStatus ? '#dcfce7' : '#fef3c7'}; color:${passStatus ? '#166534' : '#92400e'}; font-weight:900; font-size:0.75rem; padding:3px 10px; border-radius:99px;">
+                ${passStatus ? '🏆 BAŞARILI (70+ UZMANLIK BARAJI GEÇİLDİ)' : '📚 GELİŞTİRİLEBİLİR (HEDEF: 70+ PUAN)'}
+              </span>
+              <h3 style="margin:6px 0 0 0; font-size:1.12rem; color:#0f172a;">📊 Sınav Sonuç Karnesi — Toplam Puan: ${totalScore} / 100</h3>
+            </div>
+            <div style="display:flex; gap:7px; flex-wrap:wrap;">
+              <button type="button" onclick="kdToggleExamReport(false)" style="background:#1e293b; color:#fff; border:none; padding:7px 13px; border-radius:7px; font-size:0.78rem; font-weight:800; cursor:pointer;">⬅ Sorulara Dön</button>
+              ${wrongCount > 0 ? `<button type="button" onclick="kdStartRetryWrongOnly()" style="background:#ea580c; color:#fff; border:none; padding:7px 13px; border-radius:7px; font-size:0.78rem; font-weight:800; cursor:pointer;">🔁 Sadece Yanlışlarımı Tekrar Çöz (${wrongCount})</button>` : ''}
+              ${wrongCount > 0 ? `<button type="button" onclick="kdSaveAllWrongExamQuestionsToNotes()" style="background:#7c3aed; color:#fff; border:none; padding:7px 13px; border-radius:7px; font-size:0.78rem; font-weight:800; cursor:pointer;">📌 Yanlışlarımı Notlara Ekle</button>` : ''}
+              <button type="button" onclick="kdRestartExamToQuestionOne()" style="background:#dc2626; color:#fff; border:none; padding:7px 13px; border-radius:7px; font-size:0.78rem; font-weight:800; cursor:pointer;">🔄 Sınavı Tekrar Başlat (1. Soru)</button>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Konu Başlığı</th><th>Soru</th><th>✅ Doğru</th><th>❌ Yanlış</th><th>⚪ Boş</th><th>Başarı Oranı</th></tr>
+              </thead>
+              <tbody>
+                ${Object.keys(topicStats).map(tName => {
+                  const st = topicStats[tName];
+                  const pct = Math.round((st.ok / Math.max(1, st.total)) * 100);
+                  return `<tr>
+                    <td><strong>${escapeHtml(tName)}</strong></td>
+                    <td>${st.total}</td>
+                    <td style="color:#15803d; font-weight:800;">${st.ok}</td>
+                    <td style="color:#dc2626; font-weight:800;">${st.err}</td>
+                    <td style="color:#64748b;">${st.empty}</td>
+                    <td><strong>%${pct}</strong></td>
+                  </tr>`;
+                }).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+    // DURUM C: AKTİF SORU ÇÖZÜM TABLET EKRANI
+    else {
+      const qIdx = Math.min(Math.max(0, sess.currentIdx || 0), total - 1);
+      const item = questions[qIdx];
+      const userAns = sess.answers[qIdx];
+      const isLocked = userAns !== undefined;
+      const letters = ['A', 'B', 'C', 'D'];
+
+      const paletteHtml = examState.paletteOpen ? `
+        <div class="kd-palette-grid">
+          ${questions.map((_, idx) => {
+            const ua = sess.answers[idx];
+            let cls = '';
+            if (ua !== undefined) cls = (ua === questions[idx].ans) ? 'ok' : 'err';
+            if (idx === qIdx) cls += ' current';
+            return `<button type="button" class="kd-pal-num ${cls}" onclick="kdGoToExamQuestion(${idx})" title="Soru ${idx + 1}">${idx + 1}</button>`;
+          }).join('')}
+        </div>
+      ` : '';
+
+      const visualObj = item.visualKey ? EXAM_VISUAL_SVGS[item.visualKey] : null;
+      const visualHtml = visualObj ? `
+        <div class="visual-diagram-box" style="background:#ffffff; border:2px solid #94a3b8; border-radius:10px; padding:10px 12px; margin-bottom:14px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px; margin-bottom:6px;">
+            <strong style="font-size:0.82rem; color:#0f172a;">${visualObj.title}</strong>
+            <button type="button" class="kd-fs-zoom-btn" onclick="if(typeof openSchemaFullscreenFromCard==='function') openSchemaFullscreenFromCard(this.closest('.visual-diagram-box'), event)">🔍 Çizimi Tam Ekran Büyüt</button>
+          </div>
+          <h3 style="display:none;">${visualObj.title}</h3>
+          ${visualObj.svg}
+        </div>
+      ` : '';
+
+      const optionsHtml = item.opts.map((optText, oIdx) => {
+        let stateCls = '';
+        let badgeRight = '';
+        if (isLocked) {
+          stateCls = 'locked';
+          if (oIdx === item.ans) {
+            stateCls += ' correct-ans';
+            badgeRight = `<span style="margin-left:auto; font-size:0.75rem; font-weight:900; color:#15803d; white-space:nowrap;">✅ Doğru Cevap</span>`;
+          } else if (oIdx === userAns && userAns !== item.ans) {
+            stateCls += ' wrong-ans';
+            badgeRight = `<span style="margin-left:auto; font-size:0.75rem; font-weight:900; color:#dc2626; white-space:nowrap;">❌ Sizin Cevabınız</span>`;
+          }
+        }
+        return `
+          <button type="button" class="kd-opt-btn ${stateCls}" ${isLocked ? 'disabled' : ''} onclick="kdSelectExamOption(${oIdx})">
+            <span class="kd-opt-letter">${letters[oIdx]}</span>
+            <span style="flex:1;">${escapeHtml(optText)}</span>
+            ${badgeRight}
+          </button>
+        `;
+      }).join('');
+
+      const explanationHtml = isLocked ? `
+        <div style="margin-top:12px; background:${userAns === item.ans ? '#f0fdf4' : '#fffbeb'}; border:1.5px solid ${userAns === item.ans ? '#4ade80' : '#f59e0b'}; border-left:5px solid ${userAns === item.ans ? '#16a34a' : '#d97706'}; border-radius:10px; padding:13px 15px;">
+          <div style="font-size:0.84rem; font-weight:900; color:${userAns === item.ans ? '#166534' : '#92400e'}; margin-bottom:5px;">
+            ${userAns === item.ans ? '🎯 Tebrikler, Doğru Yanıt!' : `⚠️ Yanlış Yanıt! Doğru Seçenek: ${letters[item.ans]} Şıkkı`}
+          </div>
+          <div style="font-size:0.87rem; color:#1e293b; line-height:1.58; margin-bottom:10px;">
+            <strong>💡 Çözüm ve Mevzuat Dayanağı:</strong> ${escapeHtml(item.exp)}
+          </div>
+          <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+            <button type="button" class="law-link" onclick="kdOpenQuestionRefInSplit('${item.refKey}', event)">⚖️ Dayanak Maddeyi / Formu Sağ Ekranda Aç</button>
+            <button type="button" class="ek-link" onclick="kdSaveSingleExamQuestionToNotes(${qIdx}, this)">📝 Bu Soruyu Notlarıma Ekle</button>
+          </div>
+        </div>
+      ` : `
+        <div style="margin-top:6px; font-size:0.76rem; color:#64748b; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px;">
+          <span>🔒 Şıkkı işaretlediğinizde yanıtınız kilitlenir ve çözüm dayanağı açılır.</span>
+          ${emptyCount > 0 ? `<button type="button" onclick="kdJumpToFirstEmptyQuestion()" style="background:none; border:none; color:#2563eb; font-weight:800; font-size:0.76rem; cursor:pointer; text-decoration:underline;">🎯 İlk Boş Soruya Git (${emptyCount} Boş)</button>` : ''}
+        </div>
+      `;
+
+      innerScreenHtml = `
+        ${examState.retryWrongQuestions ? `
+          <div style="background:#fff7ed; border:1.5px solid #ea580c; color:#9a3412; padding:8px 12px; border-radius:8px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; font-size:0.8rem; font-weight:800;">
+            <span>🔁 YANLIŞLARIMI TEKRAR ÇÖZ MODU (${total} Soru)</span>
+            <button type="button" onclick="kdExitRetryWrongMode()" style="background:#ea580c; color:#fff; border:none; padding:4px 10px; border-radius:5px; font-size:0.74rem; font-weight:800; cursor:pointer;">✕ Ana Tablete Dön</button>
+          </div>
+        ` : ''}
+
+        <div class="kd-exam-stat-bar">
+          <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+            <span class="kd-stat-pill" style="background:#1e3a8a; color:#93c5fd;">📍 Soru ${qIdx + 1} / ${total}</span>
+            <span class="kd-stat-pill" style="background:#065f46; color:#6ee7b7;">✅ Doğru: ${correctCount}</span>
+            <span class="kd-stat-pill" style="background:#7f1d1d; color:#fca5a5;">❌ Yanlış: ${wrongCount}</span>
+            <span class="kd-stat-pill" style="background:#334155; color:#cbd5e1;">⚪ Boş: ${emptyCount}</span>
+            <span class="kd-stat-pill" style="background:#fbbf24; color:#0f172a;">🏆 Puan: ${totalScore} / 100</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+            <button type="button" onclick="kdToggleExamPalette()" style="background:#334155; color:#f8fafc; border:1px solid #64748b; padding:5px 10px; border-radius:6px; font-size:0.74rem; font-weight:800; cursor:pointer;">
+              🔢 Optik Palet ${examState.paletteOpen ? '▴' : '▾'}
+            </button>
+            <button type="button" onclick="kdToggleExamReport(true)" style="background:#0284c7; color:#ffffff; border:none; padding:5px 11px; border-radius:6px; font-size:0.74rem; font-weight:800; cursor:pointer;">
+              📊 Karneyi Gör
+            </button>
+            <button type="button" onclick="kdRestartExamToQuestionOne()" style="background:#dc2626; color:#ffffff; border:none; padding:5px 11px; border-radius:6px; font-size:0.74rem; font-weight:800; cursor:pointer;" title="Sınavı sıfırla ve 1. soruya dön">
+              🔄 Sınavı Tekrar Başlat
+            </button>
+          </div>
+        </div>
+
+        ${paletteHtml}
+
+        <div class="kd-exam-qcard" style="background:#ffffff; border:1.5px solid #cbd5e1; border-radius:11px; padding:16px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px; margin-bottom:10px; padding-bottom:8px; border-bottom:1px solid #f1f5f9;">
+            <span style="background:#eff6ff; color:#1d4ed8; border:1px solid #bfdbfe; font-size:0.74rem; font-weight:800; padding:3px 10px; border-radius:99px;">
+              📂 Konu: ${escapeHtml(item.topic)}
+            </span>
+            <span style="font-size:0.75rem; font-weight:800; color:#64748b;">
+              ${isLocked ? '🔒 Cevap Kilitlendi' : `Değer: ${pointPerQ} Puan`}
+            </span>
+          </div>
+
+          <div style="font-size:1.02rem; font-weight:800; color:#0f172a; line-height:1.52; margin-bottom:14px;">
+            <span style="color:#d97706; margin-right:4px;">Soru ${qIdx + 1}:</span> ${escapeHtml(item.q)}
+          </div>
+
+          ${visualHtml}
+          <div>${optionsHtml}</div>
+          ${explanationHtml}
+
+          <div style="margin-top:16px; padding-top:12px; border-top:1.5px solid #e2e8f0; display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap;">
+            <button type="button" onclick="kdGoToExamQuestion(${qIdx - 1})" ${qIdx === 0 ? 'disabled style="opacity:0.45; cursor:not-allowed; background:#cbd5e1; color:#475569; border:none; padding:8px 16px; border-radius:8px; font-weight:800;"' : 'style="background:#1e293b; color:#ffffff; border:none; padding:8px 16px; border-radius:8px; font-weight:800; cursor:pointer;"'}>
+              ◀ Önceki Soru
+            </button>
+
+            <span style="font-size:0.78rem; font-weight:800; color:#475569;">
+              İlerleme: ${answeredCount} / ${total} Yanıtlandı
+            </span>
+
+            ${qIdx < total - 1 ? `
+              <button type="button" onclick="kdGoToExamQuestion(${qIdx + 1})" style="background:linear-gradient(135deg,#2563eb 0%,#1d4ed8 100%); color:#ffffff; border:none; padding:8px 18px; border-radius:8px; font-weight:800; cursor:pointer;">
+                Sonraki Soru (${qIdx + 2}/${total}) ▶
+              </button>
+            ` : `
+              <button type="button" onclick="kdToggleExamReport(true)" style="background:linear-gradient(135deg,#059669 0%,#047857 100%); color:#ffffff; border:none; padding:8px 18px; border-radius:8px; font-weight:900; cursor:pointer;">
+                🏁 Sınavı Tamamla ve Karneyi Gör
+              </button>
+            `}
+          </div>
+        </div>
+      `;
+    }
+
+    mount.innerHTML = `
+      <div class="kd-exam-shell">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+          <div>
+            <span style="background:#fbbf24; color:#0f172a; font-size:0.72rem; font-weight:900; padding:3px 10px; border-radius:6px;">🎓 MODÜL 4.6 • KENTSEL DÖNÜŞÜM UZMANLIĞI SINAV MERKEZİ (170 SORU)</span>
+            <h2 style="color:#ffffff !important; border:none !important; margin:6px 0 2px 0 !important; padding:0 !important; font-size:1.25rem !important;">
+              50’şer Soruluk İnteraktif Uzmanlık Sınav Tabletleri &amp; Çözümlü Deneme Merkezi
+            </h2>
+            <p style="margin:0; font-size:0.82rem; color:#cbd5e1;">Aşağıdaki 5 sınav tabletinden dilediğinizi seçerek sınava başlayabilir, çizimli vaka sorularını tam ekran inceleyebilir ve dayanak maddeleri sağ ikiz ekranda açabilirsiniz.</p>
+          </div>
+        </div>
+
+        <div class="kd-exam-tab-bar">${tabsHtml}</div>
+        <div class="kd-exam-screen">${innerScreenHtml}</div>
+      </div>
+    `;
+  }
+
+  // 8. CİLT 4 SONUNA YERLEŞTİRME, SOL FİHRİST, ANA MERKEZ KISAYOLU VE ARAMA ENTEGRASYONU
+  function mountExamCenterAndNavigation() {
+    const activeCilt = document.body.getAttribute('data-cilt') || '1';
+
+    // Genel Arama İndeksine Kaydet
+    if (typeof GLOBAL_INDEX !== 'undefined' && Array.isArray(GLOBAL_INDEX)) {
+      if (!GLOBAL_INDEX.some(x => x.url === 'cilt4.html#bolum-7-sinav-merkezi')) {
+        GLOBAL_INDEX.unshift({
+          cilt: 'Cilt 4',
+          title: '🎓 MODÜL 4.6: Kentsel Dönüşüm Uzmanlığı Sınav Merkezi (170 Soru • 50\'şer Soruluk 5 Sınav Tableti)',
+          url: 'cilt4.html#bolum-7-sinav-merkezi',
+          keys: 'uzmanlık sınavı 50 soru 100 soru 20 soru deneme sınavı sınav tableti 9943 ada 5 parsel kesiti 1291 ada 8 parsel cevap anahtarı'
+        });
+      }
+    }
+
+    // Sol Fihristte Cilt 4 Menüsünün En Altına Ekle
+    const groups = document.querySelectorAll('#fihristList .cilt-group');
+    if (groups.length >= 4) {
+      const ul4 = groups[3].querySelector('.cilt-links');
+      if (ul4 && !ul4.querySelector('a[href*="bolum-7-sinav-merkezi"]')) {
+        const li = document.createElement('li');
+        li.innerHTML = `<a href="cilt4.html#bolum-7-sinav-merkezi" class="fihrist-ppt-title" style="border-left-color:#10b981 !important; color:#6ee7b7 !important;">🎓 MODÜL 4.6: Uzmanlık Sınav Merkezi (170 Soru • 5 Tablet)</a>`;
+        ul4.appendChild(li);
+      }
+    }
+
+    // Ana Komuta Merkezine (index.html) Hızlı Erişim Rozeti Ekle
+    if (activeCilt === '0') {
+      const heroKBtn = document.getElementById('heroTopKilavuzBtn');
+      if (heroKBtn && !document.getElementById('heroTopExamCenterBtn')) {
+        const eBtn = document.createElement('a');
+        eBtn.id = 'heroTopExamCenterBtn';
+        eBtn.href = 'cilt4.html#bolum-7-sinav-merkezi';
+        eBtn.style.cssText = 'background:linear-gradient(135deg,#10b981 0%,#047857 100%); color:#ffffff; border:1.5px solid #6ee7b7; padding:5px 14px; border-radius:99px; font-size:0.75rem; font-weight:800; cursor:pointer; text-decoration:none; box-shadow:0 3px 10px rgba(16,185,129,0.35); margin-right:6px; display:inline-flex; align-items:center; gap:4px;';
+        eBtn.innerHTML = '🎓 Uzmanlık Sınav Merkezi (170 Soru)';
+        heroKBtn.parentNode.insertBefore(eBtn, heroKBtn);
+      }
+    }
+
+    // Cilt 4'ün En Sonuna (#bolum-6'dan hemen sonraya) Sınav Tablet Merkezini Monte Et
+    if (activeCilt === '4' && !document.getElementById('bolum-7-sinav-merkezi')) {
+      const container = document.querySelector('.main-content .container') || document.querySelector('.container');
+      if (container) {
+        const sec = document.createElement('section');
+        sec.id = 'bolum-7-sinav-merkezi';
+        // Sözlük altı çizgili ipucu baloncuğunun sınav sorularında kopya vermesini önlemek için section-card sınıfı yerine özel kapsayıcı kullanıyoruz
+        sec.innerHTML = `<div id="kdExamTabletMount"></div>`;
+        container.appendChild(sec);
+        renderExamTabletCenter();
+
+        if (window.location.hash === '#bolum-7-sinav-merkezi') {
+          setTimeout(() => sec.scrollIntoView({ behavior: 'smooth', block: 'start' }), 150);
+        }
+      }
+    }
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    registerExamSupportLawCards();
+    injectExamTabletStyles();
+    loadExamState();
+    setTimeout(mountExamCenterAndNavigation, 680);
+  });
+})();
+// 31. SINAV EKRANI İKİZ EKRAN ÜST HİZALAMA KİLİDİ VE ANA MERKEZ "SINAV MERKEZİ (SON KALINAN SORUYA GİT)" KOMUTA MODÜLÜ
+(function initExamSplitTopAlignAndHeroResumeButton() {
+  const EXAM_STORAGE_KEY = 'kd_uzmanlik_sinav_merkezi_v1';
+  const EXAM_JUMP_SESSION_KEY = 'kd_focus_exam_last_question';
+  let examSplitFocusActive = false;
+
+  const TABLET_META = {
+    t1: { name: 'Tablet 1: Karma Uzmanlık', total: 50 },
+    t2: { name: 'Tablet 2: Mevzuat & Satış', total: 50 },
+    t3: { name: 'Tablet 3: MPa & İmar Hesap', total: 50 },
+    t4: { name: 'Tablet 4: Sertifika Deneme', total: 20 },
+    t5: { name: 'Tablet 5: Karma Genel Sınav', total: 50 }
+  };
+
+  // 1. STİL TANIMLARI (ANA MERKEZ SINAV KOMUTA KARTI, ÜST BAR BUTONU VE AKTİF SORU ÇERÇEVESİ)
+  function injectExamIntegrationStyles() {
+    if (document.getElementById('kdExamIntegrationStyles')) return;
+    const st = document.createElement('style');
+    st.id = 'kdExamIntegrationStyles';
+    st.textContent = `
+      /* İkiz ekran açıkken aktif sınav sorusu kartı vurgusu */
+      body.split-open .kd-exam-qcard.kd-split-pinned-question {
+        border: 2.5px solid #f59e0b !important;
+        box-shadow: 0 8px 24px rgba(245, 158, 11, 0.22) !important;
+      }
+
+      /* Ana Komuta Merkezi 4x2 Grid Altında Tam Genişlikli "Sınav Merkezi" Komuta Kartı */
+      .kd-hero-exam-master-btn {
+        grid-column: 1 / -1 !important;
+        min-height: 62px !important;
+        padding: 10px 16px !important;
+        border-radius: 10px !important;
+        background: linear-gradient(135deg, #059669 0%, #064e3b 60%, #0f172a 100%) !important;
+        border: 2px solid #34d399 !important;
+        color: #ffffff !important;
+        cursor: pointer !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        flex-wrap: wrap !important;
+        gap: 10px !important;
+        box-shadow: 0 6px 18px rgba(5, 150, 105, 0.35) !important;
+        transition: all 0.18s ease !important;
+        text-align: left !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+      }
+      .kd-hero-exam-master-btn:hover {
+        transform: translateY(-2px) !important;
+        filter: brightness(1.08) !important;
+        border-color: #fde047 !important;
+        box-shadow: 0 10px 24px rgba(5, 150, 105, 0.48) !important;
+      }
+      .kd-hero-exam-badge {
+        background: #fbbf24;
+        color: #0f172a;
+        font-size: 0.76rem;
+        font-weight: 900;
+        padding: 6px 13px;
+        border-radius: 8px;
+        white-space: nowrap;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+      }
+
+      /* Üst Komuta Barı "🎓 Sınav" Butonu */
+      .kd-exec-pill.p-sinav {
+        background: linear-gradient(135deg, #059669 0%, #065f46 100%) !important;
+        color: #fef08a !important;
+        border: 1px solid #6ee7b7 !important;
+      }
+      body:not(.split-open) .kd-exec-actions-row.has-exam-pill {
+        grid-template-columns: repeat(11, minmax(0, 1fr)) !important;
+      }
+    `;
+    document.head.appendChild(st);
+  }
+
+  // 2. AKTİF SINAV SORUSUNU SOL EKRANIN EN ÜSTÜNE (ÜST BARIN HEMEN ALTINA) KİLİTLEYEN FONKSİYON
+  function alignActiveExamQuestionToTop(smoothScroll) {
+    const qCard = document.querySelector('#kdExamTabletMount .kd-exam-qcard')
+               || document.getElementById('kdExamTabletMount')
+               || document.getElementById('bolum-7-sinav-merkezi');
+    if (!qCard) return;
+
+    document.querySelectorAll('.active-split-source').forEach(el => el.classList.remove('active-split-source'));
+    document.querySelectorAll('.kd-split-pinned-question').forEach(el => el.classList.remove('kd-split-pinned-question'));
+
+    if (qCard.classList.contains('kd-exam-qcard')) {
+      qCard.classList.add('kd-split-pinned-question');
+    }
+
+    // ortak.js içindeki eski satır referansını aktif soru kartına bağla (eski tablolara zıplamayı önler)
+    try { lastSplitTriggerEl = qCard; } catch (e) {}
+
+    const topNav = document.querySelector('.top-nav');
+    const navHeight = topNav ? topNav.getBoundingClientRect().height : 84;
+    const rect = qCard.getBoundingClientRect();
+    const targetY = Math.max(0, window.pageYOffset + rect.top - navHeight - 10);
+
+    window.scrollTo({
+      top: targetY,
+      behavior: smoothScroll ? 'smooth' : 'instant'
+    });
+  }
+
+  // Çok aşamalı hizalama (.main-content ve .split-panel 0.25sn genişlik animasyonu boyunca üstte sabit tutar)
+  function lockExamQuestionAtTopDuringTransition() {
+    alignActiveExamQuestionToTop(false);
+    [60, 180, 290, 440].forEach((delay, idx) => {
+      setTimeout(() => {
+        alignActiveExamQuestionToTop(idx === 3);
+      }, delay);
+    });
+  }
+
+  // 3. SINAVDAN DAYANAK MADDE AÇMA, SORU DEĞİŞTİRME, "AÇAN SATIR" VE "KAPAT" KANCALARI
+  function bindExamSplitAlignmentHooks() {
+    // Sayfa içi tıklamalarda sınav dışı bir madde açılırsa sınav odağını serbest bırak
+    document.addEventListener('click', (e) => {
+      if (!e.target || !e.target.closest) return;
+      if (e.target.closest('#bolum-7-sinav-merkezi')) {
+        examSplitFocusActive = true;
+      } else if (e.target.closest('.main-content') && e.target.closest('.law-link, .yon-ek-chip, .ek-link')) {
+        examSplitFocusActive = false;
+      }
+    }, true);
+
+    // a) Sınav içindeki "⚖️ Dayanak Maddeyi / Formu Sağ Ekranda Aç" fonksiyonunu güçlendir
+    if (typeof window.kdOpenQuestionRefInSplit === 'function' && !window.kdOpenQuestionRefInSplit._topAligned) {
+      const origOpenRef = window.kdOpenQuestionRefInSplit;
+      const wrappedOpenRef = function(refKey, ev) {
+        if (ev && ev.stopPropagation) ev.stopPropagation();
+        examSplitFocusActive = true;
+
+        // Sol ekranın üst kısmında sadece sorunun görünmesi için Optik Palet açıksa otomatik kapat
+        if (document.querySelector('#kdExamTabletMount .kd-palette-grid') && typeof window.kdToggleExamPalette === 'function') {
+          window.kdToggleExamPalette();
+        }
+
+        const currentCard = document.querySelector('#kdExamTabletMount .kd-exam-qcard');
+        if (currentCard) {
+          try { lastSplitTriggerEl = currentCard; } catch (e) {}
+        }
+
+        origOpenRef.call(this, refKey, ev);
+        lockExamQuestionAtTopDuringTransition();
+      };
+      wrappedOpenRef._topAligned = true;
+      window.kdOpenQuestionRefInSplit = wrappedOpenRef;
+    }
+
+    // b) İkiz ekran açıkken "Sonraki Soru / Önceki Soru" veya Optik Palet tıklanınca da yeni soruyu üstte tut
+    if (typeof window.kdGoToExamQuestion === 'function' && !window.kdGoToExamQuestion._topAligned) {
+      const origGoToQ = window.kdGoToExamQuestion;
+      const wrappedGoToQ = function(targetIdx) {
+        origGoToQ.call(this, targetIdx);
+        if (document.body.classList.contains('split-open')) {
+          examSplitFocusActive = true;
+          setTimeout(() => alignActiveExamQuestionToTop(true), 30);
+        }
+      };
+      wrappedGoToQ._topAligned = true;
+      window.kdGoToExamQuestion = wrappedGoToQ;
+    }
+
+    // c) Sağ paneldeki turuncu "🎯 Açan Satır" butonunu aktif sınav sorusuna bağla
+    if (typeof window.scrollToSplitSource === 'function' && !window.scrollToSplitSource._examHooked) {
+      const origScrollSource = window.scrollToSplitSource;
+      const wrappedScrollSource = function() {
+        if (examSplitFocusActive && document.getElementById('kdExamTabletMount')) {
+          alignActiveExamQuestionToTop(true);
+          return;
+        }
+        origScrollSource.apply(this, arguments);
+      };
+      wrappedScrollSource._examHooked = true;
+      window.scrollToSplitSource = wrappedScrollSource;
+    }
+
+    // d) Sağ panel "✕ Kapat" veya "⤢ Genişlik" tıklandığında sol ekran genişlerken soruyu kaybetme
+    ['closeSplitPanel', 'toggleSplitWidth'].forEach(fnName => {
+      if (typeof window[fnName] === 'function' && !window[fnName]._examHooked) {
+        const origFn = window[fnName];
+        const wrappedFn = function() {
+          const wasExamFocus = examSplitFocusActive && !!document.getElementById('kdExamTabletMount');
+          origFn.apply(this, arguments);
+          if (wasExamFocus) {
+            [60, 290].forEach(d => setTimeout(() => alignActiveExamQuestionToTop(d === 290), d));
+          }
+        };
+        wrappedFn._examHooked = true;
+        window[fnName] = wrappedFn;
+      }
+    });
+  }
+
+  // 4. HAFIZADAKİ SON SINAV DURUMUNU OKUMA VE DOĞRUDAN SON KALINAN SORUYA YÖNLENDİRME
+  function getExamResumeSummary() {
+    let parsed = null;
+    try {
+      parsed = JSON.parse(localStorage.getItem(EXAM_STORAGE_KEY) || 'null');
+    } catch (e) {}
+
+    let tabId = (parsed && parsed.activeTab) ? parsed.activeTab : 't1';
+    const sessions = (parsed && parsed.sessions) ? parsed.sessions : {};
+
+    // Aktif sekme başlamamışsa ama başka bir tablette yarım kalan sınav varsa onu bul
+    if (!sessions[tabId] || (!sessions[tabId].started && Object.keys(sessions[tabId].answers || {}).length === 0)) {
+      const startedTab = Object.keys(TABLET_META).find(k => sessions[k] && (sessions[k].started || Object.keys(sessions[k].answers || {}).length > 0));
+      if (startedTab) tabId = startedTab;
+    }
+
+    const meta = TABLET_META[tabId] || TABLET_META.t1;
+    const sess = sessions[tabId] || null;
+    const answeredCount = sess && sess.answers ? Object.keys(sess.answers).length : 0;
+    const hasProgress = !!(sess && (sess.started || answeredCount > 0));
+    const qNumber = hasProgress ? Math.min(meta.total, Math.max(1, (sess.currentIdx || 0) + 1)) : 1;
+
+    return {
+      tabId,
+      tabletName: meta.name,
+      total: meta.total,
+      hasProgress,
+      qNumber,
+      answeredCount
+    };
+  }
+
+  window.kdGoToExamCenterLastQuestion = function(ev) {
+    if (ev && ev.preventDefault) ev.preventDefault();
+
+    const info = getExamResumeSummary();
+
+    // Doğrudan son kalınan sorunun ekranında açılması için started = true olarak işaretle
+    try {
+      const raw = JSON.parse(localStorage.getItem(EXAM_STORAGE_KEY) || '{}');
+      raw.activeTab = info.tabId;
+      raw.sessions = raw.sessions || {};
+      raw.sessions[info.tabId] = raw.sessions[info.tabId] || { started: true, currentIdx: 0, answers: {} };
+      raw.sessions[info.tabId].started = true;
+      if (typeof raw.sessions[info.tabId].currentIdx !== 'number') {
+        raw.sessions[info.tabId].currentIdx = 0;
+      }
+      localStorage.setItem(EXAM_STORAGE_KEY, JSON.stringify(raw));
+    } catch (e) {}
+
+    const activeCilt = document.body.getAttribute('data-cilt') || '1';
+    if (activeCilt === '4' && document.getElementById('kdExamTabletMount')) {
+      if (typeof window.kdSwitchExamTablet === 'function') {
+        window.kdSwitchExamTablet(info.tabId);
+      }
+      // Eğer o sekme henüz başlatılmamış görünüyorsa başlat
+      const startBtn = document.querySelector('#kdExamTabletMount button[onclick*="kdStartExamNow"]');
+      if (startBtn && typeof window.kdStartExamNow === 'function') {
+        window.kdStartExamNow();
+      }
+      if (typeof window.kdToggleExamReport === 'function') {
+        window.kdToggleExamReport(false);
+      }
+      examSplitFocusActive = true;
+      setTimeout(() => alignActiveExamQuestionToTop(true), 50);
+    } else {
+      sessionStorage.setItem(EXAM_JUMP_SESSION_KEY, '1');
+      window.location.href = 'cilt4.html#bolum-7-sinav-merkezi';
+    }
+  };
+
+  // 5. ANA MERKEZ (index.html) VE ÜST BARA "🎓 SINAV MERKEZİ" BUTONLARINI YERLEŞTİR / GÜNCELLE
+  function renderHeroAndTopExamButtons() {
+    const info = getExamResumeSummary();
+    const activeCilt = document.body.getAttribute('data-cilt') || '0';
+
+    // a) Üst Komuta Barına "🎓 Sınav" Butonu Ekle (Tüm Ciltlerde Çalışır)
+    const actionsRow = document.querySelector('.kd-exec-actions-row, .top-actions');
+    if (actionsRow) {
+      actionsRow.classList.add('has-exam-pill');
+      let topExamBtn = document.getElementById('kdTopExamQuickBtn');
+      if (!topExamBtn) {
+        topExamBtn = document.createElement('button');
+        topExamBtn.type = 'button';
+        topExamBtn.id = 'kdTopExamQuickBtn';
+        topExamBtn.className = 'kd-exec-pill p-sinav split-extra-item';
+        topExamBtn.onclick = (e) => window.kdGoToExamCenterLastQuestion(e);
+        const glossaryBtn = document.getElementById('kdTopGlossaryBtn') || actionsRow.querySelector('.p-sema');
+        if (glossaryBtn && glossaryBtn.nextSibling) {
+          actionsRow.insertBefore(topExamBtn, glossaryBtn.nextSibling);
+        } else {
+          actionsRow.appendChild(topExamBtn);
+        }
+        const moreBtn = document.getElementById('kdSplitMoreBtn');
+        if (moreBtn && !document.body.classList.contains('kd-split-drawer-open')) {
+          moreBtn.innerHTML = '🔽 +7 Araç Aç';
+        }
+      }
+      topExamBtn.innerHTML = info.hasProgress ? `🎓 Sınav (${info.qNumber}/${info.total})` : '🎓 Sınav (170)';
+      topExamBtn.title = info.hasProgress
+        ? `${info.tabletName} • Kaldığınız Soru: ${info.qNumber}/${info.total} (Tıklayınca kaldığınız soruya gider)`
+        : 'Kentsel Dönüşüm Uzmanlığı Sınav Merkezi (170 Soru)';
+    }
+
+    // b) Ana Komuta Merkezi (index.html) İçine Tam Genişlikli "🎓 Sınav Merkezi" Komuta Kartı Ekle
+    if (activeCilt === '0') {
+      const heroTopExam = document.getElementById('heroTopExamCenterBtn');
+      if (heroTopExam) {
+        heroTopExam.onclick = (e) => window.kdGoToExamCenterLastQuestion(e);
+        heroTopExam.innerHTML = info.hasProgress
+          ? `🎓 Sınav Merkezi (Soru ${info.qNumber}/${info.total})`
+          : '🎓 Sınav Merkezi (170 Soru)';
+      }
+
+      const heroGrid = document.querySelector('.kd-hero-command-grid');
+      if (heroGrid) {
+        let masterBtn = document.getElementById('kdHeroMasterExamBtn');
+        if (!masterBtn) {
+          masterBtn = document.createElement('button');
+          masterBtn.type = 'button';
+          masterBtn.id = 'kdHeroMasterExamBtn';
+          masterBtn.className = 'kd-hero-exam-master-btn';
+          masterBtn.onclick = (e) => window.kdGoToExamCenterLastQuestion(e);
+          heroGrid.appendChild(masterBtn);
+        }
+
+        const subText = info.hasProgress
+          ? `${info.tabletName} • Yanıtlanan: ${info.answeredCount} / ${info.total} Soru • Kaldığınız yerden kesintisiz devam edin`
+          : '170 Soruluk Uzmanlık Havuzu • 5 İnteraktif Sınav Tableti, Anında Çözüm ve Sağ İkiz Ekran Mevzuat Dayanağı';
+
+        const rightBadgeText = info.hasProgress
+          ? `▶️ Kaldığım Soruya Git (Soru ${info.qNumber} / ${info.total}) ➔`
+          : '▶️ Sınav Merkezini Aç (1. Sorudan Başla) ➔';
+
+        masterBtn.innerHTML = `
+          <div style="display:flex; align-items:center; gap:12px; min-width:0;">
+            <div class="kd-hero-cmd-icon" style="width:40px !important; height:40px !important; font-size:1.45rem !important; background:rgba(251,191,36,0.22) !important; border:1px solid rgba(251,191,36,0.5);">🎓</div>
+            <div class="kd-hero-cmd-text">
+              <span class="kd-hero-cmd-title" style="font-size:0.9rem !important; color:#fef08a;">9. Sınav Merkezi (Kentsel Dönüşüm Uzmanlığı Deneme Tabletleri)</span>
+              <span class="kd-hero-cmd-sub" style="font-size:0.74rem !important; color:#e2e8f0;">${subText}</span>
+            </div>
+          </div>
+          <span class="kd-hero-exam-badge">${rightBadgeText}</span>
+        `;
+      }
+    }
+
+    // c) Cilt 4 açıldığında "Sınav Merkezi" butonundan gelindiyse doğrudan son soruyu ekranın en üstüne hizala
+    if (activeCilt === '4' && sessionStorage.getItem(EXAM_JUMP_SESSION_KEY) === '1') {
+      sessionStorage.removeItem(EXAM_JUMP_SESSION_KEY);
+      examSplitFocusActive = true;
+      [80, 260].forEach(d => setTimeout(() => alignActiveExamQuestionToTop(d === 260), d));
+    }
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    injectExamIntegrationStyles();
+    setTimeout(() => {
+      bindExamSplitAlignmentHooks();
+      renderHeroAndTopExamButtons();
+    }, 740);
+  });
+
+  // Tarayıcı "Geri" tuşuyla Ana Merkeze dönüldüğünde son kalınan soru numarasını anında güncelle
+  window.addEventListener('pageshow', () => {
+    setTimeout(renderHeroAndTopExamButtons, 120);
+  });
+})();
