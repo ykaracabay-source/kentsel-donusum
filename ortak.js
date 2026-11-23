@@ -11834,3 +11834,300 @@ B) KİRACI / SINIRLI AYNİ HAK SAHİBİ / KAPICI BAŞVURUSU İÇİN:
     setTimeout(renderHeroAndTopExamButtons, 120);
   });
 })();
+// 32. 170 SINAV SORUSU İÇİN BİREBİR DAYANAK EŞLEŞTİRME, EKSİK TEKNİK/USUL KARTLARI VE SAĞ PANEL SEÇİCİ SENKRONİZASYON MODÜLÜ
+(function initExactExamReferenceAlignmentPatch() {
+  const EXAM_STORAGE_KEY = 'kd_uzmanlik_sinav_merkezi_v1';
+
+  // 1. EKSİK VEYA GENEL KALAN TÜM KONULAR İÇİN BİREBİR ÖZEL DAYANAK VE TUTANAK KARTLARINI KAYDET
+  function registerPrecisionExamLawAndEkCards() {
+    if (typeof LAW_DB !== 'undefined') {
+      // Mevcut yon-m7 kartına UAVT bina kodu ve eksik rapor iadesi fıkralarını ekle
+      if (LAW_DB['yon-m7'] && !LAW_DB['yon-m7'].body.includes('UAVT')) {
+        LAW_DB['yon-m7'].body += `
+          <p><strong>(2-d &amp; 4) Zorunlu UAVT Adresi ve Eksik Raporun İadesi:</strong> Riskli yapı tespit raporunda <strong>Ulusal Adres Veri Tabanındaki (UAVT) açık yapı adresi ve bina kodunun</strong> yer alması zorunludur. Müdürlük/İdare incelemesinde raporda teknik eksiklik veya hata tespit edilirse rapor kesinleştirilmez; <strong>düzeltilmek üzere raporu düzenleyen lisanslı kurum veya kuruluşa iade edilir.</strong></p>`;
+      }
+
+      Object.assign(LAW_DB, {
+        'beton-donati-kat': {
+          title: 'Riskli Yapı Teknik İncelemesi: Kat Sayısı Kapsamı Doğrulaması (1980 / 5 Kat Örneği), Donatı Tespiti ve Bütüncül Analiz',
+          ref: 'Cilt 3 • Sunum 3.2 & 3.2B (RYTEİE Ek-2 Saha Rölövesi, Donatı Araştırması ve TBDY 2018 Bölüm 15)',
+          body: `<p><strong>1) Bildirilen Kat Sayısının Kapsamını Doğrulama (1980 Yapımı / 5 Katlı Bina Örneği):</strong><br>
+          Saha beyanlarında "5 katlı bina" denildiğinde, bu sayının <strong>bodrum kat ve zemin katı kapsayıp kapsamadığı</strong> (örneğin <code>Zemin + 4 Normal Kat</code> mı, <code>1 Bodrum + Zemin + 3 Normal Kat</code> mı yoksa <code>1 Bodrum + Zemin + 5 Normal Kat</code> mı olduğu) onaylı mimari/statik proje, tapu/iskân kaydı ve yerinde rölöve ölçümüyle mutlaka doğrulanmalıdır.</p>
+          <p><strong>2) Betonarme Yapıda Donatı Araştırması (Röntgen ve Sıyırma):</strong><br>
+          Kolon ve perdelerde yapılan donatı tespitinde; <strong>boyuna donatı çeliğinin türü ve çapı</strong> (düz S220 / nervürlü S420), <strong>etriye aralığı ve kanca düzeni (90° / 135°)</strong>, paspayı kalınlığı ve korozyon durumu belirlenir.</p>
+          <p><strong>3) Bütüncül Risk Kararı ve TBDY 2018 Bölüm 15 Ayrımı:</strong><br>
+          Tek başına karot MPa değeri veya bina yaşıyla risk kararı verilmez; <strong>beton/donatı malzeme verileri, taşıyıcı sistem kapasitesi ve deprem talebi</strong> birlikte modellenir. 6306 Ek-2 yalnız riskli yapı tespiti içindir; mevcut binanın <strong>deprem performansı ve güçlendirme hesabı TBDY-2018 Bölüm 15</strong> esaslarına göre yapılır.</p>`
+        },
+        'coklu-envanter-cetvel': {
+          title: 'Çok Yapılı ve Çok Hissedarlı Parsellerde Yapı Envanteri, 3 Hak Cetveli ve Tapu Kontrolü',
+          ref: 'Cilt 2 • Bölüm 7 & Bölüm 8 (6306 Yön. m.15/6–7 ve 91 Hissedarlı Parsel Saha Metodolojisi)',
+          body: `<p><strong>1) Saha Yapı Envanterinin Temel Amacı:</strong><br>
+          Aynı parselde birden fazla (ruhsatlı veya ruhsatsız) yapı bulunduğunda hazırlanan yapı envanteri; <strong>her bir yapının parsel içindeki konumunu, fiilî kullanıcısını ve hak iddiasının belge dayanaklarını</strong> eşleştirmek için kullanılır.</p>
+          <p><strong>2) Üçlü Hak Cetveli Sistemi (91 Hissedarlı Parsel Modeli):</strong><br>
+          • <strong>Tapu Hak Cetveli (Cetvel A):</strong> Güncel tapu kaydındaki hisse/arsa payı oranlarını gösterir (<code>&gt;%50</code> resmi karar ölçütüdür).<br>
+          • <strong>Mevcut Yapı Cetveli (Cetvel B):</strong> Parseldeki ruhsatsız/fiilî yapıların <strong>kullanıcısı, m² ölçüsü ve abonelik/emlak vergisi/muhdesat belgeleri</strong> bu cetvele yazılır.<br>
+          • <strong>Yeni Proje ve Paylaşım Cetveli (Cetvel C):</strong> Yeni bağımsız bölümlerin şerefiye ve denkleştirme dağılımını gösterir.</p>
+          <p><strong>3) Malik İsimleri Krokisi Doğrulaması:</strong> Krokide yapı yanında bir ismin yazılı olması tek başına tapu payını kanıtlamaz; oylama hesabı mutlaka <strong>güncel tapu kaydı ve hisse bilgisiyle</strong> kontrol edilmelidir.</p>`
+        },
+        'yon-m15-kiraci-oy': {
+          title: '6306 Oylamalarında Malik Sıfatı, Kiracının Durumu ve Arsa Payı Salt Çoğunluğu (>%50) Hesabı',
+          ref: '6306 Sayılı Kanun Madde 6/1 & Uygulama Yönetmeliği Madde 15/2 ve Madde 16/3',
+          body: `<p><strong>1) Kiracı ve Abonelik Sahibinin Oy Durumu:</strong><br>
+          Parselde kiracı olarak oturmak ve elektrik/su/doğalgaz faturalarını ödemek kişiye <strong>kendi adına malik oyu kullanma hakkı vermez</strong> (Malik yazılı vekâletname vermedikçe onun yerine de oy kullanamaz). Kiracılar yalnızca Yön. m.16/3 uyarınca <strong>2 aylık defaten taşınma/kira yardımı</strong> alabilir.</p>
+          <p><strong>2) Kişi Sayısı Değil, Arsa Payı Salt Çoğunluğu (&gt;%50):</strong><br>
+          6306 kapsamında yeniden yapım ve sözleşme kararları malik (kişi) sayısına göre değil, <strong>toplam 100/100 arsa payının yarısından fazlası (&gt;%50, örn. %52 veya %55)</strong> ile alınır. Tam <strong>%50,00</strong> pay yarısını aşmadığı için salt çoğunluk sağlamaz.</p>`
+        },
+        'sozlesme-cetvel-sartname': {
+          title: 'Kat Karşılığı Sözleşme Ekleri: Paylaşım Cetveli, Teknik Şartname, Şerefiye, Kademeli Devir ve Teslim Süresi',
+          ref: 'Cilt 3 • Bölüm 4–7 & UrbanNest Sözleşme Kurgusu (6306 Yön. m.13/9–10 ve m.15/12)',
+          body: `<p><strong>1) Bağımsız Bölüm Paylaşım Cetveli:</strong> Yeni projedeki dairelerin tartışmasız tanımlanması için cetvelde her bağımsız bölümün <strong>bölüm numarası, katı, cephesi/yönü, net alanı ve brüt alanı</strong> birlikte yer almalıdır.</p>
+          <p><strong>2) Teknik Şartname (Mahal Listesi):</strong> Yapılacak imalatın niteliğini, kullanılacak malzemelerin marka/kalite özelliklerini ve uygulama standartlarını tarif eden bağlayıcı sözleşme ekidir.</p>
+          <p><strong>3) Şerefiye Hesabı:</strong> Brüt/net alanı aynı olan bağımsız bölümler arasındaki <strong>kat, cephe ve manzara</strong> kaynaklı ekonomik değer farklarını denkleştirme yöntemidir.</p>
+          <p><strong>4) Kademeli Tapu Devri ve 18 Aylık Süre Başlangıcı:</strong> Yükleniciye yapılacak tapu devirleri peşin değil, <strong>belgelenen inşaat ilerleme aşamalarına ve %6 teminata</strong> (m.13/9–10) bağlanır. İnşaat teslim süresi (örn. 18 ay) kural olarak <strong>Yapı Ruhsatı tarihinden</strong> itibaren başlar.</p>`
+        },
+        'imark-m21-30-iskan': {
+          title: '3194 Sayılı İmar Kanunu m.21 & m.30 – Normal Yapım Süreci Sıralaması ve Yapı Kullanma İzin Belgesi (İskân)',
+          ref: '3194 Sayılı İmar Kanunu Madde 21, Madde 28/10, Madde 30 ve PAİY m.54, m.64',
+          body: `<p><strong>1) Yeni Binanın Normal Yapım Akışı:</strong><br>
+          İmar mevzuatına göre yeni bir binanın yasal üretim sırası: <strong><code>1. Uygulama projelerinin hazırlanması ➔ 2. Yapı ruhsatı alınması (m.21) ➔ 3. İnşaatın yapımı ➔ 4. Yapı kullanma izin belgesi alınması (m.30)</code></strong> şeklindedir.</p>
+          <p><strong>2) Yapı Kullanma İzin Belgesi (İskân) Nedir?</strong><br>
+          Yeni yapı tamamlandığında binanın ruhsat ve onaylı projelerine uygun inşa edildiğini gösteren ve <strong>yapının kullanımına resmen izin veren</strong> belediye/idare belgesidir (İskân alındıktan sonra kat irtifakından kat mülkiyetine geçilir; müteahhidin SGK borcu varsa İmar K. m.28/10 uyarınca arsa sahiplerine kısmi iskân verilir).</p>`
+        },
+        'eimar-cap-yencok': {
+          title: 'E-İmar Okuma, Kadastro/Park Çakıştırması, A-4 & Yençok Gösterimi ve Resmî İmar Durumu Belgesi İle Teyit',
+          ref: 'Cilt 1 • Sunum 1.1 (Belediye E-İmar Yazı ve Semboller Rehberi & Planlı Alanlar İmar Yönetmeliği)',
+          body: `<p><strong>1) Tapu/Kadastro Doğrulaması ve Park Kesişimi:</strong><br>
+          • E-imar ekranındaki ada ve parsel numaraları <strong>güncel tapu kaydı veya resmî kadastro kaydıyla</strong> karşılaştırılarak doğrulanır.<br>
+          • Parselin köşesinde park rengi/taraması görülüyorsa etkilenen terk alanını bulmak için ilk olarak <strong>güncel imar planının park kararı ile kadastro parseli üst üste çakıştırılarak</strong> incelenir.</p>
+          <p><strong>2) A-4 ve Yençok (Hmax) Gösterimlerinin Okunması:</strong><br>
+          • <strong>A-4:</strong> "A" <strong>Ayrık nizamı</strong>, "4" ise izin verilen azami kat adedini (<strong>dört kat</strong>) ifade eder.<br>
+          • <strong>Yençok / Hmax (Örn: 15,50 m):</strong> Binanın kot aldığı noktadan itibaren izin verilen <strong>azami yapı yüksekliğini</strong> verir.</p>
+          <p><strong>3) Nihai Belge İle Teyit:</strong> E-imar ekran görüntüleri bilgi amaçlıdır; parsel koşulları nihai olarak <strong>ilgili idarenin güncel parsel bazlı resmî İmar Durumu Belgesi (İmar Çapı)</strong> ile teyit edilmelidir.</p>`
+        },
+        'alan-hesabi-1700': {
+          title: 'TAKS, KAKS (Emsal), 1,70 Çıkma Katsayısı ve +2,50 m Subasman İle Toplam İnşaat Alanı Hesabı (1.000 / 1.200 / 1.700 m² Örnekleri)',
+          ref: 'Cilt 1 • Bölüm 3 (Sunum 1.3 Toplam İnşaat Alanı Hesaplama & Antalya Plan Notları Uygulaması)',
+          body: `<p><strong>1) Temel TAKS ve KAKS Formülleri:</strong><br>
+          • <strong>Azami Taban Alanı:</strong> <code>Net İmar Parseli × TAKS</code> (Örn: <code>1.200 × 0,25 = 300 m²</code>; <code>1.700 × 0,30 = 510 m²</code>). <em>Çekme mesafelerinin izin verdiği yapı zarfı daha küçükse küçük olan oturum dikkate alınır.</em><br>
+          • <strong>Emsale Dahil Toplam Katlar Alanı:</strong> <code>Net İmar Parseli × KAKS</code> (Örn: <code>1.000 × 1,20 = 1.200 m²</code>; <code>1.200 × 0,75 = 900 m²</code>; <code>1.700 × 0,80 = 1.360 m²</code>).</p>
+          <p><strong>2) 1.700 m² Parselde 1,70 Çıkma Katsayılı Model:</strong><br>
+          • Zemin oturumu (sabit): <code>1.700 × 0,30 = 510 m²</code>.<br>
+          • Üst katlara kalan baz emsal: <code>1.360 − 510 = 850 m²</code>.<br>
+          • Çıkmalı üst katlar alanı: <code>850 × 1,70 = 1.445 m²</code> (1,70 katsayısının kapsamı <strong>onaylı plan notu ve ilgili imar hükümlerinden</strong> kontrol edilir).<br>
+          • <strong>Bodrum hariç üst yapı toplamı:</strong> <code>510 + 1.445 =</code> <strong><code>1.955 m²</code></strong>.<br>
+          • <strong>+510 m² tam oturumlu bodrum eklenirse fiziksel toplam:</strong> <code>1.955 + 510 =</code> <strong><code>2.465 m²</code></strong>.</p>
+          <p><strong>3) +2,50 m Subasman Kotu İlişkisi:</strong> Subasman kotu zemin döşeme seviyesini belirler; <strong>KAKS (emsal) değerini kendiliğinden artırmaz</strong>, ancak projeye bodrum eklenirse fiziksel toplam inşaat alanı artabilir.</p>`
+        }
+      });
+    }
+
+    if (typeof YON_EK_DB !== 'undefined') {
+      Object.assign(YON_EK_DB, {
+        'Ornek-14-Teslim': {
+          title: 'ÖRNEK 14: Riskli Yapı Bağımsız Bölüm Tahliye ve Anahtar Teslim Tutanağı',
+          ref: 'Cilt 3 • Kentsel Dönüşüm Uygulama Dosyası (Örnek 14 — Tahliye, Sayaç ve Anahtar Teslim Kaydı)',
+          formText: `6306 SAYILI KANUN KAPSAMINDA BAĞIMSIZ BÖLÜM FİİLÎ TAHLİYE VE ANAHTAR TESLİM TUTANAĞI (ÖRNEK 14)
+
+TAŞINMAZIN İLİ / İLÇESİ / MAHALLESİ : [ANTALYA] İli, [İLÇE] İlçesi, [MAHALLE] Mahallesi
+ADA / PARSEL / BAĞIMSIZ BÖLÜM NO    : [ADA] Ada, [PARSEL] Parsel — Bağımsız Bölüm No: [ ... ]
+TESLİM TARİHİ VE SAATİ              : [../../2026] — Saat: [ .. : .. ]
+
+1. FİİLÎ TAHLİYE VE SAYAÇ BİLGİLERİ KONTROLÜ:
+• İnsan ve Eşya Tahliyesi : Bağımsız bölüm tamamen boşaltılmış olarak kontrol edilmiştir.
+• Elektrik Abone / Sayaç  : Tesisat No: [ ............ ] | Son Endeks: [ ....... ] | Kesme İşlem No: [ ....... ]
+• Su Abone / Sayaç        : Abone No  : [ ............ ] | Son Endeks: [ ....... ] | Kapama Kaydı  : [ ....... ]
+• Doğalgaz Abone / Sayaç  : Sözleşme  : [ ............ ] | Son Endeks: [ ....... ] | Söküm/Kapama  : [ ....... ]
+• Teslim Edilen Anahtar   : Toplam [ ... ] adet dış/daire kapı anahtarı eksiksiz teslim alınmıştır.
+
+*Not: Yıkım ruhsatı (6 iş günü - Yön. m.8/3-b) öncesinde tüm bağımsız bölümlerin ayrı ayrı tahliye ve sayaç kapatma tutanakları tamamlanarak ortak alan kontrolüyle birleştirilir.
+
+TESLİM EDEN MALİK / KULLANICI                      TESLİM ALAN YÖNETİCİ / YETKİLİ TEMSİLCİ
+(Ad Soyad - T.C. No - İmza)                        (Ad Soyad - Görev - İmza)`
+        },
+        'Ornek-03-Irtibat': {
+          title: 'ÖRNEK 03: Sınırlı İrtibat ve Başvuru Evrak Takip Yetki Yazısı (Tasarruf / Devir Yetkisi İçermez)',
+          ref: 'Cilt 3 • Kentsel Dönüşüm Uygulama Dosyası (Örnek 03 — Sınırlı Evrak Sunma ve Durum Sorma Belgesi)',
+          formText: `6306 SAYILI KANUN KAPSAMINDA SINIRLI İRTİBAT VE EVRAK TAKİP YETKİ YAZISI (ÖRNEK 03)
+
+İLGİLİ BİRİME (Belediye İmar Md. / Kentsel Dönüşüm Müdürlüğü / Lisanslı Kuruluş)
+
+Maliki bulunduğum [ANTALYA] İli, [İLÇE] İlçesi, [MAHALLE] Mahallesi, [ADA] Ada, [PARSEL] Parseldeki taşınmazla ilgili olarak;
+1- Tarafımca imzalanmış başvuru dilekçesi ve ekindeki teslim edilen belgeleri ilgili birime sunmak,
+2- Başvuru evrakının kayıt numarasını almak ve işlem durumunu sormak / eksik belge bildirimini öğrenmek üzere
+[AD SOYAD - T.C. KİMLİK NO] sınırlı irtibat kişisi olarak yetkilendirilmiştir.
+
+⚠️ YETKİ SINIRI UYARISI: İşbu sınırlı irtibat yazısı; malik adına yüklenici seçme, kat karşılığı sözleşme imzalama, teknik itirazdan vazgeçme/feragat etme veya arsa payı devri (ferağ) yapma yetkisi KESİNLİKLE İÇERMEZ. [TARİH]
+
+YETKİ VEREN MALİK (Ad Soyad - T.C. No - İmza)`
+        }
+      });
+    }
+  }
+
+  // 2. SORU METNİNE GÖRE %100 İSABETLİ DAYANAK KARTI ÇÖZÜMLEYİCİ (KAYITLI TABLET 5 SORULARINI DA ANINDA ONARIR)
+  function resolveExactRefKeyForQuestion(qText, fallbackRef) {
+    const t = String(qText || '').toLocaleLowerCase('tr-TR');
+
+    // Beton, Donatı, Kat Kapsamı ve TBDY
+    if (t.includes('beş katlı') || t.includes('bildirilen kat sayısının kapsamını') || t.includes('donatı araştırmasına') || t.includes('etriye')) return 'beton-donati-kat';
+    if (t.includes('deprem performansı ve güçlendirme değerlendirmesi')) return 'beton-donati-kat';
+    if (t.includes('boş yapısal analiz ve risk değerlendirme cetvelleri')) return 'r01-rapor-hesap';
+    if (t.includes('9,2, 10,5') || t.includes('altı karot değeri')) return 'r01-rapor-hesap';
+    if (t.includes('mpa') || t.includes('karot dayanımının düzeltilmesinde') || t.includes('beton dayanımı düşük')) return 'beton-mpa-18';
+
+    // Çoklu Yapı Envanteri, Cetveller, Kiracı Oyu
+    if (t.includes('kiracı olarak oturmak') && t.includes('malik oyu')) return 'yon-m15-kiraci-oy';
+    if (t.includes('52/100') || t.includes('91 malik bulunan örnekte') || t.includes('%50 pay kabul oyu vermiştir')) return 'yon-m15-kiraci-oy';
+    if (t.includes('yapı envanterinin') || t.includes('mevcut yapı cetveline') || t.includes('parsel malik isimleri')) return 'coklu-envanter-cetvel';
+
+    // Tutanak, İrtibat, Sözleşme, Şartname, Paylaşım Cetveli, Şerefiye
+    if (t.includes('anahtar teslim tutanağı')) return 'ek:Ornek-14-Teslim';
+    if (t.includes('sınırlı irtibat yazısında')) return 'ek:Ornek-03-Irtibat';
+    if (t.includes('paylaşım cetvelinde bağımsız bölümlerin') || t.includes('teknik şartnamenin işlevi') || t.includes('şerefiye') || t.includes('farklı ekonomik değer verilmesi') || t.includes('tapu devirleri hangi ölçüt') || t.includes('18 aylık sürenin başlangıcı')) return 'sozlesme-cetvel-sartname';
+
+    // İskân ve Normal Yapım Sırası
+    if (t.includes('normal yapım sürecini') || t.includes('binanın kullanımına ilişkin izin') || t.includes('yapının kullanımına izin verildiğini') || t.includes('“iskân” hangi belgeye') || t.includes('"iskân" hangi belgeye')) return 'imark-m21-30-iskan';
+
+    // E-İmar, İmar Çapı, A-4, Yençok, EK-1d
+    if (t.includes('a-4') || t.includes('yençok') || t.includes('hmax') || t.includes('ada ve parsel numaraları hangi kayıtla') || t.includes('köşesinde park rengi') || t.includes('nihai olarak hangi belgeyle teyit')) return 'eimar-cap-yencok';
+    if (t.includes('3,6 cm') || t.includes('fonksiyon sınırı') || t.includes('tict') || t.includes('kademe hattı') || t.includes('rgb sütunu') || t.includes('asm kodu') || t.includes('dkk kodu') || t.includes('benzer mor tonlarla')) return 'ek1d-rehber';
+
+    // Alan Hesapları (1.000 / 1.200 / 1.700 m², Subasman, 1,70 Çarpan)
+    if (t.includes('1.700 m²') || (t.includes('1.200 m²') && t.includes('0,75')) || (t.includes('1.000 m²') && t.includes('1,20')) || t.includes('subasman kotu') || t.includes('1,70 çıkma katsayısının hangi alana') || t.includes('510 m²')) {
+      if (t.includes('yapılabilir zarf bu alandan küçükse')) return 'paiy-m4';
+      return 'alan-hesabi-1700';
+    }
+
+    return fallbackRef || 'yon-m15-1-2';
+  }
+
+  // Kayıtlı localStorage oturumundaki (özellikle Tablet 5) eski refKey değerlerini ilerlemeyi hiç bozmadan güncelle
+  function upgradeSavedRandomQuestionsInStorage() {
+    try {
+      const raw = localStorage.getItem(EXAM_STORAGE_KEY);
+      if (!raw) return;
+      const parsed = JSON.parse(raw);
+      if (parsed && parsed.sessions && parsed.sessions.t5 && Array.isArray(parsed.sessions.t5.customQuestions)) {
+        parsed.sessions.t5.customQuestions.forEach(qObj => {
+          qObj.refKey = resolveExactRefKeyForQuestion(qObj.q, qObj.refKey);
+        });
+        localStorage.setItem(EXAM_STORAGE_KEY, JSON.stringify(parsed));
+      }
+    } catch (e) {}
+  }
+
+  // 3. SAĞ PANEL ÜST SEÇİCİLERİ (#quickLawSelect ve #quickEkSelect) BİRBİRİYLE TAM SENKRON HALE GETİR
+  function syncRightPanelSelectDropdowns(mode, activeKey) {
+    const lawSel = document.getElementById('quickLawSelect');
+    const ekSel = document.getElementById('quickEkSelect');
+
+    if (mode === 'law') {
+      if (ekSel) ekSel.value = ''; // Eski Ek-3E vb. seçimi temizle!
+      if (lawSel && activeKey) {
+        if (!lawSel.querySelector(`option[value="${activeKey}"]`) && typeof LAW_DB !== 'undefined' && LAW_DB[activeKey]) {
+          let grp = lawSel.querySelector('optgroup[data-exam-extra="1"]');
+          if (!grp) {
+            grp = document.createElement('optgroup');
+            grp.setAttribute('data-exam-extra', '1');
+            grp.label = '🎓 Sınav & Saha Özel Dayanak Kartları';
+            lawSel.appendChild(grp);
+          }
+          const opt = document.createElement('option');
+          opt.value = activeKey;
+          opt.textContent = LAW_DB[activeKey].title.slice(0, 62) + (LAW_DB[activeKey].title.length > 62 ? '...' : '');
+          grp.appendChild(opt);
+        }
+        lawSel.value = activeKey;
+      }
+    } else if (mode === 'ek') {
+      if (lawSel) lawSel.value = ''; // Mevzuat seçicisini temizle!
+      if (ekSel && activeKey) {
+        if (!ekSel.querySelector(`option[value="${activeKey}"]`) && typeof YON_EK_DB !== 'undefined' && YON_EK_DB[activeKey]) {
+          const opt = document.createElement('option');
+          opt.value = activeKey;
+          opt.textContent = YON_EK_DB[activeKey].title.slice(0, 58) + '...';
+          ekSel.appendChild(opt);
+        }
+        ekSel.value = activeKey;
+      }
+    }
+  }
+
+  // 4. SINAVDAN DAYANAK AÇILDIĞINDA TAM İSABETLİ KARTI AÇ VE ÜSTÜNE "DOĞRUDAN SORU DAYANAĞI" ÖZETİ EKLE
+  function hookExamReferenceOpenerAndSplitFunctions() {
+    // Genel openSplitLaw ve openYonEk çağrılarında da sağ üst açılır kutuları senkron tut
+    const origLaw = window.openSplitLaw;
+    if (typeof origLaw === 'function' && !origLaw._selectSynced) {
+      const wrappedLaw = function(lawKey) {
+        const res = origLaw.apply(this, arguments);
+        syncRightPanelSelectDropdowns('law', lawKey);
+        return res;
+      };
+      wrappedLaw._selectSynced = true;
+      window.openSplitLaw = wrappedLaw;
+    }
+
+    const origEk = window.openYonEk;
+    if (typeof origEk === 'function' && !origEk._selectSynced) {
+      const wrappedEk = function(ekCode) {
+        const res = origEk.apply(this, arguments);
+        syncRightPanelSelectDropdowns('ek', ekCode);
+        return res;
+      };
+      wrappedEk._selectSynced = true;
+      window.openYonEk = wrappedEk;
+    }
+
+    // Sınav ekranındaki "⚖️ Dayanak Maddeyi / Formu Sağ Ekranda Aç" butonunu akıllı hale getir
+    const prevExamOpenRef = window.kdOpenQuestionRefInSplit;
+    if (typeof prevExamOpenRef === 'function' && !prevExamOpenRef._exactPatched) {
+      const patchedExamOpenRef = function(rawRefKey, ev) {
+        const qCard = document.querySelector('#kdExamTabletMount .kd-exam-qcard');
+        let qTitleText = '';
+        let qExpText = '';
+
+        if (qCard) {
+          const qDivs = qCard.querySelectorAll('div');
+          qDivs.forEach(d => {
+            const txt = (d.textContent || '').trim();
+            if (!qTitleText && /^Soru\s+\d+\s*:/.test(txt)) qTitleText = txt;
+            if (!qExpText && txt.includes('Çözüm ve Mevzuat Dayanağı:')) {
+              qExpText = txt.replace(/^.*Çözüm ve Mevzuat Dayanağı:\s*/, '').trim();
+            }
+          });
+        }
+
+        const resolvedKey = resolveExactRefKeyForQuestion(qTitleText, rawRefKey);
+        const res = prevExamOpenRef.call(this, resolvedKey, ev);
+
+        // Sağ panelin en üstüne bu sorunun doğrudan karşılığını gösteren odak kutusu yerleştir
+        setTimeout(() => {
+          const splitContent = document.getElementById('splitLawContent');
+          if (splitContent && qExpText && !document.getElementById('kdExamDirectMatchBanner')) {
+            const banner = document.createElement('div');
+            banner.id = 'kdExamDirectMatchBanner';
+            banner.style.cssText = 'background:linear-gradient(135deg,#ecfdf5 0%,#d1fae5 100%); border:1.5px solid #10b981; border-left:5px solid #059669; border-radius:9px; padding:10px 13px; margin-bottom:10px; font-size:0.82rem; color:#064e3b; line-height:1.5;';
+            const safeExp = qExpText.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            banner.innerHTML = `<div style="font-size:0.72rem; font-weight:900; color:#047857; text-transform:uppercase; margin-bottom:3px;">🎯 Aktif Sınav Sorusunun Doğrudan Dayanak İlkesi</div><div><strong>${safeExp}</strong></div>`;
+            splitContent.insertBefore(banner, splitContent.firstChild);
+          }
+          if (resolvedKey.startsWith('ek:')) syncRightPanelSelectDropdowns('ek', resolvedKey.slice(3));
+          else syncRightPanelSelectDropdowns('law', resolvedKey);
+        }, 30);
+
+        return res;
+      };
+      patchedExamOpenRef._exactPatched = true;
+      window.kdOpenQuestionRefInSplit = patchedExamOpenRef;
+    }
+  }
+
+  upgradeSavedRandomQuestionsInStorage();
+
+  window.addEventListener('DOMContentLoaded', () => {
+    registerPrecisionExamLawAndEkCards();
+    setTimeout(() => {
+      hookExamReferenceOpenerAndSplitFunctions();
+    }, 780);
+  });
+})();
